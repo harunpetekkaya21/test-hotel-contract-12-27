@@ -1,0 +1,27 @@
+.layout-menu {
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+.sidebar-partner-name {
+    margin-top: auto; /* Bu elemanı diğer tüm içeriklerin altına iter */
+    text-align: center;
+    padding: 10px;
+    background-color: #f8f9fa; /* Arka plan için isteğe bağlı renk */
+    border-top: 1px solid #ddd; /* Üst çizgi */
+  }
+  
+  .sidebar-partner-name a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #333; 
+    font-weight: 600;
+  }
+  
+  .sidebar-partner-name a:hover {
+    color: #007bff; 
+    text-decoration: underline;
+  }
