@@ -57,7 +57,7 @@ export class ContractCreateComponent {
 
   tableData: any[] = [];
 
-  onDateRangeChange(): void {
+  onDateRangeChange(): void { 
     if (this.startDate && this.endDate) {
       const dates = [];
       let currentDate = new Date(this.startDate);
