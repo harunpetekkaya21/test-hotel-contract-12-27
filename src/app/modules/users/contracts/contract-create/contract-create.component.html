@@ -54,7 +54,7 @@
                 <div class="input-group">
                   <i class="fas fa-user"></i>
                   <p-inputNumber [(ngModel)]="pax.price" [min]="0" placeholder="Misafir Fiyati"></p-inputNumber>
-                  <i class="fas fa-percentage"></i>
+                  <i class="fas fa-x"></i>
                   <p-dropdown [(ngModel)]="pax.multiplier" [options]="multiplierOptions" optionLabel="label"
                     optionValue="value" (ngModelChange)="onMultiplierChange(cell, i)"></p-dropdown>
                 </div>
