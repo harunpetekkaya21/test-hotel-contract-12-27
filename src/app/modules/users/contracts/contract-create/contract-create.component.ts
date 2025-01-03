@@ -87,8 +87,9 @@ export class ContractCreateComponent {
   ];
 
   availableRoomTypes = [
-    { name: 'Promo Room', capacity: 3, childCapacity: 2 },
-    { name: 'Standard Room', capacity: 4, childCapacity: 3 },
+    { name: 'Promo Room', capacity: 3, childCapacity: 3 },
+    { name: 'Standard Room / Kara Manzarali', capacity: 2, childCapacity: 2 },
+    { name: 'Standard Room / Deniz Manzarali', capacity: 2, childCapacity: 2 },
     { name: 'Superior Room', capacity: 5, childCapacity: 4 },
   ];
 

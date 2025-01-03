@@ -33,8 +33,9 @@
 
 .input-with-icon i {
   font-size: 1.2rem;
-  color: #666;
+  color: var(--primary-color);
 }
+
 
 p-calendar,
 p-multiSelect,
@@ -176,8 +177,8 @@ p-dropdown {
 }
 
 .input-group i {
-  font-size: 1rem;
-  color: #666;
+  font-size: 1.2rem;
+  color: var(--primary-color);
   width: 1.5rem;
   height: 1.5rem;
   text-align: center;
