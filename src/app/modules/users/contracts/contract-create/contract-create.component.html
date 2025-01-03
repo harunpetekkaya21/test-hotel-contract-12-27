@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="card">
   <p-tabView>
     <p-tabPanel header="Tarih Bazlı">
@@ -28,38 +29,63 @@
                   [maxSelectedLabels]="1" selectedItemsLabel="{0} oda tipi seçildi"></p-multiSelect>
               </div>
 
-
-
               <!-- Satışı Durdur -->
               <div class="checkbox-container">
                 <p-checkbox [(ngModel)]="stopSales" binary="true" label="Satışı Durdur"></p-checkbox>
                 <p-checkbox [(ngModel)]="addChildPricing" binary="true" label="Çocuk Ekle"></p-checkbox>
               </div>
+
+              <!-- Para Birimi -->
+              <div class="currency-dropdown" style="margin-left: auto;">
+                <p-dropdown
+                  [(ngModel)]="selectedCurrency"
+                  [options]="currencyOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Para Birimi Seç"
+                  (onChange)="onCurrencyChange($event)"
+                ></p-dropdown>
+              </div>
             </div>
           </div>
         </div>
 
-
         <div *ngIf="displayedDates.length && selectedRoomTypes.length" class="card table-card">
-          <p-table [value]="tableData" [scrollable]="true" scrollDirection="horizontal" scrollHeight="600px">
+          <p-table [value]="tableData" [scrollable]="true" 
+            scrollDirection="horizontal" scrollHeight="600px">
             <ng-template pTemplate="header">
               <tr class="table-header">
-                <th class="sticky-column">Oda Tipi</th>
-                <th *ngFor="let date of displayedDates; trackBy: trackByIndex">
-                  {{ date | date: 'dd.MM.yyyy' }}
+                <th class="sticky-column">
+                  <div class="header-with-icon">
+                    <i class="fas fa-bed"></i>
+                    <span>Oda Tipi</span>
+                  </div>
+                </th>
+                <th class="table-dates" *ngFor="let date of displayedDates; trackBy: trackByIndex">
+                  <i class="fas fa-calendar-alt calendar-icon"></i>
+                  <div class="table-date">{{ date | date: 'dd.MM.yyyy' }}</div>
                 </th>
               </tr>
             </ng-template>
+
             <ng-template pTemplate="body" let-row>
               <tr>
-                <td class="room-type sticky-column">{{ row.roomType }}</td>
+                <td class="room-type sticky-column">
+                  <div class="room-with-icon">
+                    <i class="fas fa-bed"></i>
+                    <span>{{ row.roomType }}</span>
+                  </div>
+                </td>
                 <td *ngFor="let cell of row.cells; trackBy: trackByIndex">
-                  <div class="cell-content">
+                  <div class="cell-content" [ngClass]="{
+                    
+                    invalid: validationTriggered && cell.invalid
+                  }">
                     <!-- Base Fiyat -->
                     <div class="input-group">
-                      <i class="fas fa-euro-sign"></i>
+                      <i [class]="getCurrencyIconClass(selectedCurrency)"></i>
                       <span class="prefix">Base Fiyat</span>
-                      <p-inputNumber [(ngModel)]="cell.basePrice" [min]="0"
+                      <p-inputNumber [(ngModel)]="cell.basePrice" mode="currency" [currency]="selectedCurrency" [min]="0"
                         (ngModelChange)="onBasePriceChange(cell)"></p-inputNumber>
                     </div>
 
@@ -68,37 +94,33 @@
                       <div class="input-group">
                         <i class="fas fa-user"></i>
                         <span class="prefix">{{ i + 1 }} kişi için fiyat:</span>
-                        <p-inputNumber [(ngModel)]="pax.price"></p-inputNumber>
+                        <p-inputNumber [(ngModel)]="pax.price" mode="currency" [currency]="selectedCurrency"></p-inputNumber>
                         <p-dropdown [(ngModel)]="pax.multiplier" [options]="multiplierOptions" optionLabel="label"
                           optionValue="value" (ngModelChange)="onMultiplierChange(cell, i)"></p-dropdown>
                       </div>
                     </ng-container>
 
                     <!-- Çocuk Fiyatları -->
-                    <!-- Child Pricing -->
                     <ng-container *ngIf="addChildPricing">
                       <ng-container *ngFor="let child of cell.childPricing; let i = index; trackBy: trackByIndex">
-                        <div class="input-group">
+                        <div class="child-input-group">
                           <i class="fas fa-baby"></i>
-                          <span class="prefix">Yas Araligi {{ i + 1 }}:</span>
+                          <span class="prefix">Yas {{ i + 1 }}:</span>
+
                           <p-inputNumber [(ngModel)]="child.ageRange.min" [min]="0" placeholder="Min Age"
-                            class="small-input"></p-inputNumber>
-                          <span class="dash">-</span>
+                            class="child-small-input"></p-inputNumber>
+
                           <p-inputNumber [(ngModel)]="child.ageRange.max" [min]="child.ageRange.min + 1"
-                            placeholder="Max Age" class="small-input"></p-inputNumber>
-                          <p-inputNumber [(ngModel)]="child.price" [min]="0" placeholder="Price"
-                            class="small-input"></p-inputNumber>
+                            placeholder="Max Age" class="child-small-input"></p-inputNumber>
+
+                          <p-inputNumber [(ngModel)]="child.price" [min]="0" mode="currency" [currency]="selectedCurrency"
+                            placeholder="Price" class="child-price-input"></p-inputNumber>
                           <p-dropdown [(ngModel)]="child.multiplier" [options]="multiplierOptions" optionLabel="label"
                             optionValue="value" (ngModelChange)="onChildMultiplierChange(cell, i)"
-                            class="small-dropdown"></p-dropdown>
+                            class="child-small-dropdown"></p-dropdown>
                         </div>
                       </ng-container>
                     </ng-container>
-
-
-
-
-
 
                     <!-- Satışı Durdur -->
                     <ng-container *ngIf="stopSales">
@@ -120,8 +142,27 @@
 
     <p-tabPanel header="Periyot Bazlı">
       <ng-template pTemplate="content">
-        Complex Content to Lazy Load
+        <div>Complex Content to Lazy Load</div>
       </ng-template>
     </p-tabPanel>
   </p-tabView>
 </div>
+
+
+<!-- <p-dialog
+  header="Uyarı"
+  [(visible)]="showUnsavedModal"
+  [modal]="true"
+  
+  
+  
+>
+  <ng-container *ngIf="showUnsavedModal">
+    <p>Verileriniz kaydedilmedi. Çıkmak istediğinize emin misiniz?</p>
+    <div class="ui-dialog-buttonpane">
+      <button pButton label="Evet" class="p-button-danger" (click)="confirmExit()"></button>
+      <button pButton label="Hayır" class="p-button-primary" (click)="cancelExit()"></button>
+    </div>
+  </ng-container>
+</p-dialog> -->
+

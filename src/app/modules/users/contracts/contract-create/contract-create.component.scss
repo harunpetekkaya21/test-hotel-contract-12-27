@@ -61,11 +61,35 @@ p-dropdown {
 .table-header th {
   position: sticky;
   top: 0; /* Üstte sabit başlık */
-  background-color: #ffffff;
+  // background-color: var(--primary-color);
   z-index: 3;
   border-bottom: 1px solid #ddd;
   border-left: none;
   white-space: nowrap;
+  background-color: #ffffff;
+  color: var(--primary-color);
+  font-size: 16px;
+}
+.table-header .table-dates{
+  background-color: #ffffff;
+  color: var(--primary-color);
+  
+}
+
+.table-date {
+  display: inline-flex; /* Satır içi flex yapısı */
+  align-items: center;  /* İkon ve metni dikeyde ortalar */
+  gap: 8px;             /* İkon ve metin arasındaki boşluk */
+  white-space: nowrap;  /* Tarihlerin bir satırda kalmasını sağlar */
+}
+
+
+.table-dates .table-date{
+  
+  font-family: "Inter var", sans-serif;
+  
+  padding: 2px;
+  font-size: 16px;
 }
 
 /* Sticky Sütun */
@@ -84,34 +108,23 @@ p-dropdown {
   white-space: nowrap;
 }
 
-
-
-
-:host ::ng-deep .small-input .p-inputnumber input {
-  width: 55px !important;
-}
-// :host ::ng-deep .small-input  {
-//   width: 30px !important;/* Daha küçük genişlik */
-// }
-.child-pricing-container {
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  background-color: #f9f9f9;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+.room-with-icon {
+  display: flex;          /* Simge ve metni yatay hizalamak için flexbox */
+  align-items: center;    /* Simge ve metni dikey ortalar */
+  gap: 8px;               /* Simge ve metin arasındaki boşluk */
 }
 
-.child-pricing-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+.header-with-icon {
+  display: flex;          /* Simge ve metni yatay hizalamak için flexbox */
+  align-items: center;    /* Simge ve metni dikey ortalar */
+  gap: 8px;               /* Simge ve metin arasında boşluk */
+  font-size: 1em;         /* Metin ve simge boyutunu uyumlu hale getirir */
 }
 
-.child-pricing-row i {
-  font-size: 1.2rem;
-  color: #666;
-}
+
+
+
+
 
 .label {
   font-weight: bold;
@@ -122,12 +135,7 @@ p-dropdown {
   flex: 1; /* Boşluk bırakmak için */
 }
 
-.dash {
-  font-size: 1rem;
-  color: #666;
-  margin-left: 1px; /* 1px boşluk */
-  margin-right: 1px; /* 1px boşluk */
-}
+
 
 .child-pricing-row:last-child {
   margin-bottom: 0; /* Son satırda boşluk bırakma */
@@ -139,34 +147,21 @@ p-dropdown {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem;
+  padding: 2rem;
   background-color: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-/* Varsayılan Hücre Sınırı */
-.cell-content.default-border {
-  border: 1px solid #e0e0e0;
-  background-color: #fdfdfd;
-}
-
-/* Hata Durumu */
-.cell-content.error-border {
-  border-color: #ff4d4d;
-  background-color: #ffe5e5;
-}
-
-/* Başarılı Durum */
-.cell-content.success-border {
-  border-color: #28a745;
-  background-color: #eaffea;
+  position: relative; /* Box-shadow'un düzgün çalışması için */
+  z-index: 1; /* Gölgelerin diğer içeriklerden yüksek olmasını sağlar */
 }
 
 
-
+.cell-content.invalid {
+  border-color: red;
+  box-shadow: 0px 0px 2px 1px red;
+}
 
 /* Input ve Dropdown Alanları */
 .input-group {
@@ -189,14 +184,37 @@ p-dropdown {
   flex: 1;
 }
 
-.input-group i:hover {
-  color: #007bff;
-}
-
 .input-group input:focus,
 .input-group select:focus {
-  border-color: #007bff;
+  border-color: var(--primary-color);
 }
+
+.child-input-group{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.child-input-group i{
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  width: 1.5rem;
+  height: 1.5rem;
+  text-align: center;
+}
+
+.child-input-group p-inputNumber input,
+.child-input-group p-dropdown {
+  flex: 1;
+}
+:host ::ng-deep .child-input-group .child-price-input .p-inputnumber input{
+  width: 75px !important;
+}
+:host ::ng-deep .child-input-group .child-small-input .p-inputnumber input {
+  width: 55px !important;
+}
+
 
 .prefix {
   font-size: 0.9rem;
@@ -217,15 +235,15 @@ p-dropdown {
   transition: background-color 0.3s ease;
 }
 
-:host  .p-multiselect {
-  max-width: 100%; /* Mobilde taşmayı önler */
-}
+// :host  .p-multiselect {
+//   max-width: 100%; /* Mobilde taşmayı önler */
+// }
 
- :host .p-multiselect-label {
-  white-space: nowrap; /* Taşmayı engeller */
-  overflow: hidden; /* Uzun metinler için taşmayı gizler */
-  text-overflow: ellipsis; /* Uzun metinlerde ... kullanır */
-}
+//  :host .p-multiselect-label {
+//   white-space: nowrap; /* Taşmayı engeller */
+//   overflow: hidden; /* Uzun metinler için taşmayı gizler */
+//   text-overflow: ellipsis; /* Uzun metinlerde ... kullanır */
+// }
 
 .save-button:hover {
   background-color: #0056b3;
@@ -256,9 +274,9 @@ p-dropdown {
     flex-wrap: wrap;
     gap: 0.8rem;
   }
-  :host .p-multiselect {
-    width: 100%; /* Mobilde tam genişlik */
-  }
+  // :host .p-multiselect {
+  //   width: 100%; /* Mobilde tam genişlik */
+  // }
   .control-card{
     flex-direction: row;
     gap: 1rem;

@@ -14,6 +14,7 @@ export const USER_ROUTES: Routes = [
         
     },
     {
+      
       path: 'contracts',
       loadChildren: () =>
         import('./contracts/contracts.routes').then(m => m.CONTRACTS_ROUTES),
