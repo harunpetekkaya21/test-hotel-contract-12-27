@@ -46,19 +46,36 @@ p-dropdown {
 .right-controls {
   text-align: right;
 }
-
-/* Tablo */
+/* Tablo Kapsayıcı */
 .table-card {
   margin-top: 1.5rem;
   overflow-x: auto;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Sticky Başlık */
+.table-header th {
+  position: sticky;
+  top: 0; /* Üstte sabit başlık */
+  background-color: #ffffff;
+  z-index: 3;
+  border-bottom: 1px solid #ddd;
+  border-left: none;
+  white-space: nowrap;
+}
+
+/* Sticky Sütun */
+.sticky-column {
+  position: sticky;
+  left: 0;
+  background-color: #ffffff;
+  z-index: 2;
+  border-right: 1px solid #ddd;
+}
 /* Tablo Satır ve Hücre Stilleri */
-.table-header {
-  background-color: #f5f5f5;
-  font-weight: bold;
-}
-
 .room-type {
   font-weight: bold;
   text-align: left;
@@ -66,38 +83,96 @@ p-dropdown {
   white-space: nowrap;
 }
 
+
+
+
+:host ::ng-deep .small-input .p-inputnumber input {
+  width: 55px !important;
+}
+// :host ::ng-deep .small-input  {
+//   width: 30px !important;/* Daha küçük genişlik */
+// }
+.child-pricing-container {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.child-pricing-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.child-pricing-row i {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.label {
+  font-weight: bold;
+  color: #666;
+  width: 100px;
+}
+.spacer {
+  flex: 1; /* Boşluk bırakmak için */
+}
+
+.dash {
+  font-size: 1rem;
+  color: #666;
+  margin-left: 1px; /* 1px boşluk */
+  margin-right: 1px; /* 1px boşluk */
+}
+
+.child-pricing-row:last-child {
+  margin-bottom: 0; /* Son satırda boşluk bırakma */
+}
+
+
+
 .cell-content {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
-  background-color: #fdfdfd;
+  background-color: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
+/* Varsayılan Hücre Sınırı */
 .cell-content.default-border {
-  border: 1px solid #e0e0e0; /* Gri sınır */
+  border: 1px solid #e0e0e0;
   background-color: #fdfdfd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: border-color 0.3s ease;
 }
 
 /* Hata Durumu */
 .cell-content.error-border {
-  border-color: #ff4d4d; /* Kırmızı sınır */
+  border-color: #ff4d4d;
+  background-color: #ffe5e5;
 }
 
 /* Başarılı Durum */
 .cell-content.success-border {
-  border-color: #28a745; /* Yeşil sınır */
+  border-color: #28a745;
+  background-color: #eaffea;
 }
+
+
+
+
+/* Input ve Dropdown Alanları */
 .input-group {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .input-group i {
@@ -122,15 +197,78 @@ p-dropdown {
   border-color: #007bff;
 }
 
+.prefix {
+  font-size: 0.9rem;
+  color: #666;
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+/* Kaydet Butonu */
+.save-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+:host  .p-multiselect {
+  max-width: 100%; /* Mobilde taşmayı önler */
+}
+
+ :host .p-multiselect-label {
+  white-space: nowrap; /* Taşmayı engeller */
+  overflow: hidden; /* Uzun metinler için taşmayı gizler */
+  text-overflow: ellipsis; /* Uzun metinlerde ... kullanır */
+}
+
+.save-button:hover {
+  background-color: #0056b3;
+}
+
+/* Yatay Kaydırma Çubuğu */
+::-webkit-scrollbar {
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #999999;
+}
+
 /* Responsive Ayarlar */
 @media (max-width: 768px) {
+  .sticky-column {
+    position: static; /* Sticky yerine normal davranış */
+    background-color: transparent; /* Arka planı kaldır */
+    border-right: none; /* Gereksiz sınırları kaldır */
+  }
+  .child-pricing-row {
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  :host .p-multiselect {
+    width: 100%; /* Mobilde tam genişlik */
+  }
+  .control-card{
+    flex-direction: row;
+    gap: 1rem;
+  }
   .date-room-controls {
-    flex-direction: column;
+    flex-direction: row;
     gap: 1rem;
   }
 
   .control-group {
-    flex-direction: column;
+    flex-direction: row;
     gap: 1rem;
   }
 
