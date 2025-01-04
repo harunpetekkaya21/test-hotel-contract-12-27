@@ -13,7 +13,7 @@
                   [showButtonBar]="true" dateFormat="dd.mm.yy" placeholder="Başlangıç Tarihi"
                   appendTo="body"></p-calendar>
               </div>
-
+              
               <!-- Bitiş Tarihi -->
               <div class="input-with-icon">
                 <i class="fas fa-calendar-alt"></i>
@@ -95,7 +95,7 @@
                         <i class="fas fa-user"></i>
                         <span class="prefix">{{ i + 1 }} kişi için fiyat:</span>
                         <p-inputNumber [(ngModel)]="pax.price" mode="currency" [currency]="selectedCurrency"></p-inputNumber>
-                        <p-dropdown [(ngModel)]="pax.multiplier" [options]="multiplierOptions" optionLabel="label"
+                        <p-dropdown [(ngModel)]="pax.multiplier" [options]="multiplierOptions" optionLabel="label" appendTo="body"
                           optionValue="value" (ngModelChange)="onMultiplierChange(cell, i)"></p-dropdown>
                       </div>
                     </ng-container>
@@ -117,7 +117,7 @@
                             placeholder="Price" class="child-price-input"></p-inputNumber>
                           <p-dropdown [(ngModel)]="child.multiplier" [options]="multiplierOptions" optionLabel="label"
                             optionValue="value" (ngModelChange)="onChildMultiplierChange(cell, i)"
-                            class="child-small-dropdown"></p-dropdown>
+                            class="child-small-dropdown" appendTo="body"></p-dropdown>
                         </div>
                       </ng-container>
                     </ng-container>

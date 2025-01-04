@@ -211,7 +211,7 @@ export class ContractCreateComponent {
       case 'TRY':
         return 'fas fa-lira-sign';
       default:
-        return 'fas fa-money-bill-alt'; // Varsayılan ikon
+        return 'fas fa-lira-sign'; // Varsayılan ikon
     }
   }
 
