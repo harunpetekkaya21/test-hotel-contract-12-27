@@ -155,6 +155,7 @@ p-dropdown {
   transition: border-color 0.3s ease, background-color 0.3s ease;
   position: relative; /* Box-shadow'un düzgün çalışması için */
   z-index: 1; /* Gölgelerin diğer içeriklerden yüksek olmasını sağlar */
+  word-wrap: normal;
 }
 
 

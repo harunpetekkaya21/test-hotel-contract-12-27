@@ -13,6 +13,7 @@ import { Observable, of } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
+import { ContractConfirmDialogComponent } from '../components/contract-confirm-dialog/contract-confirm-dialog.component';
 export interface RoomData {
   roomType: string;
   cells: Cell[];
@@ -33,6 +34,7 @@ export interface Pax {
 export interface Cell {
   date: string;
   basePrice: number | null;
+  allotment: number | null;//Kontenjan
   paxes: Pax[];
   childPricing: ChildPricing[];
   stopSales: string | null;
@@ -43,6 +45,7 @@ export interface Cell {
   selector: 'app-contract-create',
   standalone: true,
   imports: [
+    ContractConfirmDialogComponent,
     ReactiveFormsModule,
     DropdownModule,
     CommonModule,
@@ -79,6 +82,8 @@ export class ContractCreateComponent {
   isDataSaved: boolean = false; // Verilerin kaydedilip kaydedilmediğini izler
   showUnsavedModal: boolean = false;
 
+  openDialog: boolean = false;
+
 
   stopSalesOptions = [
     { label: 'Evet', value: 'yes' },
@@ -110,33 +115,26 @@ export class ContractCreateComponent {
   constructor(private cdr: ChangeDetectorRef,private messageService: MessageService) {}
 
   ngOnInit(): void {
-    //this.loadDataFromStorage(); // Sayfa yüklendiğinde verileri yükle
+    
   }
 
-  // // Local Storage'a veri kaydet
-  // saveDataToStorage(): void {
-  //   localStorage.setItem('unsavedTableData', JSON.stringify(this.tableData));
-  // }
 
-  // // Local Storage'dan veri yükle
-  // loadDataFromStorage(): void {
-  //   const savedData = localStorage.getItem('unsavedTableData');
-  //   if (savedData) {
-  //     this.tableData = JSON.parse(savedData);
-
-  //      // Tabloyu UI'a bağlamak için gerekli işlemler
-  //   this.selectedRoomTypes = this.tableData.map((room) => ({
-  //     name: room.roomType,
-  //     capacity: room.cells[0].paxes.length, // Pax sayısını kullanarak kapasite belirleme
-  //     childCapacity: room.cells[0].childPricing.length, // Çocuk kapasitesini belirleme
-  //   }));
-
-  //   this.displayedDates = this.tableData[0]?.cells.map((cell) => cell.date) || [];
-  //   }
-  // }
 
   onDateRangeChange(): void {
     if (this.startDate && this.endDate) {
+      // Tarih doğrulaması
+      if (this.endDate < this.startDate) {
+        this.endDate = null; // Bitiş Tarihini temizle
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Tarih Hatası',
+          detail: 'Bitiş Tarihi, Başlangıç Tarihinden küçük olamaz!',
+        });
+       
+        return; // İşlemi durdur
+      }
+  
+      // Tarihler valid ise tabloyu oluştur
       this.displayedDates = this.generateDates(this.startDate, this.endDate);
       this.generateTableData();
     }
@@ -151,47 +149,65 @@ export class ContractCreateComponent {
   }
 
   generateTableData(): void {
-    this.tableData = this.selectedRoomTypes.map((room) => ({
-      roomType: room.name,
-      cells: this.displayedDates.map((date) =>
-        this.createCell(date, room.capacity, room.childCapacity)
-      ),
-    }));
+    const updatedTableData: RoomData[] = [];
+  
+    this.selectedRoomTypes.forEach((room) => {
+      const existingRoom = this.tableData.find((r) => r.roomType === room.name);
+      const cells: Cell[] = this.displayedDates.map((date) => {
+        // Önceki tablo verilerinden mevcut hücreyi bul
+        const existingCell = existingRoom?.cells.find((cell) => cell.date === date);
+  
+        // Mevcut hücre varsa aynen koru, yoksa yeni oluştur
+        return existingCell || this.createCell(date, room.capacity, room.childCapacity);
+      });
+  
+      updatedTableData.push({
+        roomType: room.name,
+        cells: cells,
+      });
+    });
+  
+    this.tableData = updatedTableData;
     this.data$ = of(this.tableData); // Akışı güncelle
-    
   }
 
   createCell(date: string, capacity: number, childCapacity: number): Cell {
     return {
       date,
       basePrice: null,
+      allotment: null,
       paxes: Array.from({ length: capacity }, (_, index) => ({
         price: null,
         multiplier: 1.0,
         paxNumber: index + 1,
       })),
       stopSales: null,
-      childPricing: Array.from({ length: capacity }, (_, index) => ({
+      childPricing: Array.from({ length: childCapacity }, (_, index) => ({
         ageRange: { min: 0, max: 0 },
         price: null,
         multiplier: 1.0,
-        childIndex: index + 1,
       })),
-
     };
-    
   }
+  
 
   private generateDates(start: Date, end: Date): string[] {
-    const dates = [];
+    const dates: string[] = [];
+    
+    // Tarihlerin saat bilgisini sıfırla
     let currentDate = new Date(start);
-    while (currentDate <= end) {
-      dates.push(currentDate.toISOString().split('T')[0]);
-      currentDate.setDate(currentDate.getDate() + 1);
+    currentDate.setHours(12, 0, 0, 0); // Saat bilgisi sıfırlanır (UTC sapmasını önlemek için 12:00 kullanılır)
+    const endDate = new Date(end);
+    endDate.setHours(12, 0, 0, 0); // Saat bilgisi sıfırlanır
+  
+    while (currentDate <= endDate) {
+      // Tarihi ISO formatına çevir ve listeye ekle
+      dates.push(new Date(currentDate).toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1); // Bir gün ekle
     }
+  
     return dates;
   }
-
   onBasePriceChange(cell: Cell): void {
     if (cell?.basePrice !== null) {
       const basePrice = this.convertToNumber(cell.basePrice);
@@ -277,19 +293,37 @@ export class ContractCreateComponent {
 
 
 
-  // Kaydet Butonu Fonksiyonu
   saveData(): void {
+    // Tüm hücrelerin validasyonunu kontrol et
     this.validateCells();
     const hasInvalidCells = this.tableData.some(room =>
       room.cells.some(cell => cell.invalid)
     );
-
-    if (!hasInvalidCells) {
-      this.isDataSaved = true;
-      //this.saveDataToStorage(); // Local Storage'a kaydet
-      console.log('Veriler başarıyla kaydedildi:', JSON.stringify(this.tableData, null, 2));
+  
+    if (hasInvalidCells) {
+      // Hücrelerde geçersiz veri varsa dialog açılmasın
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Geçersiz Hücreler',
+        detail: 'Bazı hücreler geçersiz. Lütfen kontrol edin.',
+      });
+      this.openDialog = false; // Dialog açılmıyor
+    } else {
+      // Tüm hücreler geçerliyse dialog açılsın
+      this.openDialog = true;
     }
   }
+
+  // Dialogdan gelen "saveContract" olayını işleyen fonksiyon
+onContractSave(contractData: any): void {
+  console.log('Contract verisi kaydedildi:', contractData);
+  this.messageService.add({
+    severity: 'success',
+    summary: 'Başarılı',
+    detail: 'Contract başarıyla kaydedildi!',
+  });
+  this.openDialog = false; // Dialogu kapat
+}
   trackByIndex(index: number): number {
     return index;
   }
@@ -297,19 +331,5 @@ export class ContractCreateComponent {
   trackByRoom(index: number, room: RoomData): string {
     return room.roomType;
   }
-  // confirmExit(): void {
-  //   this.showUnsavedModal = false;
-  //   this.isDataSaved = true; // Çıkışa izin ver
-  // }
-  
-  // cancelExit(): void {
-  //   this.showUnsavedModal = false; // Modal kapatılır, sayfa değişmez
-  // }
-  // // Sayfa Yenileme ve Çıkış Uyarısı
-  // @HostListener('window:beforeunload', ['$event'])
-  // unloadNotification($event: any): void {
-  //   if (!this.isDataSaved) {
-  //     $event.returnValue = true; // Tarayıcıdan çıkış uyarısı
-  //   }
-  // }
+ 
 }
