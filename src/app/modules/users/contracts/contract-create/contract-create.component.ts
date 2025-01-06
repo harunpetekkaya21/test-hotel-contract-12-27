@@ -13,7 +13,6 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
-import { ContractConfirmDialogComponent } from '../components/contract-confirm-dialog/contract-confirm-dialog.component';
 export interface RoomData {
   roomType: string;
   cells: Cell[];
@@ -34,7 +33,7 @@ export interface Pax {
 export interface Cell {
   date: string;
   basePrice: number | null;
-  allotment: number | null;//Kontenjan
+  allotment: number | null;
   paxes: Pax[];
   childPricing: ChildPricing[];
   stopSales: string | null;
@@ -45,7 +44,6 @@ export interface Cell {
   selector: 'app-contract-create',
   standalone: true,
   imports: [
-    ContractConfirmDialogComponent,
     ReactiveFormsModule,
     DropdownModule,
     CommonModule,
@@ -82,8 +80,7 @@ export class ContractCreateComponent {
   isDataSaved: boolean = false; // Verilerin kaydedilip kaydedilmediğini izler
   showUnsavedModal: boolean = false;
 
-  openDialog: boolean = false;
-
+  openDialog: boolean = false; // Contract dialog açık mı?
 
   stopSalesOptions = [
     { label: 'Evet', value: 'yes' },
@@ -123,10 +120,30 @@ export class ContractCreateComponent {
   constructor(private cdr: ChangeDetectorRef, private messageService: MessageService) { }
 
   ngOnInit(): void {
-
+    
   }
 
+  // // Local Storage'a veri kaydet
+  // saveDataToStorage(): void {
+  //   localStorage.setItem('unsavedTableData', JSON.stringify(this.tableData));
+  // }
 
+  // // Local Storage'dan veri yükle
+  // loadDataFromStorage(): void {
+  //   const savedData = localStorage.getItem('unsavedTableData');
+  //   if (savedData) {
+  //     this.tableData = JSON.parse(savedData);
+
+  //      // Tabloyu UI'a bağlamak için gerekli işlemler
+  //   this.selectedRoomTypes = this.tableData.map((room) => ({
+  //     name: room.roomType,
+  //     capacity: room.cells[0].paxes.length, // Pax sayısını kullanarak kapasite belirleme
+  //     childCapacity: room.cells[0].childPricing.length, // Çocuk kapasitesini belirleme
+  //   }));
+
+  //   this.displayedDates = this.tableData[0]?.cells.map((cell) => cell.date) || [];
+  //   }
+  // }
 
   onDateRangeChange(): void {
     if (this.startDate && this.endDate) {
@@ -142,9 +159,9 @@ export class ContractCreateComponent {
         return; // İşlemi durdur
       }
   
-      // // Tarihler valid ise tabloyu oluştur
-      // this.displayedDates = this.generateDates(this.startDate, this.endDate);
-      // this.generateTableData();
+      // Tarihler valid ise tabloyu oluştur
+      this.displayedDates = this.generateDates(this.startDate, this.endDate);
+      this.generateTableData();
     }
   }
   
@@ -160,29 +177,27 @@ export class ContractCreateComponent {
     this.generateTableData();
   }
   generateTableData(): void {
-    console.log(this.selectedRoomTypes);
-    // Tabloyu sıfırdan oluştur
-    this.tableData = [];
+    const updatedTableData: RoomData[] = [];
   
-    // Yeni oda tipleri için tablo oluştur
     this.selectedRoomTypes.forEach((room) => {
-      const cells = this.displayedDates.map((date) =>
-        this.createCell(date, room.capacity, room.childCapacity)
-      );
+      const existingRoom = this.tableData.find((r) => r.roomType === room.name);
+      const cells: Cell[] = this.displayedDates.map((date) => {
+        // Önceki tablo verilerinden mevcut hücreyi bul
+        const existingCell = existingRoom?.cells.find((cell) => cell.date === date);
   
-      // Oda tipini tabloya ekle
-      this.tableData.push({ roomType: room.name, cells });
+        // Mevcut hücre varsa aynen koru, yoksa yeni oluştur
+        return existingCell || this.createCell(date, room.capacity, room.childCapacity);
+      });
+  
+      updatedTableData.push({
+        roomType: room.name,
+        cells: cells,
+      });
     });
   
-    // BehaviorSubject güncelle
-    this.tableDataSubject.next(this.tableData);
-    this.cdr.detectChanges();
-    
+    this.tableData = updatedTableData;
+    this.data$ = of(this.tableData); // Akışı güncelle
   }
-  
-  
-  
-  
 
   createCell(date: string, capacity: number, childCapacity: number): Cell {
     return {
@@ -195,31 +210,31 @@ export class ContractCreateComponent {
         paxNumber: index + 1,
       })),
       stopSales: null,
-      childPricing: Array.from({ length: childCapacity }, (_, index) => ({
+      childPricing: Array.from({ length: capacity }, (_, index) => ({
         ageRange: { min: 0, max: 0 },
         price: null,
         multiplier: 1.0,
+        childIndex: index + 1,
       })),
-    };
-  }
 
+    };
+    
+  }
+  
 
   private generateDates(start: Date, end: Date): string[] {
     const dates: string[] = [];
+    
+    // Tarihlerin saat bilgisini sıfırla
     let currentDate = new Date(start);
-    currentDate.setHours(12, 0, 0, 0); // Saat bilgisi sıfırlanır (UTC sapmasını önlemek için 12:00 kullanılır)
-    const endDate = new Date(end);
-    endDate.setHours(12, 0, 0, 0); // Saat bilgisi sıfırlanır
-  
-    while (currentDate <= endDate) {
-      // Tarihi ISO formatına çevir ve listeye ekle
-      dates.push(new Date(currentDate).toISOString().split('T')[0]);
-      currentDate.setDate(currentDate.getDate() + 1); // Bir gün ekle
+    while (currentDate <= end) {
+      dates.push(currentDate.toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
     }
-  
     return dates;
 
   }
+
   onBasePriceChange(cell: Cell): void {
     if (cell?.basePrice !== null) {
       const basePrice = this.convertToNumber(cell.basePrice);
@@ -289,39 +304,39 @@ export class ContractCreateComponent {
   }
 
 
-saveData(): void {
-  // Geçersiz hücreleri kontrol et
-  const invalidCells = this.validateCells();
-
-  if (invalidCells.length > 0) {
-    // Geçersiz hücreler varsa dialog açılmasın
-    invalidCells.forEach((cell) =>
-      this.addToMessageQueue(
-        'error',
-        'Geçersiz Hücre',
-        `Oda Tipi: ${cell.roomType}, Tarih: ${cell.date}`
-      )
+  saveData(): void {
+    // Tüm hücrelerin validasyonunu kontrol et
+    this.validateCells();
+    const hasInvalidCells = this.tableData.some(room =>
+      room.cells.some(cell => cell.invalid)
     );
-    this.openDialog = false; // Dialog kapalı
-   // this.cdr.detectChanges();
-  } else {
-    // Tüm hücreler geçerliyse dialog açılsın
-   
-    this.openDialog = true; // Dialog açık
-    //this.cdr.detectChanges();
+  
+    if (hasInvalidCells) {
+      // Hücrelerde geçersiz veri varsa dialog açılmasın
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Geçersiz Hücreler',
+        detail: 'Bazı hücreler geçersiz. Lütfen kontrol edin.',
+      });
+      this.openDialog = false; // Dialog açılmıyor
+    } else {
+      // Tüm hücreler geçerliyse dialog açılsın
+      this.openDialog = true;
+    }
   }
-}
-
 
   // Dialogdan gelen "saveContract" olayını işleyen fonksiyon
-  onContractSave(contractData: any): void {
-    console.log('Contract verisi kaydedildi:', contractData);
-    console.log('Veriler başarıyla kaydedildi:', JSON.stringify(this.tableData, null, 2));
-   
-    this.addToMessageQueue('success', 'Başarılı', 'Contract başarıyla kaydedildi!');
-    
-    this.openDialog = false; // Dialogu kapat
-    this.cdr.detectChanges();
+onContractSave(contractData: any): void {
+  console.log('Contract verisi kaydedildi:', contractData);
+  this.messageService.add({
+    severity: 'success',
+    summary: 'Başarılı',
+    detail: 'Contract başarıyla kaydedildi!',
+  });
+  this.openDialog = false; // Dialogu kapat
+}
+  trackByIndex(index: number): number {
+    return index;
   }
   // trackByIndex(index: number): number {
   //   return index;
@@ -330,25 +345,5 @@ saveData(): void {
   trackByRoom(index: number, room: RoomData): string {
     return room.roomType;
   }
-  
-  trackByCell(index: number, cell: Cell): string {
-    return cell.date;
-  }
-  private processMessageQueue(): void {
-    if (this.messageQueue.length > 0) {
-      const message = this.messageQueue.shift();
-      if (message) {
-        this.messageService.add(message);
-        setTimeout(() => this.processMessageQueue(), 300); // 300 ms bekle
-      }
-    }
-  }
-  
-  private addToMessageQueue(severity: string, summary: string, detail: string): void {
-    this.messageQueue.push({ severity, summary, detail });
-    if (this.messageQueue.length === 1) {
-      this.processMessageQueue(); // İlk mesajı işlemeye başla
-    }
-  }
-
+ 
 }
