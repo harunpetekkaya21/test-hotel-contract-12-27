@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
@@ -66,7 +66,7 @@ export interface Cell {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContractCreateComponent {
- 
+
 
   startDate: Date | null = null;
   endDate: Date | null = null;
@@ -110,12 +110,20 @@ export class ContractCreateComponent {
   }));
 
   tableData: RoomData[] = [];
-  data$: Observable<RoomData[]> = of(this.tableData);
 
-  constructor(private cdr: ChangeDetectorRef,private messageService: MessageService) {}
+   private tableDataSubject = new BehaviorSubject<RoomData[]>([]);
+  // data$: Observable<RoomData[]> = of(this.tableData);
+
+  data$: Observable<RoomData[]> = this.tableDataSubject.asObservable();
+
+  private cachedDates: { start: Date; end: Date; dates: string[] } | null = null;
+  private messageQueue: { severity: string; summary: string; detail: string }[] = [];
+
+
+  constructor(private cdr: ChangeDetectorRef, private messageService: MessageService) { }
 
   ngOnInit(): void {
-    
+
   }
 
 
@@ -134,42 +142,47 @@ export class ContractCreateComponent {
         return; // İşlemi durdur
       }
   
-      // Tarihler valid ise tabloyu oluştur
-      this.displayedDates = this.generateDates(this.startDate, this.endDate);
-      this.generateTableData();
+      // // Tarihler valid ise tabloyu oluştur
+      // this.displayedDates = this.generateDates(this.startDate, this.endDate);
+      // this.generateTableData();
     }
   }
+  
+  
   onCurrencyChange(event: any): void {
     // Tablodaki tüm ilgili alanların para birimini değiştirmek için
-  this.selectedCurrency = event.value;
+    this.selectedCurrency = event.value;
     console.log('Selected Currency:', this.selectedCurrency);
   }
+
   updateRoomSelection(): void {
+    this.displayedDates = this.generateDates(this.startDate, this.endDate);
     this.generateTableData();
   }
-
   generateTableData(): void {
-    const updatedTableData: RoomData[] = [];
+    console.log(this.selectedRoomTypes);
+    // Tabloyu sıfırdan oluştur
+    this.tableData = [];
   
+    // Yeni oda tipleri için tablo oluştur
     this.selectedRoomTypes.forEach((room) => {
-      const existingRoom = this.tableData.find((r) => r.roomType === room.name);
-      const cells: Cell[] = this.displayedDates.map((date) => {
-        // Önceki tablo verilerinden mevcut hücreyi bul
-        const existingCell = existingRoom?.cells.find((cell) => cell.date === date);
+      const cells = this.displayedDates.map((date) =>
+        this.createCell(date, room.capacity, room.childCapacity)
+      );
   
-        // Mevcut hücre varsa aynen koru, yoksa yeni oluştur
-        return existingCell || this.createCell(date, room.capacity, room.childCapacity);
-      });
-  
-      updatedTableData.push({
-        roomType: room.name,
-        cells: cells,
-      });
+      // Oda tipini tabloya ekle
+      this.tableData.push({ roomType: room.name, cells });
     });
   
-    this.tableData = updatedTableData;
-    this.data$ = of(this.tableData); // Akışı güncelle
+    // BehaviorSubject güncelle
+    this.tableDataSubject.next(this.tableData);
+    this.cdr.detectChanges();
+    
   }
+  
+  
+  
+  
 
   createCell(date: string, capacity: number, childCapacity: number): Cell {
     return {
@@ -189,12 +202,10 @@ export class ContractCreateComponent {
       })),
     };
   }
-  
+
 
   private generateDates(start: Date, end: Date): string[] {
     const dates: string[] = [];
-    
-    // Tarihlerin saat bilgisini sıfırla
     let currentDate = new Date(start);
     currentDate.setHours(12, 0, 0, 0); // Saat bilgisi sıfırlanır (UTC sapmasını önlemek için 12:00 kullanılır)
     const endDate = new Date(end);
@@ -207,6 +218,7 @@ export class ContractCreateComponent {
     }
   
     return dates;
+
   }
   onBasePriceChange(cell: Cell): void {
     if (cell?.basePrice !== null) {
@@ -215,7 +227,7 @@ export class ContractCreateComponent {
         ...pax,
         price: this.calculatePrice(basePrice, pax.multiplier),
       }));
-      
+
     }
   }
   getCurrencyIconClass(currency: string): string {
@@ -250,86 +262,93 @@ export class ContractCreateComponent {
     return parseFloat((currentPrice * multiplier).toFixed(2));
   }
 
-  validateCells(): void {
-    this.validationTriggered = true;
-    const invalidCells: { roomType: string; date: string }[] = [];
 
-    for (const room of this.tableData) {
-      for (const cell of room.cells) {
-        const isValid = this.isCellValid(cell);
-        cell.invalid = !isValid;
-        if (!isValid) {
+  validateCells(): { roomType: string; date: string }[] {
+    this.validationTriggered = true; // Doğrulama tetiklendi
+  
+    const invalidCells: { roomType: string; date: string }[] = [];
+  
+    this.tableData.forEach((room) => {
+      room.cells.forEach((cell) => {
+        cell.invalid = !this.isCellValid(cell);
+        if (cell.invalid) {
           invalidCells.push({ roomType: room.roomType, date: cell.date });
         }
-      }
-    }
-
-    // Geçersiz hücreler için toast mesajları
-    if (invalidCells.length > 0) {
-      invalidCells.forEach(cell =>
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Geçersiz Hücre',
-          detail: `${cell.roomType} - ${cell.date}`,
-        })
-      );
-    } else {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Başarılı',
-        detail: 'Tüm hücreler geçerli!',
       });
-    }
-  }
-  isCellValid(cell: Cell): boolean {
-    if (!cell.basePrice || cell.basePrice <= 0) {
-      return false;
-    }
-    if (cell.paxes.some(pax => !pax.price || pax.price <= 0)) {
-      return false;
-    }
-    return true;
-  }
-
-
-
-  saveData(): void {
-    // Tüm hücrelerin validasyonunu kontrol et
-    this.validateCells();
-    const hasInvalidCells = this.tableData.some(room =>
-      room.cells.some(cell => cell.invalid)
-    );
+    });
   
-    if (hasInvalidCells) {
-      // Hücrelerde geçersiz veri varsa dialog açılmasın
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Geçersiz Hücreler',
-        detail: 'Bazı hücreler geçersiz. Lütfen kontrol edin.',
-      });
-      this.openDialog = false; // Dialog açılmıyor
-    } else {
-      // Tüm hücreler geçerliyse dialog açılsın
-      this.openDialog = true;
-    }
+    return invalidCells; // Geçersiz hücrelerin tam listesini döndür
   }
+
+  isCellValid(cell: Cell): boolean {
+    return (
+      cell.basePrice !== null &&
+      cell.basePrice > 0 &&
+      !cell.paxes.some((pax) => pax.price === null || pax.price <= 0)
+    );
+  }
+
+
+saveData(): void {
+  // Geçersiz hücreleri kontrol et
+  const invalidCells = this.validateCells();
+
+  if (invalidCells.length > 0) {
+    // Geçersiz hücreler varsa dialog açılmasın
+    invalidCells.forEach((cell) =>
+      this.addToMessageQueue(
+        'error',
+        'Geçersiz Hücre',
+        `Oda Tipi: ${cell.roomType}, Tarih: ${cell.date}`
+      )
+    );
+    this.openDialog = false; // Dialog kapalı
+   // this.cdr.detectChanges();
+  } else {
+    // Tüm hücreler geçerliyse dialog açılsın
+   
+    this.openDialog = true; // Dialog açık
+    //this.cdr.detectChanges();
+  }
+}
+
 
   // Dialogdan gelen "saveContract" olayını işleyen fonksiyon
-onContractSave(contractData: any): void {
-  console.log('Contract verisi kaydedildi:', contractData);
-  this.messageService.add({
-    severity: 'success',
-    summary: 'Başarılı',
-    detail: 'Contract başarıyla kaydedildi!',
-  });
-  this.openDialog = false; // Dialogu kapat
-}
-  trackByIndex(index: number): number {
-    return index;
+  onContractSave(contractData: any): void {
+    console.log('Contract verisi kaydedildi:', contractData);
+    console.log('Veriler başarıyla kaydedildi:', JSON.stringify(this.tableData, null, 2));
+   
+    this.addToMessageQueue('success', 'Başarılı', 'Contract başarıyla kaydedildi!');
+    
+    this.openDialog = false; // Dialogu kapat
+    this.cdr.detectChanges();
   }
+  // trackByIndex(index: number): number {
+  //   return index;
+  // }
 
   trackByRoom(index: number, room: RoomData): string {
     return room.roomType;
   }
- 
+  
+  trackByCell(index: number, cell: Cell): string {
+    return cell.date;
+  }
+  private processMessageQueue(): void {
+    if (this.messageQueue.length > 0) {
+      const message = this.messageQueue.shift();
+      if (message) {
+        this.messageService.add(message);
+        setTimeout(() => this.processMessageQueue(), 300); // 300 ms bekle
+      }
+    }
+  }
+  
+  private addToMessageQueue(severity: string, summary: string, detail: string): void {
+    this.messageQueue.push({ severity, summary, detail });
+    if (this.messageQueue.length === 1) {
+      this.processMessageQueue(); // İlk mesajı işlemeye başla
+    }
+  }
+
 }

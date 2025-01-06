@@ -50,8 +50,8 @@
           </div>
         </div>
 
-        <div *ngIf="displayedDates.length && selectedRoomTypes.length" class="card table-card">
-          <p-table [value]="tableData" [scrollable]="true" 
+        <div  *ngIf="displayedDates.length && selectedRoomTypes.length" class="card table-card">
+          <p-table [value]="tableData"  [scrollable]="true" 
             scrollDirection="horizontal" scrollHeight="600px">
             <ng-template pTemplate="header">
               <tr class="table-header">
@@ -61,7 +61,7 @@
                     <span>Oda Tipi</span>
                   </div>
                 </th>
-                <th *ngFor="let date of displayedDates; trackBy: trackByIndex">
+                <th *ngFor="let date of displayedDates;">
                   <i class="fas fa-calendar-alt calendar-icon"></i>
                   <div class="table-date">{{ date | date: 'dd.MM.yyyy' }}</div>
                 </th>
@@ -69,14 +69,14 @@
             </ng-template>
 
             <ng-template pTemplate="body" let-row>
-              <tr>
+              <tr *ngFor="let room of tableData; trackBy: trackByRoom">
                 <td class="room-type sticky-column">
                   <div class="room-with-icon">
                     <i class="fas fa-bed"></i>
                     <span>{{ row.roomType }}</span>
                   </div>
                 </td>
-                <td *ngFor="let cell of row.cells; trackBy: trackByIndex">
+                <td *ngFor="let cell of room.cells; trackBy: trackByCell">
                   <div class="cell-content" [ngClass]="{
                     
                     invalid: validationTriggered && cell.invalid
@@ -92,12 +92,12 @@
                     <div class="input-group">
                       <i class="fas fa-chart-bar"></i>
                       <span class="prefix">Kontenjan</span>
-                      <p-inputNumber [(ngModel)]="cell.basePrice"  [min]="0"
+                      <p-inputNumber [(ngModel)]="cell.allotment"  [min]="0"
                         ></p-inputNumber>
                     </div>
 
                     <!-- Misafir Fiyatları -->
-                    <ng-container *ngFor="let pax of cell.paxes; let i = index; trackBy: trackByIndex">
+                    <ng-container *ngFor="let pax of cell.paxes; let i = index; ">
                       <div class="input-group">
                         <i class="fas fa-user"></i>
                         <span class="prefix">{{ i + 1 }} kişi için fiyat:</span>
@@ -110,7 +110,7 @@
 
                     <!-- Çocuk Fiyatları -->
                     <ng-container *ngIf="addChildPricing">
-                      <ng-container *ngFor="let child of cell.childPricing; let i = index; trackBy: trackByIndex">
+                      <ng-container *ngFor="let child of cell.childPricing; let i = index; ">
                         <div class="child-input-group">
                           <i class="fas fa-baby"></i>
                           <span class="prefix">{{ i + 1 }}. Yas Araligi</span>
@@ -158,4 +158,4 @@
 </div>
 
 <contract-confirm-dialog [(visible)]="openDialog"
-[(visible)]="openDialog" (saveContract)="onContractSave($event)"></contract-confirm-dialog>
+  (saveContract)="onContractSave($event)"></contract-confirm-dialog>
