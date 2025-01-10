@@ -12,8 +12,6 @@ import { TabViewModule } from 'primeng/tabview';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { DialogModule } from 'primeng/dialog';
-import { ChipModule } from 'primeng/chip';
 import { v4 as uuidv4 } from 'uuid'; // UUID için
 
 export interface RoomData {
@@ -60,7 +58,7 @@ export interface Cell {
     InputNumberModule,
     TabViewModule,
     ToastModule,
-    DialogModule,ChipModule],
+    ],
   templateUrl: './date-based-contract.component.html',
   styleUrl: './date-based-contract.component.scss',
   providers: [MessageService],
@@ -68,7 +66,7 @@ export interface Cell {
 })
 export class DateBasedContractComponent {
 
-  informationDialogVisible: boolean = false;
+  
 
   startDate: Date | null = null;
   endDate: Date | null = null;
@@ -132,9 +130,7 @@ export class DateBasedContractComponent {
   }
 
 
-  showInformationDialog(){
-    this.informationDialogVisible=true;
-  }
+
 
   onDateRangeChange(): void {
       // Tarih doğrulaması

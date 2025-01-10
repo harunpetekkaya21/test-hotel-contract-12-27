@@ -1,0 +1,29 @@
+<p-breadcrumb class="custom-breadcrumb" [model]="items">
+    <ng-template pTemplate="item" let-item>
+      <ng-container *ngIf="item.route; else elseBlock">
+        <a
+          [routerLink]="item.route"
+          [ngClass]="{
+            'active-link': item.isActive,
+            'inactive-link': !item.isActive
+          }"
+          class="p-menuitem-link"
+        >
+          <i *ngIf="item.icon" [ngClass]="item.icon" class="mr-1"></i>
+          {{ item.label }}
+        </a>
+      </ng-container>
+      <ng-template #elseBlock>
+        <a
+          [href]="item.url"
+          [ngClass]="{
+            'active-link': item.isActive,
+            'inactive-link': !item.isActive
+          }"
+        >
+          <i *ngIf="item.icon" [ngClass]="item.icon" class="mr-1"></i>
+          {{ item.label }}
+        </a>
+      </ng-template>
+    </ng-template>
+  </p-breadcrumb>

@@ -1,0 +1,31 @@
+.breadcrumb-container {
+    display: flex;
+    justify-content: space-between; /* Breadcrumb ve chip'i sağa sola yayar */
+    align-items: center; /* Aynı hizaya getirir */
+    padding: 0 1rem; /* İsteğe bağlı kenar boşluğu */
+  
+    .info-chip {
+      display: flex;
+      align-items: center;
+  
+      p-chip {
+        cursor: pointer;
+        //background: #f4f4f4;
+        // border: 1px solid #ccc;
+        // border-radius: 16px;
+        // padding: 0.5rem 1rem;
+  
+        i {
+          margin-right: 9px;
+          color: var(--primary-color);
+          font-size: 1.2rem;
+          cursor: pointer;
+        }
+  
+        &:hover {
+         // background: #e0e0e0; /* Hover arka planı */
+        }
+      }
+    }
+  }
+  

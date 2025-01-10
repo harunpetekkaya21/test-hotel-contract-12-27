@@ -7,7 +7,10 @@
 }
 
 
-
+.roomtype-name{
+  color: var(--primary-color);
+  font-weight: 600;
+}
 
 
 .input-with-icon i {
@@ -150,5 +153,30 @@
 
   &:hover {
     background-color: var(--primary-color-dark);
+  }
+}
+
+
+.invalid-cell {
+  border: 2px solid red;
+  animation: shake 0.3s;
+}
+
+/* Hücre hata animasyonu */
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
   }
 }

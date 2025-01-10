@@ -1,9 +1,32 @@
 <p-toast></p-toast>
+
+
+<div class="breadcrumb-container">
+  <!-- Breadcrumb -->
+  <app-bread-crumb [items]="breadcrumbItems"></app-bread-crumb>
+
+  <!-- Information Chip/Icon -->
+  <div class="info-chip fadeout animation-duration-3000 animation-iteration-infinite">
+    <p-chip [removable]="true" (click)="showInformationDialog()" label="How to use this page ">
+      <!-- <i  class="pi pi-info-circle"></i> -->
+      <i   class="fa fa-circle-info"></i>
+    </p-chip>
+  </div>
+
+
+  <!-- <div class="fadeout animation-duration-2000 animation-iteration-infinite ml-auto mr-2 mb-4 mt-2">
+    <p-chip label=" Info for this page" [removable]="true"><i (click)="showInformationDialog()"
+        class="fa-solid fa-circle-info fa-xl " style="margin-right: 2px;"></i></p-chip>
+  </div> -->
+</div>
 <div class="card">
+  
   <p-tabView [activeIndex]="1">
+    
     <p-tabPanel header="Tarih Bazlı" >
       
       <ng-template pTemplate="content">
+        
        <app-date-based-contract></app-date-based-contract>
       </ng-template>
     </p-tabPanel>
@@ -17,3 +40,103 @@
 </div>
 
 
+<p-dialog header="Bu Sayfa icin Kullanim Rehberi" [modal]="true" [(visible)]="informationDialogVisible" [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+
+  <p class="mb-5">
+    About this page
+  </p>
+  <p class="mb-5">
+    About this page
+  </p>
+</p-dialog>

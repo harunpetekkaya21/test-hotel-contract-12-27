@@ -1,10 +1,4 @@
 <p-toast></p-toast>
-<div class="grid">
-  <div class="fadeout animation-duration-2000 animation-iteration-infinite ml-auto mr-2 mb-4 mt-2">
-    <p-chip label=" Info for this page" [removable]="true"><i (click)="showInformationDialog()"
-        class="fa-solid fa-circle-info fa-xl " style="margin-right: 2px;"></i></p-chip>
-  </div>
-</div>
 
 
 <div class="card control-card">
@@ -28,6 +22,8 @@
       <div>
         <button pButton label="Periyot Ekle" icon="pi pi-plus" (click)="addPeriod()"></button>
       </div>
+
+      
     </div>
   </div>
 </div>
@@ -46,7 +42,7 @@
             <button pButton icon="pi pi-trash" class="acordiontab-delete" (click)="removePeriod(i)"></button>
           </div>
 
-          
+
         </div>
       </ng-template>
 
@@ -58,6 +54,10 @@
               placeholder="Oda Tipi Seç" (onChange)="onRoomTypeChange(period)"></p-multiSelect>
             <p-checkbox [(ngModel)]="period.addChildPricing" binary="true" label="Çocuk Fiyatlandırması"
               (onChange)="onChildPricingToggle(period)"></p-checkbox>
+               <!-- Satışı Durdur -->
+            
+              <p-checkbox [(ngModel)]="period.stopSales" binary="true" label="Satisi Durdur"></p-checkbox>
+            
           </div>
         </div>
 
@@ -66,8 +66,8 @@
 
       <div class="grid">
         <div *ngFor="let room of period.roomData" class="col-12 md:col-12 lg:col-6">
-          <h5>{{ room.roomType }}</h5>
-          <div *ngFor="let cell of room.cells" class=" cell-content">
+          <h5 class="roomtype-name">{{ room.roomType }}</h5>
+          <div *ngFor="let cell of room.cells" class=" cell-content" [ngClass]="{ 'invalid-cell': cell.invalid }">
             <!-- Base Fiyat -->
             <div class="input-group ">
               <i class="fas fa-euro-sign "></i>
@@ -115,6 +115,15 @@
                 </div>
               </ng-container>
             </ng-container>
+
+             <!-- Satışı Durdur -->
+             <ng-container *ngIf="period.stopSales">
+              <div class="input-group">
+                <i class="fas fa-ban"></i>
+                <p-dropdown [(ngModel)]="cell.stopSales" [options]="stopSalesOptions" placeholder="Satışı Durdur"
+                  appendTo="body"></p-dropdown>
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>
@@ -127,8 +136,8 @@
 
 
 <!-- Information Dialog -->
-<p-dialog header="Bu Sayfa icin Kullanim Rehberi" [modal]="true" [(visible)]="informationDialogVisible" [style]="{ width: '50rem' }"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+<p-dialog header="Bu Sayfa icin Kullanim Rehberi" [modal]="true" [(visible)]="informationDialogVisible"
+  [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
   <p class="mb-5">
     About this page
   </p>
