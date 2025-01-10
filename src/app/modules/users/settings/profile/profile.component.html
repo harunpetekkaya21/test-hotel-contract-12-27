@@ -1,0 +1,87 @@
+<div class="card profile-card"> 
+    <!-- Profil Üst Bilgileri -->
+    <div class="profile-header">
+      <div class="logo-container">
+        <div class="logo-wrapper">
+          <img *ngIf="hotel.logo" [src]="hotel.logo" alt="Hotel Logo" class="hotel-logo" />
+          <ng-container *ngIf="!hotel.logo">
+            <div class="placeholder">Logo </div>
+          </ng-container>
+        </div>
+        <p-fileUpload name="logo" mode="basic" accept="image/*" [auto]="true" chooseLabel="Logo Sec" (uploadHandler)="onLogoUpload($event)"></p-fileUpload>
+      </div>
+      <div class="profile-info">
+        <h2 class="profile-hotel-name">{{ hotel.name || 'Hotel Adi Gelecek' }}</h2>
+        <p>{{ hotel.tagline || 'Kisa Aciklama' }}</p>
+        <p-chip label="Otel ID: {{ hotel.id }}" class="info-chip"></p-chip>
+      </div>
+      <button pButton label="Kaydet" icon="pi pi-save" class="save-button" (click)="saveProfile()"></button>
+    </div>
+  
+    <!-- Profil İçeriği -->
+    <div class="profile-content grid">
+      <!-- Genel Bilgiler -->
+      <div class="col-12 md:col-6">
+        <div class="card">
+          
+            <div class="mb-5">
+                <p-chip styleClass="custom-chip pl-2 p-3">
+                  <span class="ml-2 font-bold">
+                    Genel Bilgiler
+                  </span>
+                </p-chip>
+              </div>
+            
+          
+          <div class="field">
+            <label for="name">Hotel Adi</label>
+            <input id="name" type="text" pInputText [(ngModel)]="hotel.name" placeholder="Hotel adini giriniz" />
+          </div>
+          
+          <div class="field">
+            <label for="description">Aciklama</label>
+            <textarea id="description" pInputTextarea [(ngModel)]="hotel.description" rows="4" placeholder="Hotel aciklamasi"></textarea>
+          </div>
+        </div>
+      </div>
+  
+      <!-- İletişim Bilgileri -->
+      <div class="col-12 md:col-6">
+        <div class="card">
+            <div class="mb-5">
+                <p-chip styleClass="custom-chip pl-2 p-3">
+                  <span class="ml-2 font-bold">
+                    Iletisim Bilgileri
+                  </span>
+                </p-chip>
+              </div>
+          <div class="field">
+            <label for="phone">Telefon</label>
+            <input id="phone" type="text" pInputText [(ngModel)]="hotel.contact.phone" placeholder="Telefon numarasi" />
+          </div>
+          <div class="field">
+            <label for="email">E-posta</label>
+            <input id="email" type="text" pInputText [(ngModel)]="hotel.contact.email" placeholder="E-posta adresi" />
+          </div>
+          <div class="field">
+            <label for="address">Adres</label>
+            <textarea id="address" pInputTextarea [(ngModel)]="hotel.contact.address" rows="3" placeholder="Adres"></textarea>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Güvenlik -->
+      <div class="col-12">
+        <div class="card">
+            <div class="mb-5">
+                <p-chip styleClass="custom-chip pl-2 p-3">
+                  <span class="ml-2 font-bold">
+                    Güvenlik
+                  </span>
+                </p-chip>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
