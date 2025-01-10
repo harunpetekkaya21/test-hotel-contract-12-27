@@ -1,159 +1,19 @@
 <p-toast></p-toast>
 <div class="card">
-  <p-tabView>
-    <p-tabPanel header="Tarih Bazlı">
+  <p-tabView [activeIndex]="1">
+    <p-tabPanel header="Tarih Bazlı" >
+      
       <ng-template pTemplate="content">
-        <div class="card control-card">
-          <div class="date-room-controls">
-            <div class="control-group">
-              <!-- Başlangıç Tarihi -->
-              <div class="input-with-icon">
-                <i class="fas fa-calendar-alt"></i>
-                <p-calendar id="startDate" [(ngModel)]="startDate" (ngModelChange)="onDateRangeChange()"
-                  [showButtonBar]="true" dateFormat="dd.mm.yy" placeholder="Başlangıç Tarihi"
-                  appendTo="body"></p-calendar>
-              </div>
-              
-              <!-- Bitiş Tarihi -->
-              <div class="input-with-icon">
-                <i class="fas fa-calendar-alt"></i>
-                <p-calendar id="endDate" [(ngModel)]="endDate" (ngModelChange)="onDateRangeChange()"
-                  [showButtonBar]="true" dateFormat="dd.mm.yy" placeholder="Bitiş Tarihi" appendTo="body"></p-calendar>
-              </div>
-
-              <!-- Oda Tipleri -->
-              <div class="input-with-icon">
-                <i class="fas fa-bed"></i>
-                <p-multiSelect id="roomTypes" [(ngModel)]="selectedRoomTypes" [options]="availableRoomTypes"
-                  optionLabel="name" placeholder="Oda Tipleri Seç" appendTo="body" (onChange)="updateRoomSelection()"
-                  [maxSelectedLabels]="1" selectedItemsLabel="{0} oda tipi seçildi"></p-multiSelect>
-              </div>
-
-              <!-- Satışı Durdur -->
-              <div class="checkbox-container">
-                <p-checkbox [(ngModel)]="stopSales" binary="true" label="Satışı Durdur"></p-checkbox>
-                <p-checkbox [(ngModel)]="addChildPricing" binary="true" label="Çocuk Ekle"></p-checkbox>
-              </div>
-
-              <!-- Para Birimi -->
-              <div class="currency-dropdown" style="margin-left: auto;">
-                <p-dropdown
-                  [(ngModel)]="selectedCurrency"
-                  [options]="currencyOptions"
-                  optionLabel="label"
-                  optionValue="value"
-                  placeholder="Para Birimi Seç"
-                  (onChange)="onCurrencyChange($event)"
-                ></p-dropdown>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div  *ngIf="displayedDates.length && selectedRoomTypes.length" class="card table-card">
-          <p-table [value]="tableData"  [scrollable]="true" 
-            scrollDirection="horizontal" scrollHeight="600px">
-            <ng-template pTemplate="header">
-              <tr class="table-header">
-                <th class="sticky-column">
-                  <div class="header-with-icon">
-                    <i class="fas fa-bed"></i>
-                    <span>Oda Tipi</span>
-                  </div>
-                </th>
-                <th *ngFor="let date of displayedDates; trackBy: trackByIndex">
-                  <i class="fas fa-calendar-alt calendar-icon"></i>
-                  <div class="table-date">{{ date | date: 'dd.MM.yyyy' }}</div>
-                </th>
-              </tr>
-            </ng-template>
-
-            <ng-template pTemplate="body" let-row>
-              <tr *ngFor="let room of tableData; trackBy: trackByRoom">
-                <td class="room-type sticky-column">
-                  <div class="room-with-icon">
-                    <i class="fas fa-bed"></i>
-                    <span>{{ row.roomType }}</span>
-                  </div>
-                </td>
-                <td *ngFor="let cell of room.cells; trackBy: trackByCell">
-                  <div class="cell-content" [ngClass]="{
-                    
-                    invalid: validationTriggered && cell.invalid
-                  }">
-                    <!-- Base Fiyat -->
-                    <div class="input-group">
-                      <i [class]="getCurrencyIconClass(selectedCurrency)"></i>
-                      <span class="prefix">Base Fiyat</span>
-                      <p-inputNumber [(ngModel)]="cell.basePrice" mode="currency" [currency]="selectedCurrency" [min]="0"
-                        (ngModelChange)="onBasePriceChange(cell)"></p-inputNumber>
-                    </div>
-
-                    <div class="input-group">
-                      <i class="fas fa-chart-bar"></i>
-                      <span class="prefix">Kontenjan</span>
-                      <p-inputNumber [(ngModel)]="cell.basePrice"  [min]="0"
-                        ></p-inputNumber>
-                    </div>
-
-                    <!-- Misafir Fiyatları -->
-                    <ng-container *ngFor="let pax of cell.paxes; let i = index; ">
-                      <div class="input-group">
-                        <i class="fas fa-user"></i>
-                        <span class="prefix">{{ i + 1 }} kişi için fiyat:</span>
-                        <p-inputNumber [(ngModel)]="pax.price" mode="currency" [currency]="selectedCurrency"></p-inputNumber>
-                        <p-dropdown [(ngModel)]="pax.multiplier" [options]="multiplierOptions" optionLabel="label" appendTo="body"
-                          optionValue="value" (ngModelChange)="onMultiplierChange(cell, i)"></p-dropdown>
-                      </div>
-                    </ng-container>
-
-                    <!-- Çocuk Fiyatları -->
-                    <ng-container *ngIf="addChildPricing">
-                      <ng-container *ngFor="let child of cell.childPricing; let i = index; ">
-                        <div class="child-input-group">
-                          <i class="fas fa-baby"></i>
-                          <span class="prefix">Yas {{ i + 1 }}:</span>
-
-                          <p-inputNumber [(ngModel)]="child.ageRange.min" [min]="0" placeholder="Min Age"
-                            class="child-small-input"></p-inputNumber>
-
-                          <p-inputNumber [(ngModel)]="child.ageRange.max" [min]="child.ageRange.min + 1"
-                            placeholder="Max Age" class="child-small-input"></p-inputNumber>
-
-                          <p-inputNumber [(ngModel)]="child.price" [min]="0" mode="currency" [currency]="selectedCurrency"
-                            placeholder="Price" class="child-price-input"></p-inputNumber>
-                          <p-dropdown [(ngModel)]="child.multiplier" [options]="multiplierOptions" optionLabel="label"
-                            optionValue="value" (ngModelChange)="onChildMultiplierChange(cell, i)"
-                            class="child-small-dropdown" appendTo="body"></p-dropdown>
-                        </div>
-                      </ng-container>
-                    </ng-container>
-
-                    <!-- Satışı Durdur -->
-                    <ng-container *ngIf="stopSales">
-                      <div class="input-group">
-                        <i class="fas fa-ban"></i>
-                        <p-dropdown [(ngModel)]="cell.stopSales" [options]="stopSalesOptions"
-                          placeholder="Satışı Durdur" appendTo="body"></p-dropdown>
-                      </div>
-                    </ng-container>
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-          <button pButton label="Kaydet" (click)="saveData()" class="save-button"></button>
-        </div>
+       <app-date-based-contract></app-date-based-contract>
       </ng-template>
     </p-tabPanel>
 
-    <p-tabPanel header="Periyot Bazlı">
+    <p-tabPanel header="Periyot Bazlı" >
       <ng-template pTemplate="content">
-        <div>Complex Content to Lazy Load</div>
+        <app-period-based-contract></app-period-based-contract>
       </ng-template>
     </p-tabPanel>
   </p-tabView>
 </div>
 
-<contract-confirm-dialog [(visible)]="openDialog"
-[(visible)]="openDialog" (saveContract)="onContractSave($event)"></contract-confirm-dialog>
+

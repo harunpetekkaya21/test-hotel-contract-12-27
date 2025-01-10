@@ -1,0 +1,153 @@
+.acordiontab-delete{
+  background-color: #f84545;
+  border-color: white;
+  &:hover{
+    background-color: #ec0000
+  }
+}
+
+
+
+
+
+.input-with-icon i {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+.header-content{
+  font-size: 16px;
+}
+
+.control-card{
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+.control-group {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  
+}
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 0.5rem;
+}
+.cell-content {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  padding: 2rem;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  position: relative; /* Box-shadow'un düzgün çalışması için */
+  z-index: 1; /* Gölgelerin diğer içeriklerden yüksek olmasını sağlar */
+}
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  flex-wrap: wrap;
+
+ 
+}
+
+
+.child-input-group{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  flex-wrap: wrap;
+
+}
+
+
+.input-group i {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  width: 1.5rem;
+ 
+  text-align: center;
+}
+
+.child-input-group i{
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  width: 1.5rem;
+
+  text-align: center;
+}
+
+
+.input-group p-inputNumber input,
+.input-group p-dropdown {
+  flex: 1;
+}
+
+.child-input-group p-inputNumber input,
+.child-input-group p-dropdown {
+  flex: 1;
+  
+}
+
+.child-input-group .child-small-input{
+  flex: 0 0 75px; /* Sabit genişlik */
+  text-align: center; /* Merkezi metin hizalaması */
+}
+
+
+
+.prefix {
+  font-size: 0.9rem;
+  color: #666;
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+.header-content {
+ 
+  flex-wrap: wrap;
+
+}
+
+// .p-accordion .p-accordion-header .pi {
+//   margin-left: auto; /* Icon'u sağa yasla */
+// }
+
+@media (max-width: 576px) {
+ 
+
+  .input-group .input-group-price{
+    width: 50px;
+  }
+}
+
+.save-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+
+  &:hover {
+    background-color: var(--primary-color-dark);
+  }
+}

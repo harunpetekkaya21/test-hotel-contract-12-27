@@ -3915,13 +3915,13 @@
     padding: 1.25rem;
     border: 1px solid #e5e7eb;
     color: #6b7280;
-    background: #f9fafb;
+    background: white;
     font-weight: 700;
     border-radius: 6px;
     transition: box-shadow 0.2s;
   }
   .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
-    margin-right: 0.5rem;
+    margin-right: 0.9rem;
   }
   .p-accordion .p-accordion-header:not(.p-disabled) .p-accordion-header-link:focus-visible {
     outline: 0 none;
