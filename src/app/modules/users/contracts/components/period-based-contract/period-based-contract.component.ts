@@ -123,9 +123,21 @@ export class PeriodBasedContractComponent {
       this.showError('Başlangıç ve bitiş tarihlerini seçmelisiniz!');
       return;
     }
-
+  
     if (this.endDate <= this.startDate) {
       this.showError('Bitiş tarihi, başlangıç tarihinden önce olamaz!');
+      return;
+    }
+  
+    // Tarih çakışması kontrolü
+    const isOverlapping = this.periods.some((period) =>
+      (this.startDate! >= period.startDate && this.startDate! <= period.endDate) ||
+      (this.endDate! >= period.startDate && this.endDate! <= period.endDate) ||
+      (this.startDate! <= period.startDate && this.endDate! >= period.endDate)
+    );
+  
+    if (isOverlapping) {
+      this.showError('Seçilen tarih aralığı daha önce bir periyotta kullanılmış!');
       return;
     }
 

@@ -105,12 +105,13 @@
   
 }
 
-.child-input-group .child-small-input{
-  flex: 0 0 75px; /* Sabit genişlik */
-  text-align: center; /* Merkezi metin hizalaması */
+// .child-input-group .child-small-input{
+//   flex: 0 0 45px !important; /* Sabit genişlik */
+//   text-align: center; /* Merkezi metin hizalaması */
+// }
+:host ::ng-deep .child-small-input .p-inputnumber input {
+  width: 55px !important; /* Genişlik zorunlu olarak 55px'e ayarlanır */
 }
-
-
 
 .prefix {
   font-size: 0.9rem;
