@@ -31,8 +31,8 @@
       <div class="input-with-icon">
         <i class="fas fa-bed"></i>
         <p-multiSelect id="roomTypes" [(ngModel)]="selectedRoomTypes" [options]="availableRoomTypes" optionLabel="name"
-          placeholder="Oda Tipleri Seç" appendTo="body" (onChange)="updateRoomSelection()" [maxSelectedLabels]="1"
-          selectedItemsLabel="{0} oda tipi seçildi"></p-multiSelect>
+          placeholder="Oda Tipleri Sec" appendTo="body" (onChange)="updateRoomSelection()" [maxSelectedLabels]="1"
+          selectedItemsLabel="{0} oda tipi secildi"></p-multiSelect>
       </div>
 
       <!-- Satışı Durdur -->
@@ -44,7 +44,7 @@
       <!-- Para Birimi -->
       <div class="currency-dropdown" style="margin-left: auto;">
         <p-dropdown [(ngModel)]="selectedCurrency" [options]="currencyOptions" optionLabel="label" optionValue="value"
-          placeholder="Para Birimi Seç" (onChange)="onCurrencyChange($event)"></p-dropdown>
+          placeholder="Para Birimi Sec" (onChange)="onCurrencyChange($event)"></p-dropdown>
       </div>
     </div>
   </div>

@@ -15,7 +15,7 @@
       <div class="input-with-icon">
         <i class="fas fa-calendar-alt"></i>
         <p-calendar id="endDate" [(ngModel)]="endDate" [minDate]="startDate" [showButtonBar]="true"
-          dateFormat="dd.mm.yy" placeholder="Bitiş Tarihi" appendTo="body"></p-calendar>
+          dateFormat="dd.mm.yy" placeholder="Bitis Tarihi" appendTo="body"></p-calendar>
       </div>
 
       <!-- Periyot Ekle -->
@@ -54,7 +54,7 @@
               placeholder="Oda Tipi Seç" (onChange)="onRoomTypeChange(period)"></p-multiSelect>
             <p-checkbox [(ngModel)]="period.addChildPricing" binary="true" label="Cocuk Fiyatlandirmasi"
               (onChange)="onChildPricingToggle(period)"></p-checkbox>
-               <!-- Satışı Durdur -->
+            
             
               <p-checkbox [(ngModel)]="period.stopSales" binary="true" label="Satisi Durdur"></p-checkbox>
             

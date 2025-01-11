@@ -6560,3 +6560,24 @@
     color: #ffffff;
   }
 }
+/* 
+BreadCrupm and info chip */
+.toolbar-container {
+  display: flex;
+  justify-content: space-between; /* Solda ve sağda hizalama */
+  align-items: center;
+  /* padding: 1rem 2rem; */
+  background-color: #f9f9f9; /* Örnek arka plan rengi */
+}
+
+@media (max-width: 768px) {
+  .toolbar-container {
+    flex-wrap: wrap; /* Mobilde alt alta yerleştir */
+    justify-content: center; /* Ortala */
+  }
+
+  app-bread-crumb,
+  app-info-chip {
+    margin-bottom: 1rem;
+  }
+}
