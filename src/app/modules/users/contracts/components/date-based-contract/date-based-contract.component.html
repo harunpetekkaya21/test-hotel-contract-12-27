@@ -17,14 +17,14 @@
       <div class="input-with-icon">
         <i class="fas fa-calendar-alt"></i>
         <p-calendar id="startDate" [(ngModel)]="startDate" (ngModelChange)="onDateRangeChange()" [showButtonBar]="true"
-          dateFormat="dd.mm.yy" placeholder="Başlangıç Tarihi" appendTo="body"></p-calendar>
+          dateFormat="dd.mm.yy" placeholder="Baslangic Tarihi" appendTo="body"></p-calendar>
       </div>
 
       <!-- Bitiş Tarihi -->
       <div class="input-with-icon">
         <i class="fas fa-calendar-alt"></i>
         <p-calendar id="endDate" [(ngModel)]="endDate" [minDate]="startDate" (ngModelChange)="onDateRangeChange()"
-          [showButtonBar]="true" dateFormat="dd.mm.yy" placeholder="Bitiş Tarihi" appendTo="body"></p-calendar>
+          [showButtonBar]="true" dateFormat="dd.mm.yy" placeholder="Bitis Tarihi" appendTo="body"></p-calendar>
       </div>
 
       <!-- Oda Tipleri -->
@@ -37,8 +37,8 @@
 
       <!-- Satışı Durdur -->
       <div class="checkbox-container">
-        <p-checkbox [(ngModel)]="stopSales" binary="true" label="Satışı Durdur"></p-checkbox>
-        <p-checkbox [(ngModel)]="addChildPricing" binary="true" label="Çocuk Ekle"></p-checkbox>
+        <p-checkbox [(ngModel)]="stopSales" binary="true" label="Satisi Durdur"></p-checkbox>
+        <p-checkbox [(ngModel)]="addChildPricing" binary="true" label="Cocuk Ekle"></p-checkbox>
       </div>
 
       <!-- Para Birimi -->
@@ -134,7 +134,7 @@
             <ng-container *ngIf="stopSales">
               <div class="input-group">
                 <i class="fas fa-ban"></i>
-                <p-dropdown [(ngModel)]="cell.stopSales" [options]="stopSalesOptions" placeholder="Satışı Durdur"
+                <p-dropdown [(ngModel)]="cell.stopSales" [options]="stopSalesOptions" placeholder="Satisi Durdur"
                   appendTo="body"></p-dropdown>
               </div>
             </ng-container>

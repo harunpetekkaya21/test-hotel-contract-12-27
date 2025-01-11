@@ -85,7 +85,7 @@ export interface ChildPricing {
 })
 export class PeriodBasedContractComponent implements OnInit{
 
-  informationDialogVisible: boolean = false;
+
 
   activeIndex: number | undefined = 0;
 
@@ -135,9 +135,7 @@ export class PeriodBasedContractComponent implements OnInit{
       )
       .subscribe();
   }
-  showInformationDialog() {
-    this.informationDialogVisible = true;
-  }
+
 
   multiplierOptions = Array.from({ length: 41 }, (_, i) => ({
     label: (1 + i * 0.1).toFixed(1),

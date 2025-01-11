@@ -8,7 +8,7 @@
       <div class="input-with-icon">
         <i class="fas fa-calendar-alt"></i>
         <p-calendar id="startDate" [(ngModel)]="startDate" [showButtonBar]="true" dateFormat="dd.mm.yy"
-          placeholder="Başlangıç Tarihi" appendTo="body"></p-calendar>
+          placeholder="Baslangic Tarihi" appendTo="body"></p-calendar>
       </div>
 
       <!-- Bitiş Tarihi -->
@@ -52,7 +52,7 @@
             <p-multiSelect [(ngModel)]="period.selectedRoomTypes" [maxSelectedLabels]="1"
               selectedItemsLabel="{0} oda tipi seçildi" [options]="availableRoomTypes" optionLabel="name"
               placeholder="Oda Tipi Seç" (onChange)="onRoomTypeChange(period)"></p-multiSelect>
-            <p-checkbox [(ngModel)]="period.addChildPricing" binary="true" label="Çocuk Fiyatlandırması"
+            <p-checkbox [(ngModel)]="period.addChildPricing" binary="true" label="Cocuk Fiyatlandirmasi"
               (onChange)="onChildPricingToggle(period)"></p-checkbox>
                <!-- Satışı Durdur -->
             
@@ -87,7 +87,7 @@
             <ng-container *ngFor="let pax of cell.paxes; let i = index">
               <div class="input-group">
                 <i class="fas fa-user "></i>
-                <span class="prefix">{{ i + 1 }} kişi için fiyat:</span>
+                <span class="prefix">{{ i + 1 }} kisi icin fiyat:</span>
                 <p-inputNumber class="" [(ngModel)]="pax.price" mode="currency"
                   [currency]="selectedCurrency"></p-inputNumber>
 
@@ -101,7 +101,7 @@
               <ng-container *ngFor="let child of cell.childPricing; let i = index">
                 <div class="child-input-group">
                   <i class="fas fa-baby "></i>
-                  <span class="prefix">{{ i + 1 }}. Yas Aralığı</span>
+                  <span class="prefix">{{ i + 1 }}. Yas Araligi</span>
                   <p-inputNumber class="child-small-input" [(ngModel)]="child.ageRange.min" [min]="0"
                     placeholder="Min Age"></p-inputNumber>
                   <p-inputNumber class="child-small-input" [(ngModel)]="child.ageRange.max"
@@ -135,104 +135,3 @@
 </div>
 
 
-<!-- Information Dialog -->
-<p-dialog header="Bu Sayfa icin Kullanim Rehberi" [modal]="true" [(visible)]="informationDialogVisible"
-  [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-
-  <p class="mb-5">
-    About this page
-  </p>
-  <p class="mb-5">
-    About this page
-  </p>
-</p-dialog>
