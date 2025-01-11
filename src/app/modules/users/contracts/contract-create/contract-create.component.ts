@@ -9,6 +9,7 @@ import { DateBasedContractComponent } from '../components/date-based-contract/da
 import { BreadCrumbComponent, BreadcrumbItem } from '../../../../shared/components/bread-crumb/bread-crumb.component';
 import { ChipModule } from 'primeng/chip';
 import { DialogModule } from 'primeng/dialog';
+import { InfoChipComponent } from '../../../../shared/components/info-chip/info-chip.component';
 
 @Component({
   selector: 'app-contract-create',
@@ -22,7 +23,8 @@ import { DialogModule } from 'primeng/dialog';
     DateBasedContractComponent,
     BreadCrumbComponent,
     ChipModule,
-    DialogModule
+    DialogModule,
+    InfoChipComponent
   ],
   templateUrl: './contract-create.component.html',
   styleUrls: ['./contract-create.component.scss'],
@@ -31,17 +33,10 @@ import { DialogModule } from 'primeng/dialog';
 })
 export class ContractCreateComponent {
 
-  informationDialogVisible: boolean = false;
     breadcrumbItems: BreadcrumbItem[] = [
       { label: 'Dashboard', route: '/', icon: 'fa fa-home' },
     { label: 'Create New Contract', route: '/components' ,isActive: true },
  
    
     ];
-
-
-    showInformationDialog(){
-      this.informationDialogVisible=true;
-    }
- 
 }

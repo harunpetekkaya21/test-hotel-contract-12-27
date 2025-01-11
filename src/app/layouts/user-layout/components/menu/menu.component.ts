@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit {
             {
                 label: '',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: [''] }
+                    { label: 'Dashboard', icon: 'fa fa-home', routerLink: [''] }
                 ]
             },
 
@@ -82,17 +82,17 @@ export class MenuComponent implements OnInit {
 
                     {
                         label: 'Roooms',
-                        icon: '',
+                        icon: 'fa fa-bed',
                         items: [
                            
                             {
                                 label: 'Room Type List',
-                                icon: '',
-                                routerLink: ['']
+                                icon: 'fa fa-list',
+                                routerLink: ['rooms/list-room-type']
                             },
                             {
                                 label: 'Create New Room Type',
-                                icon: '',
+                                icon: 'fa fa-square-plus',
                                 routerLink: ['rooms/create-new-room-type']
                             }
                             
@@ -110,18 +110,41 @@ export class MenuComponent implements OnInit {
 
                     {
                         label: 'Contracts',
-                        icon: '',
+                        icon: 'fa fa-book',
                         items: [
                             {
                                 label: 'Contract List',
-                                icon: '',
-                                routerLink: ['']
+                                icon: 'fa fa-list',
+                                routerLink: ['contracts/list-contracts']
                             },
                             {
                                 label: 'Create New Contract',
-                                icon: '',
+                                icon: 'fa fa-square-plus',
                                 routerLink: ['contracts/create-new-contract']
                             }
+                            
+
+                        ]
+                    },
+                    
+
+                ]
+            },
+            {
+                label: 'Settings',
+                icon: '',
+                items: [
+
+                    {
+                        label: 'Settings',
+                        icon: 'fa fa-cog',
+                        items: [
+                            {
+                                label: 'My Profile',
+                                icon: 'fa fa-user',
+                                routerLink: ['settings/profile']
+                            },
+                            
                             
 
                         ]

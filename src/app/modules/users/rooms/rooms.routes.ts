@@ -9,6 +9,13 @@ export const ROOMS_ROUTES: Routes = [
         
     },
 
+    {
+      path: 'list-room-type',
+      loadComponent: () =>
+        import('./room-list/room-list.component').then(m=>m.RoomListComponent),
+        
+    },
+
     
    
    

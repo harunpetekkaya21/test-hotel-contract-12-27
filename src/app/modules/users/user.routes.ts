@@ -20,6 +20,13 @@ export const USER_ROUTES: Routes = [
         import('./contracts/contracts.routes').then(m => m.CONTRACTS_ROUTES),
         
     },
+    {
+      
+      path: 'settings',
+      loadChildren: () =>
+        import('./settings/settings.routes').then(m => m.SETTINGS_ROUTES),
+        
+    },
    
    
   ];

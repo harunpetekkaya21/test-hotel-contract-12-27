@@ -7,6 +7,10 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
+import { BreadCrumbComponent, BreadcrumbItem } from '../../../../shared/components/bread-crumb/bread-crumb.component';
+import { InfoChipComponent } from '../../../../shared/components/info-chip/info-chip.component';
+import { DialogModule } from 'primeng/dialog';
+
 
 export interface RoomType {
   id?: number;
@@ -62,28 +66,41 @@ export interface AdultPricingUnRefundable extends AdultPricing { }
     InputNumberModule,
     ButtonModule,
     InputTextModule,
-    CheckboxModule
+    CheckboxModule,
+    BreadCrumbComponent,
+    InfoChipComponent,
+    DialogModule
+
   ],
-  
+
   templateUrl: './room-create.component.html',
   styleUrl: './room-create.component.scss'
 })
 export class RoomCreateComponent {
+ 
+  breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Dashboard', route: '/', icon: 'fa fa-home' },
+    { label: 'Create New Room Type', route: '/components', isActive: true },
 
-    // Fiyat işlemi seçenekleri
-    adjustmentOptions = [
-      { label: 'Ekle (+)', value: '+' },
-      { label: 'Çıkar (-)', value: '-' },
-      { label: 'Yüzde (%)', value: '%' },
-    ];
-  
-    // Para birimi seçenekleri
-    currencyOptions = [
-      { label: 'Euro (EUR)', value: 'EUR' },
-      { label: 'Amerikan Doları (USD)', value: 'USD' },
-      { label: 'Türk Lirası (TRY)', value: 'TRY' },
-    ];
-  
+
+  ];
+
+
+
+  // Fiyat işlemi seçenekleri
+  adjustmentOptions = [
+    { label: 'Ekle (+)', value: '+' },
+    { label: 'Çıkar (-)', value: '-' },
+    { label: 'Yüzde (%)', value: '%' },
+  ];
+
+  // Para birimi seçenekleri
+  currencyOptions = [
+    { label: 'Euro (EUR)', value: 'EUR' },
+    { label: 'Amerikan Doları (USD)', value: 'USD' },
+    { label: 'Türk Lirası (TRY)', value: 'TRY' },
+  ];
+
 
   createRoomType: CreateRoomType = {
     name: '',
@@ -163,8 +180,8 @@ export class RoomCreateComponent {
   onSave() {
     console.log('Kaydedilen RoomType Verisi:', this.createRoomType);
 
-    
-   
+
+
   }
 
 }

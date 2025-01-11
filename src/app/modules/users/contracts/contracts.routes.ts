@@ -10,6 +10,14 @@ export const CONTRACTS_ROUTES: Routes = [
       // canDeactivate: [canDeactivateGuard],
         
     },
+    {
+      
+      path: 'list-contracts',
+      loadComponent: () =>
+        import('./contract-list/contract-list.component').then(m=>m.ContractListComponent),
+      // canDeactivate: [canDeactivateGuard],
+        
+    },
 
     
    
