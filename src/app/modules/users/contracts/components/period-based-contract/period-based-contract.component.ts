@@ -17,6 +17,7 @@ import { v4 as uuidv4 } from 'uuid'; // Benzersiz ID için
 import { AccordionModule } from 'primeng/accordion';
 
 import { RoomTypeService } from '../../../../../core/services/room-type.service';
+import { ContractConfirmDialogComponent } from '../../contract-confirm-dialog/contract-confirm-dialog.component';
 
 
 export interface Period {
@@ -38,7 +39,7 @@ export interface Cell {
   basePrice: number | 0;
   allotment: number | 0;
   paxes: Pax[];
-  stopSales:false;
+  stopSales: false;
   childPricing: ChildPricing[];
   invalid?: boolean; // Hücre geçerlilik durumu
 }
@@ -74,7 +75,8 @@ export interface ChildPricing {
     ToastModule,
     DialogModule,
     AccordionModule,
-    
+    ContractConfirmDialogComponent
+
 
   ],
   templateUrl: './period-based-contract.component.html',
@@ -83,10 +85,10 @@ export interface ChildPricing {
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class PeriodBasedContractComponent implements OnInit{
+export class PeriodBasedContractComponent implements OnInit {
 
 
-
+  contractConfirmDialog: boolean = false;
   activeIndex: number | undefined = 0;
 
   activeIndexChange(index: any) {
@@ -108,11 +110,11 @@ export class PeriodBasedContractComponent implements OnInit{
   ];
 
 
-  constructor(private roomTypeService: RoomTypeService, private messageService: MessageService) {
+  constructor(private roomTypeService: RoomTypeService,private cdr: ChangeDetectorRef, private messageService: MessageService) {
   }
   ngOnInit(): void {
-   
-     this.fetchRoomTypes();
+
+    this.fetchRoomTypes();
   }
 
   private fetchRoomTypes(): void {
@@ -170,7 +172,7 @@ export class PeriodBasedContractComponent implements OnInit{
       endDate: this.endDate,
       selectedRoomTypes: [],
       addChildPricing: false,
-      stopSales:false,
+      stopSales: false,
       roomData: [],
     };
 
@@ -257,7 +259,7 @@ export class PeriodBasedContractComponent implements OnInit{
       {
         basePrice: basePrice, // Base fiyatı hücreye aktar
         allotment: 0,
-        stopSales:false,
+        stopSales: false,
         paxes: Array.from({ length: capacity }, (_, i) => ({
           paxNumber: i + 1,
           price: 0,
@@ -333,25 +335,15 @@ export class PeriodBasedContractComponent implements OnInit{
   }
   saveData(): void {
 
-    // Geçersiz durumları toplamak için bir dizi
-  const invalidDetails: string[] = [];
-
-  // Başlangıç ve bitiş tarihleri kontrolü
-  // if (!this.startDate || !this.endDate) {
-  //   this.showError('Başlangıç ve bitiş tarihleri girilmelidir!');
-  //   return;
-  // }
-
-  // Periyot kontrolü
-  if (this.periods.length === 0) {
-    this.showError('En az bir periyot eklenmelidir!');
-    return;
-  }
-
-
-
-    const invalidCells: { periodName:string; roomType: string; details: string }[] = [];
   
+    // Periyot kontrolü
+    if (this.periods.length === 0) {
+      this.showError('En az bir periyot eklenmelidir!');
+      return;
+    }
+
+    const invalidCells: { periodName: string; roomType: string; details: string }[] = [];
+
     // Hücre doğrulama ve geçersizlik toplama
     this.periods.forEach((period) => {
       period.roomData.forEach((room) => {
@@ -360,16 +352,15 @@ export class PeriodBasedContractComponent implements OnInit{
           if (!isCellValid) {
             // Hücreyi işaretle
             cell.invalid = true;
-  
+
             // Hata mesajı için detayları topla
             invalidCells.push({
-              periodName:period.startDate+"-"+period.endDate,
+              periodName: period.startDate + "-" + period.endDate,
               roomType: room.roomType,
-              details: `Base Price: ${cell.basePrice || 'Eksik'}, Allotment: ${
-                cell.allotment || 'Eksik'
-              }, Paxes: ${cell.paxes
-                .map((pax, index) => `Pax ${index + 1}: ${pax.price || 'Eksik'}`)
-                .join(', ')}`,
+              details: `Base Price: ${cell.basePrice || 'Eksik'}, Allotment: ${cell.allotment || 'Eksik'
+                }, Paxes: ${cell.paxes
+                  .map((pax, index) => `Pax ${index + 1}: ${pax.price || 'Eksik'}`)
+                  .join(', ')}`,
             });
           } else {
             // Geçerli hücrelerde işaretlemeyi kaldır
@@ -378,21 +369,41 @@ export class PeriodBasedContractComponent implements OnInit{
         });
       });
     });
-  
+
     if (invalidCells.length > 0) {
       // Hataları modüler bir şekilde göster
       this.showError(
         `Geçersiz Hücreler:\n` +
-          invalidCells
-            .map(
-              (error) =>
-                `Periyot ID: ${error}, Oda Tipi: ${error.roomType}, Detaylar: ${error.details}`
-            )
-            .join('\n')
+        invalidCells
+          .map(
+            (error) =>
+              `Periyot ID: ${error}, Oda Tipi: ${error.roomType}, Detaylar: ${error.details}\n`
+          )
+          .join('\n')
       );
     } else {
       // Geçerli verileri JSON olarak yazdır
-      const formattedData = this.periods.map((period) => ({
+      this.contractConfirmDialog = true;//dialogu ac
+     
+      
+    }
+  }
+  // Hücre doğrulama fonksiyonu
+  private isCellValid(cell: Cell): boolean {
+    return (
+      cell.basePrice !== null &&
+      cell.basePrice > 0 &&
+      cell.allotment !== null &&
+      cell.allotment > 0 &&
+      !cell.paxes.some((pax) => pax.price === null || pax.price <= 0)
+    );
+  }
+
+  onPeriodBaseContractSave(contractData: any){
+
+    console.log('Contract verisi kaydedildi:', contractData);
+
+     const formattedData = this.periods.map((period) => ({
         periodId: period.id,
         startDate: period.startDate,
         endDate: period.endDate,
@@ -414,17 +425,10 @@ export class PeriodBasedContractComponent implements OnInit{
         })),
       }));
       console.log('Kaydedilen Veriler:', JSON.stringify(formattedData, null, 2));
-      this.showSuccess('Veriler başarıyla kaydedildi!');
-    }
+
+    //this.addToMessageQueue('success', 'Basarili', 'Contract basariyla kaydedildi!');
+    this.showSuccess('Veriler basariyla kaydedildi!');
+    this.contractConfirmDialog = false;
+    this.cdr.detectChanges();
   }
-  // Hücre doğrulama fonksiyonu
-private isCellValid(cell: Cell): boolean {
-  return (
-    cell.basePrice !== null &&
-    cell.basePrice > 0 &&
-    cell.allotment !== null &&
-    cell.allotment > 0 &&
-    !cell.paxes.some((pax) => pax.price === null || pax.price <= 0)
-  );
-}
 }

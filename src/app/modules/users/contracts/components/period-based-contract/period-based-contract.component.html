@@ -131,7 +131,12 @@
 
     </p-accordionTab>
   </p-accordion>
+
   <button pButton label="Kaydet" icon="pi pi-save" class="save-button" (click)="saveData()"></button>
+
+
 </div>
 
 
+<contract-confirm-dialog [(visible)]="contractConfirmDialog"
+[(visible)]="contractConfirmDialog" (saveContract)="onPeriodBaseContractSave($event)"></contract-confirm-dialog>

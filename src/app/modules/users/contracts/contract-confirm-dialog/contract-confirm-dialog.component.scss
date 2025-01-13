@@ -1,0 +1,9 @@
+.country-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .country-flag {
+    border-radius: 3px;
+    border: 1px solid #ddd;
+  }

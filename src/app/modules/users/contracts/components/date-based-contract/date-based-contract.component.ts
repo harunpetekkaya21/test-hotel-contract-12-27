@@ -13,6 +13,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { v4 as uuidv4 } from 'uuid'; // UUID için
+import { ContractConfirmDialogComponent } from '../../contract-confirm-dialog/contract-confirm-dialog.component';
 
 export interface RoomData {
   idFromClient: string; // Unique ID
@@ -58,6 +59,7 @@ export interface Cell {
     InputNumberModule,
     TabViewModule,
     ToastModule,
+    ContractConfirmDialogComponent
     ],
   templateUrl: './date-based-contract.component.html',
   styleUrl: './date-based-contract.component.scss',
@@ -82,7 +84,7 @@ export class DateBasedContractComponent {
   isDataSaved: boolean = false; // Verilerin kaydedilip kaydedilmediğini izler
   showUnsavedModal: boolean = false;
 
-  openDialog: boolean = false; // Contract dialog açık mı?
+  contractConfirmDialog: boolean = false; 
 
 
 
@@ -130,13 +132,11 @@ export class DateBasedContractComponent {
   }
 
 
-
-
   onDateRangeChange(): void {
       // Tarih doğrulaması
       if (this.endDate < this.startDate) {
         this.endDate = null; // Bitiş Tarihini temizle
-        this.addToMessageQueue('error', 'Tarih Hatası', 'Bitiş Tarihi, Başlangıç Tarihinden küçük olamaz!');
+        this.addToMessageQueue('error', 'Tarih Hatasi', 'Bitiş Tarihi, Baslangic Tarihinden küçük olamaz!');
        
         return; // İşlemi durdur
       }
@@ -175,8 +175,6 @@ export class DateBasedContractComponent {
     });
   }
   
-
-
 
   createCell(date: string, capacity: number, childCapacity: number): Cell {
     return {
@@ -276,6 +274,7 @@ export class DateBasedContractComponent {
       }
     }
   }
+
   private addToMessageQueue(severity: string, summary: string, detail: string): void {
     this.messageQueue.push({ severity, summary, detail });
     if (this.messageQueue.length === 1) {
@@ -322,16 +321,16 @@ export class DateBasedContractComponent {
         )
       );
 
-      this.openDialog = false;
+      this.contractConfirmDialog = false;
     } else {
       this.tableData.forEach((room) => {
         room.isTableDataSavedFromClient = true;
         room.isPending = false;
       });
   
-      this.messageService.add({ severity: 'success', summary: 'Başarılı', detail: 'Veriler kaydedildi.' });
+      //this.messageService.add({ severity: 'success', summary: 'Basarili', detail: 'Veriler kaydedildi.' });
      
-      this.openDialog = true;
+      this.contractConfirmDialog = true;//dialogu ac
     }
   }
 
@@ -339,10 +338,10 @@ export class DateBasedContractComponent {
   // Dialogdan gelen "saveContract" olayını işleyen fonksiyon
   onContractSave(contractData: any): void {
     console.log('Contract verisi kaydedildi:', contractData);
-    console.log('Veriler başarıyla kaydedildi:', JSON.stringify(this.tableData, null, 2));
+    console.log('Veriler Basariyla kaydedildi:', JSON.stringify(this.tableData, null, 2));
 
-    this.addToMessageQueue('success', 'Başarılı', 'Contract başarıyla kaydedildi!');
-    this.openDialog = false;
+    this.addToMessageQueue('success', 'Basarili', 'Contract basariyla kaydedildi!');
+    this.contractConfirmDialog = false;
     this.cdr.detectChanges();
   }
 
