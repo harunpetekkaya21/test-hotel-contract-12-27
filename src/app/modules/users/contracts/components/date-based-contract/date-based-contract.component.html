@@ -95,14 +95,14 @@
               <p-inputNumber [(ngModel)]="cell.allotment" [min]="0"></p-inputNumber>
             </div>
 
-            <!-- Misafir Fiyatları -->
-            <ng-container *ngFor="let pax of cell.paxes; let i = index;">
+            <!-- Adult Fiyatları -->
+            <ng-container *ngFor="let adult of cell.adults; let i = index;">
               <div class="input-group">
                 <i class="fas fa-user"></i>
                 <span class="prefix">{{ i + 1 }} kişi için fiyat:</span>
-                <p-inputNumber [(ngModel)]="pax.price" mode="currency" [currency]="selectedCurrency"></p-inputNumber>
+                <p-inputNumber [(ngModel)]="adult.price" mode="currency" [currency]="selectedCurrency"></p-inputNumber>
                 x
-                <p-dropdown [(ngModel)]="pax.multiplier" [options]="multiplierOptions" optionLabel="label"
+                <p-dropdown [(ngModel)]="adult.multiplier" [options]="multiplierOptions" optionLabel="label"
                   appendTo="body" optionValue="value" (ngModelChange)="onMultiplierChange(cell, i)"></p-dropdown>
               </div>
             </ng-container>

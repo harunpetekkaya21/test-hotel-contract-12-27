@@ -84,14 +84,14 @@
             </div>
 
             <!-- Misafir Fiyatları -->
-            <ng-container *ngFor="let pax of cell.paxes; let i = index">
+            <ng-container *ngFor="let adult of cell.adults; let i = index">
               <div class="input-group">
                 <i class="fas fa-user "></i>
                 <span class="prefix">{{ i + 1 }} kisi icin fiyat:</span>
-                <p-inputNumber class="" [(ngModel)]="pax.price" mode="currency"
+                <p-inputNumber class="" [(ngModel)]="adult.price" mode="currency"
                   [currency]="selectedCurrency"></p-inputNumber>
 
-                <p-dropdown class="" [(ngModel)]="pax.multiplier" [options]="multiplierOptions" optionLabel="label"
+                <p-dropdown class="" [(ngModel)]="adult.multiplier" [options]="multiplierOptions" optionLabel="label"
                   appendTo="body" optionValue="value" (ngModelChange)="onMultiplierChange(cell, i)"></p-dropdown>
               </div>
             </ng-container>

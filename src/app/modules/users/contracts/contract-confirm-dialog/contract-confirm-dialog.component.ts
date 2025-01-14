@@ -128,4 +128,9 @@ export class ContractConfirmDialogComponent {
     this.visible = false;
     this.visibleChange.emit(this.visible);
   }
+
+  onDialogClose(): void {
+    this.visible = false;
+    this.visibleChange.emit(this.visible);
+  }
 }

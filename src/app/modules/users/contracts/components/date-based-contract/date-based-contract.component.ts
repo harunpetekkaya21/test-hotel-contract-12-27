@@ -9,11 +9,14 @@ import { CommonModule } from '@angular/common';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { v4 as uuidv4 } from 'uuid'; // UUID için
 import { ContractConfirmDialogComponent } from '../../contract-confirm-dialog/contract-confirm-dialog.component';
+import { PriceCalculationService } from '../../../../../core/services/contract/price-calculation.service';
+import { RoomTypeService } from '../../../../../core/services/room-type.service';
+import { ContractService } from '../../../../../core/services/contract/contract.service';
 
 export interface RoomData {
   idFromClient: string; // Unique ID
@@ -27,27 +30,28 @@ interface ChildPricing {
   ageRange: { min: number; max: number };
   price: number | null;
   multiplier: number;
+  childIndex?: number;
 }
 
-export interface Pax {
+export interface Adult {
   price: number | null;
   multiplier: number;
-  paxNumber?: number;
+  adultNumber?: number;
 }
 
 export interface Cell {
   date: string;
   basePrice: number | null;
   allotment: number | null;
-  paxes: Pax[];
+  adults: Adult[];
   childPricing: ChildPricing[];
-  stopSales: string | null;
+  stopSales: boolean | null;
   invalid?: boolean;
 }
 @Component({
   selector: 'app-date-based-contract',
   standalone: true,
-  imports: [ ReactiveFormsModule,
+  imports: [ReactiveFormsModule,
     DropdownModule,
     CommonModule,
     FormsModule,
@@ -60,19 +64,21 @@ export interface Cell {
     TabViewModule,
     ToastModule,
     ContractConfirmDialogComponent
-    ],
+  ],
   templateUrl: './date-based-contract.component.html',
   styleUrl: './date-based-contract.component.scss',
-  providers: [MessageService],
+
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateBasedContractComponent {
 
-  
+
 
   startDate: Date | null = null;
   endDate: Date | null = null;
-  selectedRoomTypes: any[] = [];
+  // selectedRoomTypes: any[] = [];
+  selectedRoomTypes: { name: string; capacity: number; childCapacity: number, basePrice: number }[] = [];
+
   displayedDates: string[] = [];
   stopSales = false;
   addChildPricing = false;
@@ -84,21 +90,16 @@ export class DateBasedContractComponent {
   isDataSaved: boolean = false; // Verilerin kaydedilip kaydedilmediğini izler
   showUnsavedModal: boolean = false;
 
-  contractConfirmDialog: boolean = false; 
+  contractConfirmDialog: boolean = false;
 
 
 
   stopSalesOptions = [
-    { label: 'Evet', value: 'yes' },
-    { label: 'Hayır', value: 'no' },
+    { label: 'Evet', value: true },
+    { label: 'Hayir', value: false },
   ];
 
-  availableRoomTypes = [
-    { name: 'Promo Room', capacity: 3, childCapacity: 3 },
-    { name: 'Standard Room / Kara Manzarali', capacity: 2, childCapacity: 2 },
-    { name: 'Standard Room / Deniz Manzarali', capacity: 2, childCapacity: 2 },
-    { name: 'Superior Room', capacity: 5, childCapacity: 4 },
-  ];
+  availableRoomTypes: any[] = [];
 
   // Para birimi seçenekleri
   currencyOptions = [
@@ -125,26 +126,44 @@ export class DateBasedContractComponent {
   private messageQueue: { severity: string; summary: string; detail: string }[] = [];
 
 
-  constructor(private cdr: ChangeDetectorRef, private messageService: MessageService) { }
+  constructor(private cdr: ChangeDetectorRef, private priceService: PriceCalculationService, private messageService: MessageService, private roomTypeService: RoomTypeService, private contractService: ContractService) { }
 
   ngOnInit(): void {
-   
+    this.fetchRoomTypes();
   }
 
+  private fetchRoomTypes(): void {
+    this.roomTypeService
+      .getAvailableRoomTypes()
+      .pipe(
+        tap((data) => {
+          if (data && Array.isArray(data)) {
+            this.availableRoomTypes = data; // UI'de kullanılacak veriyi atama
+            console.log('succsess:', data);
+          } else {
+            //console.warn('Servisten gecersiz bir veri dondu:', data);
+          }
+        }),
+        catchError((error) => {
+          this.addToMessageQueue('error', 'hata', 'Oda bilgileri alinirken bir hata olustu! Lutfen uygulamayi tekrar baslatin');
+          console.error('--', error);
+          return of([]); // Hata durumunda boş bir array döndür
+        })
+      )
+      .subscribe();
+  }
 
   onDateRangeChange(): void {
-      // Tarih doğrulaması
-      if (this.endDate < this.startDate) {
-        this.endDate = null; // Bitiş Tarihini temizle
-        this.addToMessageQueue('error', 'Tarih Hatasi', 'Bitiş Tarihi, Baslangic Tarihinden küçük olamaz!');
-       
-        return; // İşlemi durdur
-      }
+    // Tarih doğrulaması
+    if (this.endDate < this.startDate) {
+      this.endDate = null; // Bitiş Tarihini temizle
+      this.addToMessageQueue('error', 'Tarih Hatasi', 'Bitiş Tarihi, Baslangic Tarihinden küçük olamaz!');
 
-
+      return; // İşlemi durdur
+    }
   }
-  
-  
+
+
   onCurrencyChange(event: any): void {
     // Tablodaki tüm ilgili alanların para birimini değiştirmek için
     this.selectedCurrency = event.value;
@@ -160,9 +179,15 @@ export class DateBasedContractComponent {
       const existingRoom = this.tableData.find((room) => room.roomType === roomType.name);
       const idFromClient = existingRoom?.idFromClient || uuidv4(); // Unique ID
 
+      const basePrice = this.availableRoomTypes.find(
+        (availableRoom) => availableRoom.name === roomType.name
+      )?.basePrice;
+
       const cells: Cell[] = this.displayedDates.map((date) => {
+        date
+
         const existingCell = existingRoom?.cells.find((cell) => cell.date === date);
-        return existingCell || this.createCell(date, roomType.capacity, roomType.childCapacity);
+        return existingCell || this.createCell(date, roomType.capacity, roomType.childCapacity, basePrice);
       });
 
       return {
@@ -174,30 +199,30 @@ export class DateBasedContractComponent {
       };
     });
   }
-  
 
-  createCell(date: string, capacity: number, childCapacity: number): Cell {
+
+  createCell(date: string, capacity: number, childCapacity: number, basePrice: number|0 ): Cell {
     return {
       date,
-      basePrice: null,
-      allotment: null,
-      paxes: Array.from({ length: capacity }, (_, index) => ({
-        price: null,
+      basePrice,
+      allotment: 0,
+      adults: Array.from({ length: capacity }, (_, index) => ({
+        price: 0,
         multiplier: 1.0,
-        paxNumber: index + 1,
+        adultNumber: index + 1,
       })),
-      stopSales: null,
+      stopSales: false,
       childPricing: Array.from({ length: childCapacity }, (_, index) => ({
         ageRange: { min: 0, max: 0 },
-        price: null,
+        price: 0,
         multiplier: 1.0,
         childIndex: index + 1,
       })),
 
     };
-    
+
   }
-  
+
 
   private generateDates(start: Date, end: Date): string[] {
     if (
@@ -207,28 +232,28 @@ export class DateBasedContractComponent {
     ) {
       return this.cachedDates.dates; // Önceki sonucu döndür
     }
-  
+
     const dates: string[] = [];
     let currentDate = new Date(start);
     currentDate.setHours(12, 0, 0, 0);
     const endDate = new Date(end);
     endDate.setHours(12, 0, 0, 0);
-  
+
     while (currentDate <= endDate) {
       dates.push(currentDate.toISOString().split('T')[0]);
       currentDate.setDate(currentDate.getDate() + 1);
     }
-  
+
     this.cachedDates = { start, end, dates };
     return dates;
   }
 
   onBasePriceChange(cell: Cell): void {
     if (cell?.basePrice !== null) {
-      const basePrice = this.convertToNumber(cell.basePrice);
-      cell.paxes = cell.paxes.map((pax) => ({
-        ...pax,
-        price: this.calculatePrice(basePrice, pax.multiplier),
+
+      cell.adults = cell.adults.map((adoult) => ({
+        ...adoult,
+        price: this.priceService.calculatePrice(cell.basePrice, adoult.multiplier),
       }));
 
     }
@@ -247,23 +272,15 @@ export class DateBasedContractComponent {
   }
 
   onMultiplierChange(cell: Cell, paxIndex: number): void {
-    const pax = cell.paxes[paxIndex];
-    pax.price = this.calculatePrice(this.convertToNumber(cell.basePrice), pax.multiplier);
+    const adoult = cell.adults[paxIndex];
+    adoult.price = this.priceService.calculatePrice(cell.basePrice, adoult.multiplier);
   }
 
   onChildMultiplierChange(cell: Cell, childIndex: number): void {
     const child = cell.childPricing[childIndex];
-    child.price = this.calculatePrice(this.convertToNumber(cell.basePrice), child.multiplier);
+    child.price = this.priceService.calculatePrice(cell.basePrice, child.multiplier);
   }
 
-  private convertToNumber(value: any): number {
-    const num = parseFloat(value?.toString().replace(',', '.') ?? '0');
-    return isNaN(num) ? 0 : num;
-  }
-
-  private calculatePrice(currentPrice: number, multiplier: number): number {
-    return parseFloat((currentPrice * multiplier).toFixed(2));
-  }
 
   private processMessageQueue(): void {
     if (this.messageQueue.length > 0) {
@@ -298,14 +315,16 @@ export class DateBasedContractComponent {
 
     return invalidCells;
   }
-  
-  
+
+
 
   isCellValid(cell: Cell): boolean {
     return (
       cell.basePrice !== null &&
       cell.basePrice > 0 &&
-      !cell.paxes.some((pax) => pax.price === null || pax.price <= 0)
+      !cell.adults.some((adoult) => adoult.price === null || adoult.price <= 0 ||
+        cell.allotment <= 0)
+
     );
   }
 
@@ -323,13 +342,8 @@ export class DateBasedContractComponent {
 
       this.contractConfirmDialog = false;
     } else {
-      this.tableData.forEach((room) => {
-        room.isTableDataSavedFromClient = true;
-        room.isPending = false;
-      });
-  
       //this.messageService.add({ severity: 'success', summary: 'Basarili', detail: 'Veriler kaydedildi.' });
-     
+
       this.contractConfirmDialog = true;//dialogu ac
     }
   }
@@ -338,15 +352,64 @@ export class DateBasedContractComponent {
   // Dialogdan gelen "saveContract" olayını işleyen fonksiyon
   onContractSave(contractData: any): void {
     console.log('Contract verisi kaydedildi:', contractData);
-    console.log('Veriler Basariyla kaydedildi:', JSON.stringify(this.tableData, null, 2));
+    // console.log('Veriler Basariyla kaydedildi:', JSON.stringify(this.tableData, null, 2));
 
-    this.addToMessageQueue('success', 'Basarili', 'Contract basariyla kaydedildi!');
+    const data = this.generateContractJson();
+    console.log(data);
+
+    this.contractService.saveContract(data).subscribe({
+      next: (response) => {
+        console.log('Contract saved:', response);
+        alert('Veri başarıyla kaydedildi!');
+      },
+      error: (error) => {
+        console.error('Error saving contract:', error);
+        alert('Veri kaydedilirken bir hata oluştu.');
+      },
+    });
+
+    //this.addToMessageQueue('success', 'Basarili', 'Contract basariyla kaydedildi!');
     this.contractConfirmDialog = false;
     this.cdr.detectChanges();
   }
 
 
-trackByIndex(index: number): number {
-  return index;
-}
+  trackByIndex(index: number): number {
+    return index;
+  }
+
+  private generateContractJson(): any {
+    return {
+      IdFromClient: 'example-id',
+      // IsTableDataSavedFromClient: false,
+      //IsPending: false,
+      HotelId: 1,
+      IsDateBased: true,
+      RoomTypes: this.tableData.map(room => ({
+        RoomType: room.roomType,
+        Cells: room.cells.map(cell => ({
+          Date: cell.date,
+          BasePrice: cell.basePrice,
+          StopSales: cell.stopSales,
+          Adults: cell.adults.map(adult => ({
+            AdultNumber: adult.adultNumber,
+            Price: adult.price,
+            Multiplier: adult.multiplier,
+          })),
+          ChildPricing: cell.childPricing.map(child => ({
+            ChildIndex: child.childIndex,
+            AgeRange: {
+              Min: child.ageRange.min,
+              Max: child.ageRange.max,
+            },
+            Price: child.price,
+            Multiplier: child.multiplier,
+          })),
+
+
+        })),
+      })),
+    };
+  }
+
 }

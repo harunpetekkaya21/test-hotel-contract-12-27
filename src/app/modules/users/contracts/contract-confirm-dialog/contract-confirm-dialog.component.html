@@ -3,6 +3,7 @@
       [(visible)]="visible"
       [modal]="true"
       [style]="{ width: '50vw' }"
+      (onHide)="onDialogClose()"
       header="Yeni Contract Oluştur"
     >
       <div class="p-fluid formgrid grid">

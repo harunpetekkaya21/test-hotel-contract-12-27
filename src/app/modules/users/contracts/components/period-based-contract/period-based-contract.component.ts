@@ -18,6 +18,7 @@ import { AccordionModule } from 'primeng/accordion';
 
 import { RoomTypeService } from '../../../../../core/services/room-type.service';
 import { ContractConfirmDialogComponent } from '../../contract-confirm-dialog/contract-confirm-dialog.component';
+import { PriceCalculationService } from '../../../../../core/services/contract/price-calculation.service';
 
 
 export interface Period {
@@ -38,14 +39,14 @@ export interface RoomData {
 export interface Cell {
   basePrice: number | 0;
   allotment: number | 0;
-  paxes: Pax[];
+  adults: Adult[];
   stopSales: false;
   childPricing: ChildPricing[];
   invalid?: boolean; // Hücre geçerlilik durumu
 }
 
-export interface Pax {
-  paxNumber: number;
+export interface Adult {
+  adultNumber: number;
   price: number | 0;
   multiplier: number;
 }
@@ -81,7 +82,7 @@ export interface ChildPricing {
   ],
   templateUrl: './period-based-contract.component.html',
   styleUrl: './period-based-contract.component.scss',
-  providers: [MessageService],
+
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
@@ -96,21 +97,19 @@ export class PeriodBasedContractComponent implements OnInit {
   }
 
   startDate: Date | null = null;
-  //startDate:  Date= new Date(1,1,2022);
   endDate: Date | null = null;
-  //endDate:  Date= new Date(1,5,2022);
   periods: Period[] = [];
   selectedCurrency = 'EUR';
 
   availableRoomTypes: any[] = [];
 
   stopSalesOptions = [
-    { label: 'Evet', value: 'yes' },
-    { label: 'Hayır', value: 'no' },
+    { label: 'Evet', value: true },
+    { label: 'Hayir', value: false },
   ];
 
 
-  constructor(private roomTypeService: RoomTypeService,private cdr: ChangeDetectorRef, private messageService: MessageService) {
+  constructor(private roomTypeService: RoomTypeService,private cdr: ChangeDetectorRef, private messageService: MessageService, private priceService:PriceCalculationService) {
   }
   ngOnInit(): void {
 
@@ -187,16 +186,7 @@ export class PeriodBasedContractComponent implements OnInit {
   }
 
 
-  // onRoomTypeChange(period: Period): void {
-  //   period.roomData = period.selectedRoomTypes.map((roomType: any) => {
-  //     const matchingRoom = this.availableRoomTypes.find((r) => r.name === roomType.name);
-  //     return {
-  //       id: uuidv4(),
-  //       roomType: matchingRoom.name,
-  //       cells: this.generateRoomCells(matchingRoom.capacity, matchingRoom.childCapacity, period.addChildPricing),
-  //     };
-  //   });
-  // }
+
   onRoomTypeChange(period: Period): void {
     period.roomData = period.selectedRoomTypes.map((selectedRoom) => {
       const roomDetails = this.availableRoomTypes.find((room) => room.name === selectedRoom.name);
@@ -228,27 +218,7 @@ export class PeriodBasedContractComponent implements OnInit {
     });
   }
 
-  // private generateRoomCells(capacity: number, childCapacity: number, addChildPricing: boolean): Cell[] {
-  //   return [
-  //     {
-  //       basePrice: null,
-  //       allotment: null,
-  //       paxes: Array.from({ length: capacity }, (_, i) => ({
-  //         paxNumber: i + 1,
-  //         price: null,
-  //         multiplier: 1.0,
-  //       })),
-  //       childPricing: addChildPricing
-  //         ? Array.from({ length: childCapacity }, () => ({
-  //             ageRange: { min: 0, max: 0 },
-  //             price: null,
-  //             multiplier: 1.0,
-  //           }))
-  //         : [],
-  //     },
-  //   ];
-  // }
-
+  
   private generateRoomCells(
     capacity: number,
     childCapacity: number,
@@ -260,8 +230,9 @@ export class PeriodBasedContractComponent implements OnInit {
         basePrice: basePrice, // Base fiyatı hücreye aktar
         allotment: 0,
         stopSales: false,
-        paxes: Array.from({ length: capacity }, (_, i) => ({
-          paxNumber: i + 1,
+    
+        adults: Array.from({ length: capacity }, (_, i) => ({
+          adultNumber: i + 1,
           price: 0,
           multiplier: 1.0,
         })),
@@ -296,30 +267,23 @@ export class PeriodBasedContractComponent implements OnInit {
   }
 
   onBasePriceChange(cell: Cell): void {
-    const basePrice = this.convertToNumber(cell.basePrice);
-    cell.paxes = cell.paxes.map((pax) => ({
-      ...pax,
-      price: this.calculatePrice(basePrice, pax.multiplier),
+    
+    cell.adults = cell.adults.map((adult) => ({
+      ...adult,
+      price: this.priceService.calculatePrice(cell.basePrice, adult.multiplier),
     }));
   }
 
-  onMultiplierChange(cell: Cell, paxIndex: number): void {
-    const pax = cell.paxes[paxIndex];
-    pax.price = this.calculatePrice(this.convertToNumber(cell.basePrice), pax.multiplier);
+  onMultiplierChange(cell: Cell, adultIndex: number): void {
+    const adult = cell.adults[adultIndex];
+    adult.price = this.priceService.calculatePrice(cell.basePrice, adult.multiplier);
   }
 
   onChildMultiplierChange(cell: Cell, childIndex: number): void {
     const child = cell.childPricing[childIndex];
-    child.price = this.calculatePrice(this.convertToNumber(cell.basePrice), child.multiplier);
+    child.price = this.priceService.calculatePrice(cell.basePrice, child.multiplier);
   }
 
-  private convertToNumber(value: any): number {
-    return parseFloat(value?.toString().replace(',', '.') ?? '0') || 0;
-  }
-
-  private calculatePrice(currentPrice: number, multiplier: number): number {
-    return parseFloat((currentPrice * multiplier).toFixed(2));
-  }
 
   getCurrencyIconClass(currency: string): string {
     switch (currency) {
@@ -358,8 +322,8 @@ export class PeriodBasedContractComponent implements OnInit {
               periodName: period.startDate + "-" + period.endDate,
               roomType: room.roomType,
               details: `Base Price: ${cell.basePrice || 'Eksik'}, Allotment: ${cell.allotment || 'Eksik'
-                }, Paxes: ${cell.paxes
-                  .map((pax, index) => `Pax ${index + 1}: ${pax.price || 'Eksik'}`)
+                }, Adults: ${cell.adults
+                  .map((adult, index) => `Adult ${index + 1}: ${adult.price || 'Eksik'}`)
                   .join(', ')}`,
             });
           } else {
@@ -395,7 +359,7 @@ export class PeriodBasedContractComponent implements OnInit {
       cell.basePrice > 0 &&
       cell.allotment !== null &&
       cell.allotment > 0 &&
-      !cell.paxes.some((pax) => pax.price === null || pax.price <= 0)
+      !cell.adults.some((adult) => adult.price === null || adult.price <= 0)
     );
   }
 
@@ -411,10 +375,10 @@ export class PeriodBasedContractComponent implements OnInit {
           roomType: room.roomType,
           basePrice: room.cells[0]?.basePrice || null,
           allotment: room.cells[0]?.allotment || null,
-          paxes: room.cells[0]?.paxes.map((pax) => ({
-            paxNumber: pax.paxNumber,
-            price: pax.price,
-            multiplier: pax.multiplier,
+          adults: room.cells[0]?.adults.map((adult) => ({
+            adultNumber: adult.adultNumber,
+            price: adult.price,
+            multiplier: adult.multiplier,
           })),
           childPricing: room.cells[0]?.childPricing.map((child) => ({
             ageRange: child.ageRange,
