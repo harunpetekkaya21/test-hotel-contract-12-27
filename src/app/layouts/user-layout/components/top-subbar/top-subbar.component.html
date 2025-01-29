@@ -1,0 +1,53 @@
+<div class="topsubbar">
+    <ul class="topsubbar-menu">
+      <ng-container *ngFor="let item of model; let i = index;">
+        <!-- Ana Menü Öğeleri -->
+        <li class="topsubbar-menu-item" *ngIf="!item.separator">
+          <!-- Alt Menü Olmayan Link -->
+          <a
+            *ngIf="!item.items"
+            [routerLink]="item.routerLink"
+            class="topsubbar-link"
+            [attr.target]="item.target"
+          >
+            <i *ngIf="item.icon" [ngClass]="item.icon" class="topsubbar-icon"></i>
+            {{ item.label }}
+          </a>
+  
+          <!-- Alt Menü Olan Link -->
+          <div
+            *ngIf="item.items"
+            class="topsubbar-link has-submenu"
+            (mouseenter)="item.expanded = true"
+            (mouseleave)="item.expanded = false"
+          >
+            <i *ngIf="item.icon" [ngClass]="item.icon" class="topsubbar-icon"></i>
+            {{ item.label }}
+            <i class="pi pi-fw pi-angle-down submenu-toggler"></i>
+            <!-- Alt Menü -->
+            <ul
+              *ngIf="item.expanded"
+              class="topsubbar-submenu"
+            >
+              <ng-container *ngFor="let child of item.items">
+                <li class="topsubbar-submenu-item">
+                  <a
+                    [routerLink]="child.routerLink"
+                    class="topsubbar-sublink"
+                    [attr.target]="child.target"
+                  >
+                    <i *ngIf="child.icon" [ngClass]="child.icon"></i>
+                    {{ child.label }}
+                  </a>
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </li>
+  
+        <!-- Ayırıcı -->
+        <li *ngIf="item.separator" class="menu-separator"></li>
+      </ng-container>
+    </ul>
+  </div>
+  

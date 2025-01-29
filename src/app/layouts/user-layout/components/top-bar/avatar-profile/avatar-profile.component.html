@@ -1,0 +1,18 @@
+<div class="avatar-container" (click)="toggleMenu($event)">
+
+  
+    <!-- Avatar -->
+    <p-avatar
+      icon="pi pi-user"
+      styleClass="avatar"
+      size="xlarge"
+      shape="circle"
+    ></p-avatar>
+
+    <!-- Menü -->
+    <ul class="avatar-menu" *ngIf="isMenuVisible">
+      <li><a routerLink="/profile">Profile</a></li>
+      <li><a routerLink="/settings">Settings</a></li>
+      <li><a routerLink="/logout">Logout</a></li>
+    </ul>
+  </div>

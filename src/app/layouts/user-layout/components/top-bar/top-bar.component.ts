@@ -1,18 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 
 import { MenuItem, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule, NgClass, NgIf } from '@angular/common';
 import { UserLayoutService } from '../../services/user.layout.service';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
+import { MenuModule } from 'primeng/menu';
 
-import { Observable } from 'rxjs';
+import { AvatarProfileComponent } from './avatar-profile/avatar-profile.component';
+import { ButtonModule } from 'primeng/button';
 
-
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { NotificationComponent } from './components/notification/notification.component';
 @Component({
     standalone: true,
-    imports: [NgClass, NgIf, AsyncPipe, FormsModule, DropdownModule],
+    imports: [NgClass, NgIf, CommonModule, FormsModule, DropdownModule, AvatarProfileComponent, MenuModule, ButtonModule, AvatarModule, NotificationComponent],
 
     selector: 'app-top-bar',
     templateUrl: './top-bar.component.html',
@@ -21,13 +25,39 @@ import { Observable } from 'rxjs';
 })
 export class TopBarComponent implements OnInit {
 
-   
-
     items: MenuItem[] | undefined;
+    // isNotificationVisible = false; // Bildirim menüsü görünürlüğü
+    isAvatarMenuVisible = false; // Avatar menüsü görünürlüğü
+    isLanguageMenuVisible = false;
 
-    
 
-  
+    selectedLanguage: string | any;
+
+    // Diller ve bayraklar
+    languages = [
+        { name: 'United States', code: 'US' },
+        { name: 'Germany', code: 'DE' },
+        { name: 'Spain', code: 'ES' }
+
+    ];
+
+
+    // Avatar Menüsünü Aç/Kapa
+    toggleAvatarMenu(event: MouseEvent) {
+        event.stopPropagation();
+        this.isAvatarMenuVisible = !this.isAvatarMenuVisible;
+        //this.isNotificationVisible = false; // Bildirim menüsü açıksa kapat
+    }
+
+
+
+
+    @HostListener('document:click', ['$event'])
+    closeMenus() {
+
+        this.isAvatarMenuVisible = false;
+
+    }
 
     @ViewChild('menubutton') menuButton!: ElementRef;
 
@@ -36,138 +66,31 @@ export class TopBarComponent implements OnInit {
     @ViewChild('topbarmenu') menu!: ElementRef;
 
     constructor(public layoutService: UserLayoutService, private router: Router) {
-
-      
-
-
+        // Varsayılan dili al
+       
     }
 
+    onLanguageChange(event: any): void {
+        // Dil değişim kontrolü
+        console.log('Dil değiştirildi:', event.value);
+    
+        // Yeni seçilen dili kullanarak gerekli işlemleri yapabilirsiniz
+        this.updateLanguageSettings(event.value);
+      }
+    
+      updateLanguageSettings(language: { name: string; code: string; flag: string }): void {
+        // Dil değişikliğine bağlı işlemler
+        console.log('Yeni dil ayarlandı:', language);
+    
+        // Örneğin:
+        // - Uygulama dilini değiştirmek
+        // - Yerel depolamaya kaydetmek
+        localStorage.setItem('selectedLanguage', JSON.stringify(language));
+      }
 
     ngOnInit() {
-        
-        
-        this.items = [
-
-            {
-                label: 'Facilities',
-                icon: 'pi pi-building',
-                items: [
-                    {
-                        label: 'Facility List',
-                        icon: 'pi pi-list',
-                        route: 'facility/facility-list'
-
-                    },
-                    {
-                        label: 'Create Facility',
-                        icon: 'pi pi-plus-circle',
-                        route: 'facility/facility-create'
-
-
-                    },
-
-
-
-                ]
-            },
-            {
-                label: 'Rooms',
-                icon: 'pi pi-image',
-                items: [
-                    {
-                        label: 'Room List',
-                        icon: 'pi pi-list',
-                        route: 'room/room-list'
-
-                    },
-                    {
-                        label: 'Create Room ',
-                        icon: 'pi pi-plus-circle',
-                        route: 'room/room-create'
-
-                    },
-
-                ]
-            },
-            // {
-            //     label: 'Contracts',
-            //     icon: 'pi pi-file-edit',
-            //     items: [
-            //         {
-            //             label: 'Contract List',
-            //             icon: 'pi pi-list',
-
-            //         },
-            //         {
-            //             label: 'Create Contract ',
-            //             icon: 'pi pi-plus-circle',
-
-            //         },
-
-            //     ]
-            // },
-
-            {
-                label: 'Menu 1',
-                icon: 'pi pi-home'
-            },
-            {
-                label: 'Menu 2',
-                icon: 'pi pi-home',
-                route: '/home'
-            },
-
-        ];
+        this.selectedLanguage = this.languages[0];
     }
-
-   
 
 }
 
-
-// {
-//     label: 'Contact',
-//     icon: 'pi pi-envelope',
-//     badge: '3'
-// }
-
-// {
-//     label: 'Projects',
-//     icon: 'pi pi-search',
-//     items: [
-//         {
-//             label: 'Core',
-//             icon: 'pi pi-bolt',
-//             shortcut: '⌘+S'
-//         },
-//         {
-//             label: 'Blocks',
-//             icon: 'pi pi-server',
-//             shortcut: '⌘+B'
-//         },
-//         {
-//             label: 'UI Kit',
-//             icon: 'pi pi-pencil',
-//             shortcut: '⌘+U'
-//         },
-//         {
-//             separator: true
-//         },
-//         {
-//             label: 'Templates',
-//             icon: 'pi pi-palette',
-//             items: [
-//                 {
-//                     label: 'Apollo',
-//                     icon: 'pi pi-palette',
-//                     badge: '2'
-//                 },
-//                 {
-//                     label: 'Ultima',
-//                     icon: 'pi pi-palette',
-//                     badge: '3'
-//                 }
-//             ]
-//         }
-//     ]
-// },

@@ -1,0 +1,125 @@
+/* Bildirim İkonu */
+.notification-container {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-icon {
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: color 0.3s ease;
+    
+}
+
+.notification-icon:hover {
+
+    color: var(--primary-color);
+}
+
+/* Açılır Menü */
+.notification-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    width: 300px;
+    padding: 10px 0;
+}
+
+/* Bildirim Listesi */
+.notification-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Bildirim Öğesi */
+.notification-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Priority Konteyner */
+.priority-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+    margin-right: 5%;
+}
+
+/* Priority İsmi */
+.priority-label {
+    font-size: 10px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+/* Priority Göstergesi */
+.priority-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #cccccc;
+}
+
+/* Dikey Noktalı Çizgi */
+.dotted-line {
+    width: 2px;
+    /* Çizgi genişliği */
+    height: 50px;
+    /* Çizginin toplam yüksekliği */
+    margin-right: 10px;
+    /* Çizgi ile mesaj arasındaki boşluk */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Noktalar arasındaki mesafe eşit */
+}
+
+.dotted-line::before,
+.dotted-line::after,
+.dotted-line div {
+  content: '';
+  width: 2px; /* Noktaların genişliği */
+  height: 2px; /* Noktaların yüksekliği */
+  background-color: #cccccc; /* Noktaların rengi */
+  border-radius: 50%; /* Yuvarlak noktalar */
+}
+/* Bildirim Mesajı */
+.notification-message {
+    color: #333333;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Scroll Panel */
+p-scrollPanel {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+@media (max-width: 991px) {
+    .notification-menu {
+        top: calc(100% + 5px);
+        margin-left: 50px;
+        width: 250px;
+    }
+}

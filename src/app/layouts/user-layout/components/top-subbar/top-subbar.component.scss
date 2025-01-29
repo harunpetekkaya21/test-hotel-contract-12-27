@@ -1,0 +1,94 @@
+/* Topsubbar Genel Stil */
+.topsubbar {
+    
+    position: relative; /* Alt menülerin pozisyonlandırması için gerekli */
+    z-index: 1000;
+    overflow: visible; /* Alt menülerin görünmesini sağlar */
+  }
+  
+  .topsubbar-menu {
+    display: flex; /* Yatay hizalama */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .topsubbar-menu-item {
+    position: relative; /* Alt menülerin pozisyonlandırılması için */
+    margin-right: 15px; /* Menü öğeleri arası boşluk */
+  }
+  
+  .topsubbar-link {
+    text-decoration: none;
+    color: var( --menu-link-color); /* Açık renk yazı */
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .topsubbar-link:hover {
+    //background-color: #34495e; /* Hover sırasında koyu arka plan */
+    // color: #1abc9c; /* Hover sırasında vurgu rengi */#f29f05
+    color : var(--secondary-color);
+    //font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .topsubbar-icon {
+    margin-right: 8px;
+  }
+  
+  /* Alt Menü */
+  .topsubbar-submenu {
+    position: absolute;
+    top: 100%; /* Ana menünün hemen altına yerleşir */
+    left: 0;
+    background-color: var(--menu-background-color);
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    z-index: 1000; /* Alt menü topsubbar'ın üstünde yer alır */
+    display: none; /* Varsayılan olarak gizli */
+  }
+  
+  .topsubbar-menu-item:hover .topsubbar-submenu {
+    display: block; /* Hover sırasında alt menü görünür */
+  }
+  
+  .topsubbar-submenu-item {
+    padding: 0;
+  }
+  
+  .topsubbar-sublink {
+    text-decoration: none;
+    color: var( --menu-link-color);
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    white-space: nowrap;
+  }
+  
+  .topsubbar-sublink:hover {
+    background-color: #f29f05; /* Alt menü hover arka plan rengi */
+    color: white; /* Alt menü hover yazı rengi */
+  }
+  
+  /* Responsive Tasarım */
+  // @media (max-width: 768px) {
+  //   .topsubbar-menu {
+  //     flex-direction: column; /* Mobilde dikey hizalama */
+  //   }
+  
+  //   .topsubbar-menu-item {
+  //     margin-right: 0;
+  //     margin-bottom: 10px;
+  //   }
+  // }
+  

@@ -1,216 +1,108 @@
 
-//Aylik Ozet start
-/* Genel Kart Tasarımı */
-/* Genel Kart Tasarımı */
-.custom-card {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+
+
+
+.summary-container {
+  
+  border: dotted 2px #c9c6c6; /* Dotted border */
+  padding: 1rem; /* Spacing around content */
+  border-radius: 8px; /* Rounded corners */
+  background-color: #ffffff; /* Slightly off-white background */
+  margin-bottom: 8px;
 }
 
-.custom-title {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 20px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-/* Ay Kartlarının Stili */
-.month-card {
-  padding: 10px;
-}
-
-.month-container {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 16px;
-  text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.month-container:hover {
-  background-color: #eef6fd;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-  transform: translateY(-3px);
-}
-
-.month-header {
-  font-size: 16px;
-  font-weight: 800;
-  // color: #0078d4;
-  margin-bottom: 12px;
-  text-transform: capitalize;
-}
-
-.month-details {
+ /* Summary Cards */
+ .summary-card {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.detail-item {
-  display: flex;
-  justify-content: space-between;
-  font-size: 15px;
-  color: #555;
-}
-
-.detail-label {
-  font-weight: 500;
-}
-
-.detail-value {
-  font-weight: bold;
-  color: #333;
-}
-
-/* Responsive Ayarlar */
-@media (max-width: 768px) {
-  .custom-title {
-    font-size: 22px; /* Mobil cihazlar için biraz daha büyük başlık */
-  }
-  .month-header {
-    font-size: 18px; /* Mobilde ay başlıkları daha büyük */
-  }
-  .detail-item {
-    font-size: 16px; /* Mobilde detaylar için daha büyük yazı boyutu */
-  }
-  .month-container {
-    padding: 18px; /* Mobilde daha geniş padding */
-  }
-}
-
-@media (max-width: 480px) {
-  .custom-title {
-    font-size: 24px; /* Daha küçük ekranlarda başlık boyutunu büyüttüm */
-  }
-  .month-header {
-    font-size: 20px; /* Daha büyük ay başlığı */
-  }
-  .detail-item {
-    font-size: 18px; /* Detay metinleri için daha büyük font */
-  }
-  .month-container {
-    padding: 20px; /* Mobilde ekstra boşluk sağlandı */
-  }
-}
-
-//Aylik Ozet end
-
-//Reservasyon Ozet Start
-/* Kart Genel Stili */
-.reservation-summary-card {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.reservation-summary-title {
-  font-size: 20px;
-  color: #444;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
-/* Grid Ayarları */
-.reservation-summary-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 16px;
-}
-
-/* Kartların Stili */
-.summary-box {
-  background-color: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex-direction: row;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: 1rem;
+  min-width: 120px;
 }
 
-.summary-box:hover {
-  background-color: #eef6fd;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  transform: translateY(-3px);
+.summary-card i {
+  font-size: 1.5rem;
 }
 
-/* İkon Ayarları */
-.summary-icon {
-  font-size: 30px;
-  color: #0078d4;
-  margin-bottom: 10px;
+.summary-card .info h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
 }
 
-.summary-box:hover .summary-icon {
-  color: #005a9e;
-  transition: color 0.3s ease;
-}
-
-/* Label ve Değer Stilleri */
-.summary-label {
-  font-size: 17px;
+.summary-card .info p {
+  margin: 0;
   color: #666;
-  font-weight: 500;
-  margin-bottom: 6px;
+  font-size: 0.85rem;
 }
 
-.summary-value {
-  font-size: 18px;
-  font-weight: 600;
-  color: #636262;
-  margin-top: 4px;
+.vacant {
+  border-left: 5px solid green;
 }
 
-.summary-box:hover .summary-value {
-  color: #0078d4;
+.occupied {
+  border-left: 5px solid blue;
 }
 
-/* Responsive Ayarlar */
-@media (max-width: 768px) {
-  .reservation-summary-title {
-    font-size: 18px;
-  }
-  .summary-box {
-    padding: 16px;
-  }
-  .summary-label {
-    font-size: 15px;
-  }
-  .summary-value {
-    font-size: 20px;
-  }
-  .summary-icon {
-    font-size: 28px;
-  }
+.blocked {
+  border-left: 5px solid orange;
 }
 
-@media (max-width: 480px) {
-  .reservation-summary-title {
-    font-size: 16px;
-  }
-  .summary-label {
-    font-size: 14px;
-  }
-  .summary-value {
-    font-size: 18px;
-  }
-  .summary-icon {
-    font-size: 26px;
-  }
+/* Room Table */
+.room-table {
+  width: 100%;
 }
 
+.text-green {
+  color: green;
+}
 
-//Reservasyon Ozet End
+.text-blue {
+  color: blue;
+}
+
+.text-orange {
+  color: orange;
+}
+
+.announcement-container {
+  border-radius: 1rem;
+  background: linear-gradient(
+    0deg,
+    rgba(4, 70, 141, 0.5),
+    rgba(45, 138, 236, 0.5)
+  );
+  background: linear-gradient(
+    92.54deg,
+    #1853a0 47.88%,
+    #7f97bd 100.01%
+  );
+  position: relative; /* Close button için bağlam oluşturuyor */
+}
+
+.announcement-close-button {
+  position: absolute;
+  top: 0.5rem; /* Sağ üst hizalama */
+  right: 0.5rem; /* Sağdan hizalama */
+  background: none; /* Buton arka planı */
+  border: none; /* Buton çerçevesi */
+  cursor: pointer; /* El işareti */
+  font-size: 1.5rem; /* Çarpı boyutu */
+  outline: none; /* Fokus durumunda kenar kaldırıldı */
+  z-index: 10; /* Üstte görünmesi için */
+  color: rgb(77, 73, 73); /* Çarpı ikon rengi */
+}
+
+.announcement-close-button i {
+  font-size: 1.5rem;
+}
+
+.announcement-close-button:hover {
+  color: red; /* Hover durumunda kırmızı */
+}

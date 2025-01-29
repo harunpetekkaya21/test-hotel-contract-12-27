@@ -1,66 +1,226 @@
 
-:host ::ng-deep .p-menubar {
-    background-color: #f8f9fa; /* Arka plan rengi */
-    border: none; /* İsteğe bağlı olarak kenarlığı kaldırın */
-}
-
-
-:host ::ng-deep .p-menubar .p-menuitem-link {
+/* Email Bölümü */
+.email-section {
     display: flex;
     align-items: center;
-    padding: 0.5rem 1rem;
+    justify-content: center;
+    padding: 8px 12px;
+    /* İç boşluk */
+    border: 1px solid #bdc3c7;
+    /* Çizgiler */
+    border-radius: 8px;
+    /* Köşeleri yuvarlat */
+    background-color: #ffffff;
+    /* Arka plan rengi */
+    color: #2c3e50;
+    /* Yazı rengi */
+    font-size: 14px;
+    /* Yazı boyutu */
+    font-weight: 500;
+    /* Yazı kalınlığı */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Hafif gölge */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Avatar Bölümü */
+.avatar-section {
+    position: relative;
+    cursor: pointer;
+}
+
+.avatar {
+    // border: 2px solid #ffffff;
+    // border-radius: 50%;
+    transition: border-color 0.3s ease;
+
+}
+
+
+.avatar-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    list-style: none;
+    padding: 10px 0;
+    z-index: 1000;
+    min-width: 150px;
+}
+
+.avatar-menu li {
+    margin: 0;
+    padding: 0;
+}
+
+.avatar-menu a {
+    display: block;
     text-decoration: none;
-    color:  #333;
+    color: var(--primary-color);
+    padding: 8px 15px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-:host ::ng-deep .p-menubar .p-menuitem-link:hover {
-    border-radius: 5px;
-    background-color: #04598c;
-    color:  #fff;
-}
-
-:host ::ng-deep .p-badge {
-    //background-color:  #d90000;
+.avatar-menu a:hover {
+    background-color: var(--primary-color);
     color: #ffffff;
 }
-:host ::ng-deep .p-menubar .p-submenu {
-    width: 500px; /* Varsayılan genişlik */
+
+//   /* Responsive Tasarım */
+//   @media (max-width: 768px) {
+//     .layout-topbar-menu {
+//       flex-direction: column;
+//       align-items: flex-end;
+//       gap: 1rem;
+//     }
+//   }
+
+
+/* Avatar Bölümü */
+
+
+.position {
+    // border: 2px solid #ffffff;
+    // border-radius: 50%;
+    transition: border-color 0.3s ease;
+
 }
 
-:host ::ng-deep .p-menubar .p-menuitem-link:hover + .p-submenu {
-    width: 550px !important; /* Hover sırasında alt menü genişliği */
-    transition: width 0.3s ease; /* Geçiş animasyonu (isteğe bağlı) */
+
+.position-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    list-style: none;
+    padding: 10px 0;
+    z-index: 1000;
+    min-width: 150px;
 }
 
-:host ::ng-deep .p-menuitem-link .shortcut-class {
-    margin-left: 50px; /* Shortcut ile önceki metin arasındaki boşluğu ayarlar */
+.position-menu li {
+    margin: 0;
+    padding: 0;
+}
+
+.position-menu a {
+    display: block;
+    text-decoration: none;
+    color: var(--primary-color);
+    padding: 8px 15px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.position-menu a:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
 }
 
 
 
-/* p-menubar arka plan rengini değiştirme */
-::ng-deep .p-menubar {
-    background-color: #ffffff !important; /* İstediğiniz arka plan rengini buraya yazın */
-  }
-  
-  /* Menü öğelerinin yazı boyutunu değiştirme */
-  ::ng-deep .p-menuitem-link {
-    font-size: 18px !important; /* İstediğiniz yazı boyutunu buraya yazın */
-    font-weight: 500 !important;
-    
-  }
-  
-  /* Menü öğelerinin üzerine gelindiğinde stil değiştirme */
-  ::ng-deep .p-menuitem-link:hover {
-    background-color: var(--primary-color) !important; /* Hover (üzerine gelindiğinde) arka plan rengini değiştirebilirsiniz */
-    color: #FFFFFF !important; /* Hover yazı rengini değiştirebilirsiniz */
-  }
-  
+.language-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 200px;
+}
 
- .layout-topbar-logo {
-    
-      span {
-        color: var(--text-logo-color) !important; // light tema rengi
-      }
-    
-  }
+.selected-language {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+}
+.selected-language:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.selected-language .flag-icon {
+    width: 24px;
+    height: 16px;
+    background-size: cover;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.selected-language .language-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    flex-grow: 1;
+}
+
+.selected-language i {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Dil Seçim Menüsü */
+.language-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    list-style: none;
+    padding: 6px 0;
+    margin: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.language-menu li {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.language-menu li:hover {
+    background-color: #f1f1f1;
+}
+
+.language-menu .flag-icon {
+    width: 24px;
+    height: 16px;
+    background-size: cover;
+    margin-right: 8px;
+}
+
+.language-menu .language-label {
+    font-size: 14px;
+    color: #333;
+}
+
+.flag-icon-us {
+    background-image: url('/assets/flags/uk.png');
+}
+
+.flag-icon-tr {
+    background-image: url('/assets/flags/tr.png');
+}
+
+.flag-icon-es {
+    background-image: url('/assets/flags/es.png');
+}
+
+.flag-icon-de {
+    background-image: url('/assets/flags/de.png');
+}

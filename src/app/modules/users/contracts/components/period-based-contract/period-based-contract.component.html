@@ -67,7 +67,7 @@
       <div class="grid">
         <div *ngFor="let room of period.roomData" class="col-12 md:col-12 lg:col-6">
           <h5 class="roomtype-name">{{ room.roomType }}</h5>
-          <div *ngFor="let cell of room.cells" class=" cell-content" [ngClass]="{ 'invalid-cell': cell.invalid }">
+          <div *ngFor="let cell of room.cells" class=" cell-content" >
             <!-- Base Fiyat -->
             <div class="input-group ">
               <i class="fas fa-euro-sign "></i>
@@ -77,10 +77,10 @@
             </div>
 
             <!-- Kontejan -->
-            <div class="input-group">
+            <div class="input-group" >
               <i class="fas fa-chart-bar"></i>
               <span class="prefix">Kontenjan</span>
-              <p-inputNumber class="" [(ngModel)]="cell.allotment" [min]="0"></p-inputNumber>
+              <p-inputNumber [ngClass]="{ 'invalid-cell': cell.invalid }" [(ngModel)]="cell.allotment" [min]="0"></p-inputNumber>
             </div>
 
             <!-- Misafir Fiyatları -->
@@ -120,7 +120,7 @@
              <ng-container *ngIf="period.stopSales">
               <div class="input-group">
                 <i class="fas fa-ban"></i>
-                <p-dropdown [(ngModel)]="cell.stopSales" [options]="stopSalesOptions" placeholder="Satışı Durdur"
+                <p-dropdown [(ngModel)]="cell.stopSales" [options]="stopSalesOptions" placeholder="Satisi Durdur"
                   appendTo="body"></p-dropdown>
               </div>
             </ng-container>

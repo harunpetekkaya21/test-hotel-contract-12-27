@@ -10,11 +10,12 @@ import { UserLayoutService } from './services/user.layout.service';
 import { FooterComponent } from './components/footer/footer.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
+import {  TopSubBarComponent } from './components/top-subbar/top-subbar.component';
 
 @Component({
   selector: 'user-layout',
   standalone: true,
-  imports: [TopBarComponent,SideBarComponent,RouterModule,FooterComponent,CommonModule],
+  imports: [TopBarComponent,SideBarComponent,RouterModule,FooterComponent,CommonModule,TopSubBarComponent],
   templateUrl: './user-layout.component.html'
 })
 export class UserLayoutComponent implements OnDestroy{
@@ -25,11 +26,13 @@ export class UserLayoutComponent implements OnDestroy{
   profileMenuOutsideClickListener: any;
 
   @ViewChild(SideBarComponent) appSidebar!: SideBarComponent;
+  @ViewChild(TopSubBarComponent) appTestBar!: TopSubBarComponent;
 
   @ViewChild(TopBarComponent) appTopbar!: TopBarComponent;
 
   constructor(public layoutService: UserLayoutService, public renderer: Renderer2, public router: Router) {
       this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
+
           if (!this.menuOutsideClickListener) {
               this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
                   const isOutsideClicked = !(this.appSidebar.el.nativeElement.isSameNode(event.target) || this.appSidebar.el.nativeElement.contains(event.target) 
@@ -40,6 +43,17 @@ export class UserLayoutComponent implements OnDestroy{
                   }
               });
           }
+
+          if (!this.menuOutsideClickListener) {
+            this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
+                const isOutsideClicked = !(this.appTestBar.elel.nativeElement.isSameNode(event.target) || this.appTestBar.elel.nativeElement.contains(event.target) 
+                    || this.appTopbar.menuButton.nativeElement.isSameNode(event.target) || this.appTopbar.menuButton.nativeElement.contains(event.target));
+                
+                if (isOutsideClicked) {
+                    this.hideMenu();
+                }
+            });
+        }
 
           if (!this.profileMenuOutsideClickListener) {
               this.profileMenuOutsideClickListener = this.renderer.listen('document', 'click', event => {

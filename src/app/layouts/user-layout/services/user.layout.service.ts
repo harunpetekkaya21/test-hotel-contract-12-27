@@ -82,6 +82,7 @@ onMenuToggle() {
     }
 
     if (this.isDesktop()) {
+        
         this.state.staticMenuDesktopInactive =
             !this.state.staticMenuDesktopInactive;
     } else {
