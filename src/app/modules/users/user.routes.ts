@@ -27,6 +27,13 @@ export const USER_ROUTES: Routes = [
         import('./settings/settings.routes').then(m => m.SETTINGS_ROUTES),
         
     },
+    {
+      
+      path: 'my-facility',
+      loadComponent: () =>
+        import('./my-facility/my-facility.component').then(m => m.MyFacilityComponent),
+        
+    },
    
    
   ];

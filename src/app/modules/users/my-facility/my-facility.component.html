@@ -1,0 +1,210 @@
+
+<p-toast />
+<div class="card">
+    <p-progressBar [value]="value" />
+</div>
+<div class="card flex justify-content-center">
+    <p-stepper>
+        <p-stepperPanel header="General">
+            <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <facility-general componentPath="general.component"></facility-general>
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-end">
+                    <p-button 
+                        label="Next" 
+                        icon="pi pi-arrow-right" 
+                        iconPos="right" 
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Opportunies">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column ">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <facility-opportunities componentPath="opportunities.component"></facility-opportunities>
+
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                    <p-button 
+                        label="Back" 
+                        icon="pi pi-arrow-left" 
+                        (onClick)="prevCallback.emit()" />
+                    <p-button 
+                        label="Next" 
+                        icon="pi pi-arrow-right" 
+                        iconPos="right" 
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+
+        <p-stepperPanel header="Rooms">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <facility-rooms componentPath="rooms.component"></facility-rooms>
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                    <p-button 
+                        label="Back" 
+                        icon="pi pi-arrow-left" 
+                        (onClick)="prevCallback.emit()" />
+                    <p-button 
+                        label="Next" 
+                        icon="pi pi-arrow-right" 
+                        iconPos="right" 
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Meals">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <facility-meals componentPath="meals.component"></facility-meals>
+
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                    <p-button 
+                        label="Back" 
+                        icon="pi pi-arrow-left" 
+                        (onClick)="prevCallback.emit()" />
+                    <p-button 
+                        label="Next" 
+                        icon="pi pi-arrow-right" 
+                        iconPos="right" 
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Pools/Aqua">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <facility-pools-aqua componentPath="pools-aqua.component"></facility-pools-aqua>
+
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                    <p-button 
+                        label="Back" 
+                        icon="pi pi-arrow-left" 
+                        (onClick)="prevCallback.emit()" />
+                    <p-button 
+                        label="Next" 
+                        icon="pi pi-arrow-right" 
+                        iconPos="right" 
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Mice">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <facility-mice componentPath="mice.component"></facility-mice>
+
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                    <p-button 
+                        label="Back" 
+                        icon="pi pi-arrow-left" 
+                        (onClick)="prevCallback.emit()" />
+                    <p-button 
+                        label="Next" 
+                        icon="pi pi-arrow-right" 
+                        iconPos="right" 
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Otel Type / Temas">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <facility-oteltype-temas componentPath="oteltype-temas.component"></facility-oteltype-temas>
+
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                    <p-button 
+                        label="Back" 
+                        icon="pi pi-arrow-left" 
+                        (onClick)="prevCallback.emit()" />
+                    <p-button 
+                        label="Next" 
+                        icon="pi pi-arrow-right" 
+                        iconPos="right" 
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Supplier Contracts">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <facility-supplier-contracts componentPath="supplier-contracts.component"></facility-supplier-contracts>
+
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                    <p-button 
+                        label="Back" 
+                        icon="pi pi-arrow-left" 
+                        (onClick)="prevCallback.emit()" />
+                    <p-button 
+                        label="Next" 
+                        icon="pi pi-arrow-right" 
+                        iconPos="right" 
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Cancellation Pol.">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <facility-cancellation-policies componentPath="cancellation-policies.component"></facility-cancellation-policies>
+
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                    <p-button 
+                        label="Back" 
+                        icon="pi pi-arrow-left" 
+                        (onClick)="prevCallback.emit()" />
+                    <p-button 
+                        label="Next" 
+                        icon="pi pi-arrow-right" 
+                        iconPos="right" 
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <!-- Last -->
+        <p-stepperPanel header="Documents">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+                <div class="flex flex-column h-12rem">
+                    <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                        <facility-documents componentPath="documents.component"></facility-documents>
+
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-start">
+                    <p-button 
+                        label="Back" 
+                        icon="pi pi-arrow-left" 
+                        (onClick)="prevCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+    </p-stepper>
+</div>

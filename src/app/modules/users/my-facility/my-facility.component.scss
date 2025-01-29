@@ -1,0 +1,34 @@
+@media (max-width: 768px) {
+    .card {
+        width: 100% !important; /* Mobilde tam genişlik */
+        padding: 1rem;
+    }
+    
+    .h-12rem {
+        height: auto !important; /* Yükseklik dinamik olacak */
+        min-height: 8rem; /* Minimum yükseklik */
+    }
+
+    .flex {
+        flex-direction: column !important; /* Mobilde dikey hizalama */
+    }
+
+    .justify-content-between {
+        justify-content: center !important; /* Butonları ortala */
+    }
+
+    .p-button {
+        width: 100%; /* Küçük ekranlarda butonları genişlet */
+        margin-bottom: 0.5rem;
+    }
+}
+
+.card {
+    width: 100% !important;  /* Tüm genişliği kaplasın */
+    max-width: 100vw;        /* Viewport genişliğini geçmesin */
+    padding: 1rem;
+}
+
+.p-stepper {
+    width: 100% !important;  /* Stepper tam genişlik */
+}

@@ -1,0 +1,27 @@
+<div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- Her kategori bir Fieldset içinde -->
+    <p-fieldset *ngFor="let category of categories; let i = index" toggleable>
+      <ng-template pTemplate="header">
+        <div class="flex items-center gap-2">
+          <i [class]="category.icon" class="text-lg"></i>
+          <span class="font-semibold">{{ category.name }}</span>
+        </div>
+      </ng-template>
+  
+      <div class="flex flex-column gap-3">
+        <!-- Özellikler alt alta sıralanır -->
+        <div
+          *ngFor="let featureControl of getFeaturesControls(i).controls; let j = index"
+          class="flex items-center justify-between w-full p-3 border-b border-gray-200"
+        >
+          <div class="flex items-center gap-3 w-3/4">
+            <i [class]="category.features[j].icon" class="text-lg"></i>
+            <span class="text-sm font-medium flex-grow">{{ category.features[j].label }}</span>
+          </div>
+          <!-- InputSwitch -->
+          <p-inputSwitch [formControl]="getFormControl(featureControl)" class="w-1/4"></p-inputSwitch>
+        </div>
+      </div>
+    </p-fieldset>
+  </div>
+  
