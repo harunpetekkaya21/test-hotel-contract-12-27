@@ -23,28 +23,25 @@ export class TopSubBarComponent implements OnInit {
                 ]
             },
 
-            {
+            // {
 
-                label: 'Roooms',
-                icon: 'fa fa-bed',
-                items: [
+            //     label: 'Roooms',
+            //     icon: 'fa fa-bed',
+            //     items: [
 
-                    {
-                        label: 'Room Type List',
-                        icon: 'fa fa-list',
-                        routerLink: ['rooms/list-room-type']
-                    },
-                    {
-                        label: 'Create New Room Type',
-                        icon: 'fa fa-square-plus',
-                        routerLink: ['rooms/create-new-room-type']
-                    }
+            //         {
+            //             label: 'Room Type List',
+            //             icon: 'fa fa-list',
+            //             routerLink: ['rooms/list-room-type']
+            //         },
+            //         {
+            //             label: 'Create New Room Type',
+            //             icon: 'fa fa-square-plus',
+            //             routerLink: ['rooms/create-new-room-type']
+            //         }
+            //     ]
 
-
-
-                ]
-
-            },
+            // },
             {
 
                 label: 'Contracts',
@@ -65,28 +62,47 @@ export class TopSubBarComponent implements OnInit {
                 ]
 
             },
-            {
+            // {
 
-                label: 'Settings',
-                icon: 'fa fa-cog',
-                items: [
-                    {
-                        label: 'My Facility',
-                        icon: 'fa fa-building',
-                        routerLink: ['settings/my-facility']
-                    },
+            //     label: 'Settings',
+            //     icon: 'fa fa-cog',
+            //     items: [
+            //         {
+            //             label: '',
+            //             icon: '',
+            //             routerLink: ['']
+            //         },
 
+            //     ]
 
-
-                ]
-
-            },
+            // },
 
             {
                 label: 'My Facility',
                 icon: 'fa fa-hotel',
                 items: [
                     { label: 'My Facility', icon: 'fa fa-hotel', routerLink: ['my-facility'] }
+                ]
+            },
+            {
+                label: 'Promotions',
+                icon: 'fa fa-percent',
+                items: [
+                    { label: 'Create Promotions', icon: 'fa fa-plus', routerLink: ['my-facility'] }
+                ]
+            },
+            {
+                label: 'Stop-Sales',
+                icon: 'fa fa-stop',
+                items: [
+                    { label: 'Create Stop-Sales', icon: 'fa fa-plus', routerLink: ['my-facility'] }
+                ]
+            },
+            {
+                label: 'Actions',
+                icon: 'fa fa-hexagon-nodes',
+                items: [
+                    { label: 'Create Actions', icon: 'fa fa-plus', routerLink: ['my-facility'] }
                 ]
             },
 

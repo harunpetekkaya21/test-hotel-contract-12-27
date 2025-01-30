@@ -1,1 +1,145 @@
-<p>rooms works!</p>
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+
+            <div class="p-fluid p-formgrid grid">
+                <!-- Oda Tipi İsmi -->
+                <div class="field col-12 md:col-12">
+                    <p-floatLabel>
+                        <input pInputText id="roomTypeName" [(ngModel)]="createRoomType.name" />
+                        <label for="roomTypeName">Oda Tipi İsmi</label>
+                    </p-floatLabel>
+                </div>
+
+                <!-- Oda Sayısı -->
+                <div class="field col-12 md:col-6">
+                    <label for="odaSayisi">Oda Sayısı</label>
+                    <p-inputNumber [(ngModel)]="createRoomType.odaSayisi"></p-inputNumber>
+                </div>
+
+                <!-- Oda Kapasitesi -->
+                <div class="field col-12 md:col-6">
+                    <label for="odaKapasitesi">Oda Kapasitesi</label>
+                    <p-inputNumber [(ngModel)]="createRoomType.odaKapasitesi"></p-inputNumber>
+                </div>
+
+
+                <!-- Yetişkin Kapasitesi -->
+                <div class="field col-12 md:col-6">
+                    <label for="yetiskinKapasitesi">Yetişkin Kapasitesi</label>
+                    <p-inputNumber [(ngModel)]="createRoomType.yetiskinKapasitesi"
+                        (ngModelChange)="updateAdults()"></p-inputNumber>
+                </div>
+
+                <!-- Çocuk Kapasitesi -->
+                <div class="field col-12 md:col-6">
+                    <label for="cocukKapasitesi">Çocuk Kapasitesi</label>
+                    <p-inputNumber [(ngModel)]="createRoomType.cocukKapasitesi"></p-inputNumber>
+                </div>
+
+                <!-- Gecelik Baz Fiyat -->
+                <div class="field col-12 md:col-12">
+                    <label class="mb-2 block font-bold" for="horizontal">
+                        Gecelik Baz Fiyat
+                    </label>
+                    <p-inputNumber [(ngModel)]="createRoomType.gecelikBaseFiyat" [showButtons]="true"
+                        buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="100"
+                        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" mode="currency"
+                        currency="EUR" />
+                </div>
+             
+                <!-- <div class="field col-12">
+                    <p-checkbox [(ngModel)]="createRoomType.refundable" binary="true" label="İade Edilebilir"
+                        (onChange)="updateAdults()"></p-checkbox>
+                </div> -->
+
+                <!-- Yetişkin Fiyat Düzenlemesi -->
+                <div class="card mt-3" *ngIf="createRoomType.adults.length > 0">
+                    <h5>Yetişkin Fiyat Düzenlemesi</h5>
+                    <table class="p-datatable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fiyat İşlemi</th>
+                                <th>Değer</th>
+                                <th>Para Birimi</th>
+                                <th>Gecelik Base Fiyat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let adult of createRoomType.adults">
+                                <td>{{ adult.id }}</td>
+                                <td>
+                                    <p-dropdown [options]="adjustmentOptions" [(ngModel)]="adult.adjustmentType"
+                                        (onChange)="calculateNightlyPrice(adult)"></p-dropdown>
+                                </td>
+                                <td>
+                                    <p-inputNumber [(ngModel)]="adult.adjustmentValue"
+                                        (ngModelChange)="calculateNightlyPrice(adult)"></p-inputNumber>
+                                </td>
+                                <td>
+                                    <p-dropdown [options]="currencyOptions" [(ngModel)]="adult.currency"
+                                        (onChange)="calculateNightlyPrice(adult)"></p-dropdown>
+                                </td>
+                                <td>{{ adult.nightlyPrice | currency: adult.currency }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- İade Edilebilirlik Düzenlemesi -->
+                <div class="card mt-3" *ngIf="createRoomType.refundable">
+                    <h5>İade Edilebilirlik Düzenlemesi</h5>
+                    <table class="p-datatable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>İade İşlemi</th>
+                                <th>Değer</th>
+                                <th>Para Birimi</th>
+                                <th>İade Edilebilir Base Fiyat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let adult of createRoomType.adults">
+                                <td>{{ adult.id }}</td>
+
+                                <!-- İade İşlemi -->
+                                <ng-container *ngIf="isRefundable(adult); else notRefundable">
+                                    <td>
+                                        <p-dropdown [options]="adjustmentOptions"
+                                            [(ngModel)]="adult.refundableAdjustmentType"
+                                            (onChange)="calculateRefundablePrice(adult)"></p-dropdown>
+                                    </td>
+                                    <td>
+                                        <p-inputNumber [(ngModel)]="adult.refundableAdjustmentValue"
+                                            (ngModelChange)="calculateRefundablePrice(adult)"></p-inputNumber>
+                                    </td>
+
+                                    <td>
+                                        <p-dropdown [options]="currencyOptions" [(ngModel)]="adult.currency"
+                                            (onChange)="calculateRefundablePrice(adult)"></p-dropdown>
+                                    </td>
+
+                                    <td>{{ adult.refundablePrice | currency: adult.currency }}</td>
+                                </ng-container>
+
+                                <!-- İade Edilemez Mesajı -->
+                                <ng-template #notRefundable>
+                                    <td colspan="3">İade Edilemez</td>
+                                </ng-template>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <p-button label="Save" (onClick)="onSave()" />
+
+    </div>
+</div>
+

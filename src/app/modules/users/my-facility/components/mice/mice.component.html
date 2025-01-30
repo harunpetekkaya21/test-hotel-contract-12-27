@@ -1,1 +1,54 @@
-<p>mice works!</p>
+<form [formGroup]="form">
+    <div class="container">
+      <!-- Toplantı Odası Var mı? -->
+      <div class="form-field">
+        <label>Toplantı Odası Var mı?</label>
+        <p-inputSwitch formControlName="hasMeetingRoom"></p-inputSwitch>
+      </div>
+  
+      <!-- Eğer toplantı odası varsa -->
+      <div *ngIf="hasMeetingRoom">
+        
+        <!-- Toplantı Odası Sayısı -->
+        <div class="form-field">
+          <label>Toplantı Odası Sayısı</label>
+          <p-inputNumber formControlName="meetingRoomCount" (onInput)="updateMeetingRooms(form.value.meetingRoomCount)"></p-inputNumber>
+        </div>
+  
+        <!-- Dinamik Toplantı Odaları -->
+        <div formArrayName="meetingRooms">
+          <div *ngFor="let roomCtrl of meetingRooms.controls; let i = index;" [formGroupName]="i">
+            
+            <p-card>
+              <div class="form-field">
+                <label>Oda Adı</label>
+                <input pInputText formControlName="name" placeholder="Oda adı girin">
+              </div>
+  
+              <div class="form-field">
+                <label>Kapasite</label>
+                <p-inputNumber formControlName="capacity" placeholder="Kapasite"></p-inputNumber>
+              </div>
+  
+              <div class="form-field">
+                <label>Metrekare</label>
+                <p-inputNumber formControlName="size" placeholder="Metrekare"></p-inputNumber>
+              </div>
+  
+              <div class="form-field">
+                <label>Projeksiyon Cihazı Var mı?</label>
+                <p-inputSwitch formControlName="hasProjector"></p-inputSwitch>
+              </div>
+            </p-card>
+  
+          </div>
+        </div>
+        
+      </div>
+  
+      <!-- Form Gönderme Butonu -->
+      <button pButton type="submit" label="Kaydet"  [disabled]="form.invalid"></button>
+  
+    </div>
+  </form>
+  

@@ -1,1 +1,171 @@
-<p>general works!</p>
+<div class="p-fluid  my-facility">
+    <form [formGroup]="generalTabViewForm" (ngSubmit)="saveFacility()">
+      <!-- HOTEL ACTIVE -->
+      <p-fieldset legend="Hotel Active" toggleable class="section-fieldset">
+        <div class="p-field-checkbox">
+          <p-checkbox inputId="isHotelSale" formControlName="isHotelForSale" [binary]="true"></p-checkbox>
+          <label for="isHotelSale" class="ml-2">Is The Hotel For Sale?</label>
+        </div>
+      </p-fieldset>
+  
+      <!-- BASIC INFORMATION -->
+      <p-fieldset legend="Basic Information" toggleable class="section-fieldset">
+        <div class="p-grid p-formgrid">
+          <!-- Facility Name -->
+          <div class="p-col-12 p-md-6">
+            <label for="facilityName" class="p-text-bold">Facility Name</label>
+            <input id="facilityName" type="text" pInputText formControlName="facilityName"
+              placeholder="e.g. Hilton Garden Inn" tooltip="Enter the name of the facility (minimum 3 characters)" />
+            <p-message
+              *ngIf="generalTabViewForm.get('facilityName')?.invalid && generalTabViewForm.get('facilityName')?.touched"
+              severity="error" text="Facility Name is required (min 3 characters)."></p-message>
+          </div>
+  
+          <!-- Facility Type -->
+          <div class="p-col-12 p-md-6">
+            <label for="facilityType" class="p-text-bold">Facility Type</label>
+            <p-dropdown id="facilityType" [options]="facilityTypes" formControlName="facilityType"
+              placeholder="Select a Type"></p-dropdown>
+            <p-message
+              *ngIf="generalTabViewForm.get('facilityType')?.invalid && generalTabViewForm.get('facilityType')?.touched"
+              severity="error" text="Facility Type is required."></p-message>
+          </div>
+  
+          <!-- Raiting -->
+          <div class="p-col-12 p-md-6 mt-3">
+            <label class="p-text-bold" for="raiting">Rating</label>
+            <p-dropdown id="raiting" [options]="raitingNumbers" formControlName="raiting" optionLabel="name"
+              placeholder="Select Rating"></p-dropdown>
+          </div>
+        </div>
+      </p-fieldset>
+  
+      <!-- ADDRESS INFORMATION -->
+      <p-fieldset legend="Address Information" toggleable class="section-fieldset">
+        <div class="p-grid p-formgrid">
+          <!-- City -->
+          <div class="p-col-12 p-md-6">
+            <label for="city" class="p-text-bold">City</label>
+            <input id="city" type="text" pInputText formControlName="city" placeholder="e.g. Ankara" />
+            <p-message *ngIf="generalTabViewForm.get('city')?.invalid && generalTabViewForm.get('city')?.touched"
+              severity="error" text="City is required."></p-message>
+          </div>
+  
+          <!-- Country -->
+          <div class="p-col-12 p-md-6">
+            <label for="country" class="p-text-bold">Country</label>
+            <input id="country" type="text" pInputText formControlName="country" placeholder="e.g. Turkey" />
+            <p-message *ngIf="generalTabViewForm.get('country')?.invalid && generalTabViewForm.get('country')?.touched"
+              severity="error" text="Country is required."></p-message>
+          </div>
+  
+          <!-- Address -->
+          <div class="p-col-12">
+            <label for="address" class="p-text-bold">Address</label>
+            <textarea id="address" rows="3" pInputTextarea formControlName="address"
+              placeholder="Full Address..."></textarea>
+          </div>
+  
+          <!-- Latitude/Longitude -->
+          <div class="p-col-12 p-md-6">
+            <label for="latitude" class="p-text-bold">Latitude</label>
+            <input id="latitude" type="text" pInputText formControlName="latitude"
+              [value]="latitude() !== null ? latitude() : ''" placeholder="e.g. 39.9" />
+          </div>
+  
+          <div class="p-col-12 p-md-6">
+            <label for="longitude" class="p-text-bold">Longitude</label>
+            <input id="longitude" type="text" pInputText formControlName="longitude"
+              [value]="longitude() !== null ? longitude() : ''" placeholder="e.g. 32.8" />
+          </div>
+  
+          <div class="p-col-12">
+            <p-button  type="button" (click)="openMap()" label="Open Map" class="p-button-rounded p-button-info mt-2"
+              icon="pi pi-map-marker"></p-button>
+          </div>
+        </div>
+      </p-fieldset>
+  
+      <!-- EMAIL INFORMATIONS -->
+      <p-fieldset legend="Email Informations" toggleable class="section-fieldset">
+        <div class="p-grid p-formgrid">
+          <div class="p-col-12 p-md-6">
+            <label for="ourEmail" class="p-text-bold">Our Email</label>
+            <input id="ourEmail" type="text" pInputText formControlName="ourEmail"
+              placeholder="e.g. reservations@hotel.com" />
+          </div>
+  
+          <div class="p-col-12 p-md-6">
+            <label for="hotelOrSupplierEmail" class="p-text-bold">Hotel/Supplier Email (Booking mail)</label>
+            <input id="hotelOrSupplierEmail" type="text" pInputText formControlName="hotelOrSupplierEmail"
+              placeholder="e.g. sales@hotel.com" />
+          </div>
+  
+          <div class="p-col-12 mt-3">
+            <div class="p-field-checkbox">
+              <p-checkbox inputId="isBookingEmail" value="" formControlName="isBookingEmail" [binary]="true"></p-checkbox>
+              <label for="isHotelSale" class="ml-2">Is Booking Email?</label>
+            </div>
+          </div>
+        </div>
+      </p-fieldset>
+  
+      <!-- PRODUCT GROUP -->
+      <p-fieldset legend="Product Group" toggleable class="section-fieldset">
+        <div class="p-grid p-formgrid">
+          <div class="p-col-12 p-md-6">
+            <label for="supplier" class="p-text-bold">Supplier</label>
+            <input id="supplier" type="text" pInputText formControlName="supplier" placeholder="e.g. TUI, Booking.com" />
+          </div>
+  
+          <div class="p-col-12 p-md-6">
+            <label for="customer" class="p-text-bold">Customer</label>
+            <input id="customer" type="text" pInputText formControlName="customer" placeholder="e.g. Retail Customer" />
+          </div>
+        </div>
+      </p-fieldset>
+  
+      <!-- ALLOTMENT -->
+      <p-fieldset legend="Allotment" toggleable class="section-fieldset">
+        <div class="p-grid p-formgrid">
+          <div class="p-col-12 p-md-6">
+            <label for="allotment" class="p-text-bold">Allotment</label>
+            <p-inputNumber id="allotment" type="text" formControlName="allotment" [showButtons]="true" [min]="0"
+              [max]="100"></p-inputNumber>
+          </div>
+  
+          <div class="p-col-12 p-md-6">
+            <label for="allotmentSenderEmail" class="p-text-bold">Allotment Sender Email</label>
+            <input id="allotmentSenderEmail" type="text" pInputText formControlName="allotmentSenderEmail" />
+          </div>
+  
+          <div class="p-col-12 p-md-6">
+            <label for="allotmentReserverEmail" class="p-text-bold">Allotment Reserver Email</label>
+            <input id="allotmentReserverEmail" type="text" pInputText formControlName="allotmentReserverEmail" />
+          </div>
+        </div>
+      </p-fieldset>
+  
+      <!-- SPECIAL NOTES -->
+      <p-fieldset legend="Special Notes" toggleable class="section-fieldset">
+        <textarea rows="5" cols="30" pInputTextarea formControlName="specialNote"
+          placeholder="Any additional notes..."></textarea>
+      </p-fieldset>
+  
+      <!-- SUBMIT BUTTON -->
+      <div class="p-d-flex p-jc-end p-mt-3">
+        <button pButton label="Save" icon="pi pi-save" class="p-button-primary p-button-rounded" type="submit"></button>
+      </div>
+    </form>
+  </div>
+  
+  
+  <!-- HARİTA DİALOGU -->
+  <p-dialog [visible]="showMap()" [closable]="false" [modal]="true" header="Location on Map" [dismissableMask]="true"
+    [style]="{ width: '100%', height: '100%' }" [resizable]="false" [draggable]="true" class="map-dialog">
+    <div id="map" style="width: 100%; height: 100%;" class="map-container"></div>
+    <p-footer>
+      <button pButton icon="pi pi-times" label="Close" class="p-button-rounded p-button-secondary"
+        (click)="closeMap()"></button>
+    </p-footer>
+  </p-dialog>

@@ -1,17 +1,16 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MealsOption } from '../models/Meal/MealsOption';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { MealBoardTypeOption } from '../models/meal-board-type/MealBoardTypeOption';
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class MealPlanAndBoarTypeServiceService {
-  private apiUrl = '/api/meal-board-options'; // API URL'si
+export class MealsService {
+ private apiUrl = '/api/meal-board-options'; // API URL'si
 
 
-  private mealBoardOptions: MealBoardTypeOption[] = [
+  private mealBoardOptions: MealsOption[] = [
     { id: 1, name: "A'la Carte All Inclusive" },
     { id: 2, name: "Full Board" },
     { id: 3, name: "High Class All Inclusive" },
@@ -38,7 +37,7 @@ export class MealPlanAndBoarTypeServiceService {
   //   return this.http.get<MealBoardTypeOption[]>(this.apiUrl);
   // }
 
-  getMealBoardOptions(): Observable<MealBoardTypeOption[]> {
+  getMealBoardOptions(): Observable<MealsOption[]> {
     return of(this.mealBoardOptions);
   }
 }

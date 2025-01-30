@@ -1,1 +1,19 @@
-<p>meals works!</p>
+<p-fieldset legend="Meal Plan" toggleable class="section-fieldset">
+    <div class="container">
+      <form [formGroup]="mealsPlanForm">
+        <div class="checkbox-grid">
+          <div *ngFor="let option of mealBoardTypeOptions">
+            <p-checkbox 
+              [binary]="true" 
+              [formControlName]="'option_' + option.id" 
+              [label]="option.name">
+            </p-checkbox>
+          </div>
+        </div>
+      </form>
+      <div *ngIf="mealsPlanForm.invalid && mealsPlanForm.touched" class="error-message">
+        <p>Please select at least one option.</p>
+      </div>
+    </div>
+  </p-fieldset>
+  
