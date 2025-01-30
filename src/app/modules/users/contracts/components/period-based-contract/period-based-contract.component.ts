@@ -27,7 +27,7 @@ export interface Period {
   endDate: Date;
   selectedRoomTypes: any[];
   addChildPricing: boolean;
-  stopSales: boolean;
+  // stopSales: boolean;
   roomData: RoomData[];
 }
 
@@ -40,7 +40,7 @@ export interface Cell {
   basePrice: number | 0;
   allotment: number | 0;
   adults: Adult[];
-  stopSales: false;
+  // stopSales: false;
   childPricing: ChildPricing[];
   invalid?: boolean; // Hücre geçerlilik durumu
 }
@@ -103,10 +103,10 @@ export class PeriodBasedContractComponent implements OnInit {
 
   availableRoomTypes: any[] = [];
 
-  stopSalesOptions = [
-    { label: 'Evet', value: true },
-    { label: 'Hayir', value: false },
-  ];
+  // stopSalesOptions = [
+  //   { label: 'Evet', value: true },
+  //   { label: 'Hayir', value: false },
+  // ];
 
 
   constructor(private roomTypeService: RoomTypeService,private cdr: ChangeDetectorRef, private messageService: MessageService, private priceService:PriceCalculationService) {
@@ -171,7 +171,7 @@ export class PeriodBasedContractComponent implements OnInit {
       endDate: this.endDate,
       selectedRoomTypes: [],
       addChildPricing: false,
-      stopSales: false,
+      // stopSales: false,
       roomData: [],
     };
 
@@ -229,7 +229,7 @@ export class PeriodBasedContractComponent implements OnInit {
       {
         basePrice: basePrice, // Base fiyatı hücreye aktar
         allotment: 0,
-        stopSales: false,
+        // stopSales: false,
     
         adults: Array.from({ length: capacity }, (_, i) => ({
           adultNumber: i + 1,
@@ -385,7 +385,7 @@ export class PeriodBasedContractComponent implements OnInit {
             price: child.price,
             multiplier: child.multiplier,
           })),
-          stopSales: room.cells[0]?.stopSales,
+          // stopSales: room.cells[0]?.stopSales,
         })),
       }));
       console.log('Kaydedilen Veriler:', JSON.stringify(formattedData, null, 2));

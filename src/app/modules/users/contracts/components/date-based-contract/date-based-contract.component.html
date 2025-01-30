@@ -37,7 +37,7 @@
 
       <!-- Satışı Durdur -->
       <div class="checkbox-container">
-        <p-checkbox [(ngModel)]="stopSales" binary="true" label="Satisi Durdur"></p-checkbox>
+        <!-- <p-checkbox [(ngModel)]="stopSales" binary="true" label="Satisi Durdur"></p-checkbox> -->
         <p-checkbox [(ngModel)]="addChildPricing" binary="true" label="Cocuk Ekle"></p-checkbox>
       </div>
 
@@ -131,13 +131,13 @@
             </ng-container>
 
             <!-- Satışı Durdur -->
-            <ng-container *ngIf="stopSales">
+            <!-- <ng-container *ngIf="stopSales">
               <div class="input-group">
                 <i class="fas fa-ban"></i>
                 <p-dropdown [(ngModel)]="cell.stopSales" [options]="stopSalesOptions" placeholder="Satisi Durdur"
                   appendTo="body"></p-dropdown>
               </div>
-            </ng-container>
+            </ng-container> -->
           </div>
         </td>
       </tr>

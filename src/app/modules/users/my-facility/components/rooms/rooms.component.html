@@ -10,6 +10,16 @@
                         <label for="roomTypeName">Oda Tipi İsmi</label>
                     </p-floatLabel>
                 </div>
+                <div class="field col-12 md:col-12">
+                    
+                    <p-multiSelect 
+                    [options]="roomTypeFeatureOptions" 
+                    [(ngModel)]="selectedRoomTypeFeatureOptions" 
+                    optionLabel="label" 
+                    placeholder="Select Room Type" />
+                
+                </div>
+           
 
                 <!-- Oda Sayısı -->
                 <div class="field col-12 md:col-6">

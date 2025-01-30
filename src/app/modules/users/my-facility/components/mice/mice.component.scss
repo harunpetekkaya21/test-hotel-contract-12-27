@@ -1,0 +1,90 @@
+.container {
+ 
+  margin: auto;
+  padding: 20px;
+}
+.meeting-header-first .meeting-header-second{
+
+}
+
+/* Kartları yan yana hizalama */
+.room-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: flex-start; /* Kartları soldan başlat */
+}
+
+/* Kart tasarımı */
+.room-card {
+  flex: 1 1 calc(16.66% - 30px); /* 6 kart sığacak şekilde */
+  // max-width: calc(16.66% - 30px);
+  // min-width: 180px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+/* Label ve inputları yan yana hizala */
+.form-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  flex: 1; /* Label genişliği */
+  font-weight: bold;
+  white-space: nowrap; /* Label'ın alt satıra düşmesini engeller */
+}
+
+.form-group input {
+  flex: 2; /* Input genişliği */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  min-width: 0;
+}
+
+/* Checkbox için özel stil */
+.form-group input[type="checkbox"] {
+  width: auto;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 1200px) {
+  .room-card {
+    flex: 1 1 calc(25% - 30px); /* Orta ekranlarda 4 kart */
+    max-width: calc(25% - 30px);
+  }
+}
+
+@media (max-width: 900px) {
+  .room-card {
+    flex: 1 1 calc(33.33% - 30px); /* Küçük ekranlarda 3 kart */
+    max-width: calc(33.33% - 30px);
+  }
+}
+
+@media (max-width: 600px) {
+  .room-card {
+    flex: 1 1 calc(50% - 30px); /* Daha küçük ekranlarda 2 kart */
+    max-width: calc(50% - 30px);
+  }
+}
+
+@media (max-width: 400px) {
+  .room-card {
+    flex: 1 1 100%; /* Mobilde 1 kart */
+    max-width: 100%;
+  }
+
+  .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

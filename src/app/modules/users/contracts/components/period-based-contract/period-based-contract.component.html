@@ -4,21 +4,22 @@
 <div class="card control-card">
   <div class="date-room-controls">
     <div class="control-group">
-      <!-- Başlangıç Tarihi -->
       <div class="input-with-icon">
         <i class="fas fa-calendar-alt"></i>
         <p-calendar id="startDate" [(ngModel)]="startDate" [showButtonBar]="true" dateFormat="dd.mm.yy"
           placeholder="Baslangic Tarihi" appendTo="body"></p-calendar>
       </div>
 
-      <!-- Bitiş Tarihi -->
       <div class="input-with-icon">
         <i class="fas fa-calendar-alt"></i>
         <p-calendar id="endDate" [(ngModel)]="endDate" [minDate]="startDate" [showButtonBar]="true"
           dateFormat="dd.mm.yy" placeholder="Bitis Tarihi" appendTo="body"></p-calendar>
       </div>
 
-      <!-- Periyot Ekle -->
+      <div class="input-with-icon">
+        <p-checkbox binary="true" label="Bir sonraki yil icin de gecerli"></p-checkbox>
+      </div>
+    
       <div>
         <button pButton label="Periyot Ekle" icon="pi pi-plus" (click)="addPeriod()"></button>
       </div>
@@ -56,7 +57,7 @@
               (onChange)="onChildPricingToggle(period)"></p-checkbox>
             
             
-              <p-checkbox [(ngModel)]="period.stopSales" binary="true" label="Satisi Durdur"></p-checkbox>
+              <!-- <p-checkbox [(ngModel)]="period.stopSales" binary="true" label="Satisi Durdur"></p-checkbox> -->
             
           </div>
         </div>
@@ -117,13 +118,13 @@
             </ng-container>
 
              <!-- Satışı Durdur -->
-             <ng-container *ngIf="period.stopSales">
+             <!-- <ng-container *ngIf="period.stopSales">
               <div class="input-group">
                 <i class="fas fa-ban"></i>
                 <p-dropdown [(ngModel)]="cell.stopSales" [options]="stopSalesOptions" placeholder="Satisi Durdur"
                   appendTo="body"></p-dropdown>
               </div>
-            </ng-container>
+            </ng-container> -->
           </div>
         </div>
       </div>

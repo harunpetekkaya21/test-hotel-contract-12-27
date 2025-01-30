@@ -1,0 +1,51 @@
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .discount-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Her indirim satırı */
+  .discount-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .discount-type {
+    flex: 2;
+    font-weight: bold;
+  }
+  
+  .discount-condition {
+    flex: 3;
+  }
+  
+  .discount-switch {
+    flex: 1;
+    text-align: center;
+  }
+  
+  /* Responsive Tasarım */
+  @media (max-width: 600px) {
+    .discount-row {
+      flex-direction: column;
+      gap: 10px;
+      text-align: center;
+    }
+    
+    .discount-type, .discount-condition, .discount-switch {
+      flex: none;
+      width: 100%;
+    }
+  }
+  

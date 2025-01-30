@@ -6,11 +6,12 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'contract-confirm-dialog',
   standalone: true,
-  imports: [DialogModule, InputTextModule, DropdownModule, ButtonModule, CommonModule,FormsModule,MultiSelectModule],
+  imports: [DialogModule, InputTextModule, DropdownModule, ButtonModule, CommonModule,FormsModule,MultiSelectModule,CheckboxModule],
   templateUrl: './contract-confirm-dialog.component.html',
   styleUrl: './contract-confirm-dialog.component.scss'
 })

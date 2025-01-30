@@ -1,1 +1,258 @@
-<p>cancellation-policies works!</p>
+<p-fieldset legend="Create New Policy" toggleable class="section-fieldset">
+    <form [formGroup]="form" class="">
+  
+      <div class="grid p-fluid">
+        <div class="col-12 lg:col-6">
+          <div class="">
+            <!-- ust kisim -->
+            <div class="form-container">
+  
+  
+              <div class="form-group">
+                <label for="policyName">Policy Name</label>
+                <input pInputText formControlName="policyName" id="policyName" placeholder="Enter new policy name" />
+              </div>
+  
+              <div class="form-group">
+                <label>Booking Date</label>
+                <div class="date-group">
+                  <p-calendar formControlName="policyBookingDateFrom" placeholder="From" [showIcon]="true"></p-calendar>
+                  <p-calendar formControlName="policyBookingDateUntil" placeholder="Until" [showIcon]="true"></p-calendar>
+                </div>
+              </div>
+  
+              <div class="form-group">
+                <label for="policyCurrency">Currency</label>
+                <p-dropdown id="policyCurrency" formControlName="policyCurrency" [options]="currencyList"
+                  placeholder="Select"></p-dropdown>
+              </div>
+  
+              <div class="form-group">
+                <label for="policyPriority">Priority</label>
+                <p-inputNumber [showButtons]="true" formControlName="policyPriority" inputId="policyPriority" [min]="0"
+                  [max]="100" />
+              </div>
+  
+  
+  
+              <div class="form-group">
+                <label for="policyDescription">Description</label>
+                <textarea style="max-width: 100%;" pInputTextarea wir rows="4" cols="30"
+                  formArrayName="policyDescription"></textarea>
+              </div>
+  
+              <div class="checkbox-group">
+                <div>
+                  <p-checkbox inputId="isNonRefundable" formControlName="nonRefundablePolicy"
+                    [binary]="true"></p-checkbox>
+                  <label for="isNonRefundable">Non Refundable</label>
+                </div>
+                <div>
+                  <p-checkbox inputId="isVerified" formControlName="verifiedPolicy" [binary]="true"></p-checkbox>
+                  <label for="isVerified">Verified</label>
+                </div>
+                <div>
+                  <p-checkbox inputId="isOnlyApplyToEarlyBookingDiscounts"
+                    formControlName="onlyApplyToEarlyBookingDiscounts" [binary]="true"></p-checkbox>
+                  <label for="isOnlyApplyToEarlyBookingDiscounts">Only apply to Early booking discounts</label>
+                </div>
+              </div>
+  
+              <p-button type="button" class="submit-btn">Save Policy</p-button>
+            </div>
+          </div>
+  
+  
+        </div>
+        <div class="col-12 lg:col-6">
+          <div class="">
+            <p-fieldset legend="Check In Date" [toggleable]="false">
+  
+  
+              <div class="p-field-checkbox">
+                <p-checkbox formControlName="applyToAllDays" (onChange)="toggleDaysVisibility()"
+                  binary="true"></p-checkbox>
+                <label>Apply to all the days of the week</label>
+              </div>
+  
+              <!-- Günlerin checkbox'ları sadece applyToAllDays seçilirse görünür -->
+              <div *ngIf="daysVisible" class="p-grid">
+                <div *ngFor="let day of daysArray.controls; let i = index" class="p-col">
+                  <p-checkbox [formControl]="day" binary="true"></p-checkbox>
+                  <label>{{ ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'][i] }}</label>
+                </div>
+              </div>
+  
+              <div class="p-grid p-ai-center">
+                <div class="p-col">
+                  <p-calendar appendTo="body" formControlName="policyCheckInFromDate" placeholder="From"></p-calendar>
+                </div>
+                <div class="p-col">
+                  <p-calendar appendTo="body" formControlName="policyCheckInToDate" placeholder="To"></p-calendar>
+                </div>
+                <div class="p-col">
+                  <button pButton type="button" label="Ekle" (click)="addCheckInDates()"></button>
+                </div>
+              </div>
+  
+              <p-table [value]="addedCheckInDates" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-date let-i="rowIndex">
+                  <tr>
+                    <td>{{ date.policyCheckInFromDate | date: 'shortDate' }}</td>
+                    <td>{{ date.policyCheckInToDate | date: 'shortDate' }}</td>
+                    <td>
+                      <button pButton type="button" label="Delete" class="p-button-danger"
+                        (click)="deleteDate(i)"></button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+  
+  
+            </p-fieldset>
+          </div>
+  
+          <div class="mt-4">
+            <p-fieldset legend="Booking stay date" [toggleable]="false">
+  
+  
+              <div class="p-grid p-ai-center">
+                <div class="p-col">
+                  <p-calendar appendTo="body" formControlName="policyBookingStayFromDate" placeholder="From"></p-calendar>
+                </div>
+                <div class="p-col">
+                  <p-calendar appendTo="body" formControlName="policyBookingStayToDate" placeholder="To"></p-calendar>
+                </div>
+                <div class="p-col">
+                  <button pButton type="button" label="Ekle" (click)="addBookingStayDate()"></button>
+                </div>
+              </div>
+  
+              <p-table [value]="addedStayDates" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+  
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-date let-i="rowIndex">
+                  <tr>
+                    <td>{{ date.policyBookingStayFromDate | date: 'shortDate' }}</td>
+                    <td>{{ date.policyBookingStayToDate | date: 'shortDate' }}</td>
+                    <td>
+                      <button pButton type="button" label="Delete" class="p-button-danger"
+                        (click)="deleteStayDate(i)"></button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+  
+            </p-fieldset>
+          </div>
+  
+  
+        </div>
+      </div>
+  
+  
+      <p-fieldset legend="Rules" class="section-fieldset">
+        <div class="card grid p-fluid">
+          <div class=" p-4">
+            <h3>Cancellation Policy Rules</h3>
+            <p class="text-muted">
+              To upload the cancellation policy rules you should insert values from minimum to maximum. For example, "From
+              10 to 15 days before trip".
+              To indicate the periods that do not incur into cancellation costs you should complete the first range and
+              leave the second range blank. For example: from 16 days to_. You should enter at least a general rule such
+              as, "From 10 to - days before the trip"
+              Please, do not forget to add a general rule from the maximum number of days to undefined and insert 0 cost
+              and price to complete the cancellation policy and save all data.
+            </p>
+  
+            <div class="rules-container">
+              <!-- <div class="rule-header p-grid p-align-center p-justify-between p-mb-3">
+                <span class="p-col-1">From</span>
+                <span class="p-col-2">To</span>
+                <span class="p-col-3">Condition</span>
+                <span class="p-col-2">Public Price</span>
+                <span class="p-col-2">Cost Price</span>
+                <span class="p-col">Actions</span>
+              </div> -->
+  
+              <!-- Rule Rows -->
+              <div *ngFor="let rule of rulesControls; let i = index" [formGroup]="rule"
+                class="p-grid p-align-center p-justify-between p-mb-3 rule-row">
+                <!-- From & To -->
+                <div class="p-col-1">
+                  <input pInputText formControlName="from" placeholder="From" class="w-full" />
+                </div>
+                <div class="p-col-1">
+                  <input pInputText formControlName="to" placeholder="To" class="w-full" />
+                </div>
+  
+                <!-- Condition -->
+                <div class="p-col-2">
+                  <p-dropdown [options]="conditions" formControlName="condition" placeholder="Select condition"
+                    class="w-full">
+                  </p-dropdown>
+                </div>
+  
+                <!-- Stay Length -->
+                <div class="p-col-2">
+                  <label>Stay length</label>
+                  <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">From</span>
+                    <input pInputText formControlName="stayFrom" />
+                    <span class="p-inputgroup-addon">To</span>
+                    <input pInputText formControlName="stayTo" />
+                  </div>
+                </div>
+  
+                <!-- Public Price -->
+                <div class="p-col-2">
+                  <div class="p-inputgroup">
+                    <input pInputText formControlName="publicPrice" placeholder="Price" class="w-full" />
+                    <span class="p-inputgroup-addon">EUR</span>
+                  </div>
+                </div>
+  
+                <!-- Cost Price -->
+                <div class="p-col-2">
+                  <div class="p-inputgroup">
+                    <input pInputText formControlName="costPrice" placeholder="Price" class="w-full" />
+                    <span class="p-inputgroup-addon">EUR</span>
+                  </div>
+                </div>
+  
+                <!-- Delete Button -->
+                <div class="p-col">
+                  <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm"
+                    (click)="deleteRule(i)">
+                  </button>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Add Rule Button -->
+            <div class="p-mt-4">
+              <button pButton type="button" icon="pi pi-plus" label="Add Rule" class="p-button-success"
+                (click)="addRule()"></button>
+            </div>
+          </div>
+  
+        </div>
+      </p-fieldset>
+  
+  
+      <p-button label="Save" (onClick)="saveForm()"></p-button>
+    </form>
+  </p-fieldset>

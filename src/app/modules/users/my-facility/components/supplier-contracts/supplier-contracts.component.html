@@ -1,1 +1,205 @@
-<p>supplier-contracts works!</p>
+<p-fieldset legend="Extranet Contract" toggleable class="section-fieldset">
+    <form [formGroup]="supplierContractsForm" (ngSubmit)="onSubmit()">
+      <div class="grid p-fluid">
+  
+        <!-- Left Column -->
+        <div class="col-12 lg:col-6">
+          <div class="card form-container">
+            <!-- Name -->
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input id="name" type="text" pInputText formControlName="name" placeholder="Enter Contract Name" />
+              <small *ngIf="supplierContractsForm.get('name')?.invalid && supplierContractsForm.get('name')?.touched"
+                class="p-error">Name is required.</small>
+            </div>
+  
+            <!-- Dropdown Fields -->
+            <div *ngFor="let field of dropdownFields" class="form-group">
+              <label [for]="field.controlName">{{ field.label }}</label>
+              <p-dropdown [options]="field.options" [id]="field.controlName" [formControlName]="field.controlName">
+              </p-dropdown>
+            </div>
+  
+            <!-- Season Dates -->
+            <div class="form-group">
+              <label for="seasonDates">Season Dates</label>
+              <div class="date-group">
+                <p-calendar id="seasonDateFrom" formControlName="seasonDateFrom" placeholder="From" [showIcon]="true">
+                </p-calendar>
+                <p-calendar id="seasonDateEnd" formControlName="seasonDateEnd" placeholder="To" [showIcon]="true">
+                </p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Right Column -->
+        <div class="col-12 lg:col-6">
+          <div class="card form-container">
+            <!-- Switch Fields -->
+            <div *ngFor="let field of switchFields" class="form-group">
+              <label [for]="field.controlName">{{ field.label }}</label>
+              <p-inputSwitch [id]="field.controlName" [formControlName]="field.controlName"></p-inputSwitch>
+            </div>
+  
+            <!-- MultiSelect Field -->
+            <div class="form-group">
+              <label for="invoicingCountries">Invoicing Countries</label>
+              <p-multiSelect id="invoicingCountries" formControlName="invoicingCountries" [options]="countries"
+                optionLabel="name" filter placeholder="Choose countries" appendTo="body">
+                <ng-template let-country pTemplate="selectedItem">
+                  <div class="country-item">
+                    <img [src]="country.flag" alt="{{ country.name }}" width="20" /> {{ country.name }}
+                  </div>
+                </ng-template>
+                <ng-template let-country pTemplate="item">
+                  <div class="country-item">
+                    <img [src]="country.flag" alt="{{ country.name }}" width="20" /> {{ country.name }}
+                  </div>
+                </ng-template>
+              </p-multiSelect>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Access Conditions -->
+        <div class="col-12">
+          <p-fieldset legend="Access Conditions" toggleable>
+            <div class="form-group">
+              <label for="availableThroughAllSalesChannelsState">Available through all sales channels</label>
+              <p-inputSwitch formControlName="availableThroughAllSalesChannelsState"></p-inputSwitch>
+            </div>
+            <div *ngIf="!availableThroughAllSalesChannelsState" class="form-group">
+              <div class="p-field-checkbox">
+                <p-checkbox formControlName="availableThroughAllSalesChannelsStateWebService" binary="true"
+                  inputId="availableThroughAllSalesChannelsStateWebService" label="Web Service"></p-checkbox>
+              </div>
+  
+              <div class="p-field-checkbox">
+                <p-checkbox formControlName="availableThroughAllSalesChannelsStateWebSite" binary="true"
+                  inputId="availableThroughAllSalesChannelsStateWebSite" label="Web Site"></p-checkbox>
+              </div>
+            </div>
+          </p-fieldset>
+        </div>
+  
+  
+  
+       <div class="col-12">
+        <p-fieldset legend="Extranet Contract" toggleable class="section-fieldset">
+          <form [formGroup]="supplierContractsForm" (ngSubmit)="onSubmit()">
+            <div class="grid p-fluid">
+        
+              <!-- Liberate Minimum Allotment -->
+              <div class="col-11">
+                <div class="form-group">
+                  <label for="liberateMinimumAllotment">Liberate Minimum Allotment</label>
+                  <p-inputSwitch formControlName="liberateMinimumAllotmentState" (onChange)="toggleLiberateAllotment()"></p-inputSwitch>
+                  <!-- Add Button -->
+               
+                </div>
+                 
+              </div>
+              <div class="col-1  ">
+                <button pButton label="Add" type="button" (click)="addRow()"></button>
+              </div>
+          
+              <div *ngIf="supplierContractsForm.get('liberateMinimumAllotmentState')?.value" class="col-12">
+               
+                <div class="grid">
+                  <!-- Release Type -->
+                  <div class="col-12 md:col-6 lg:col-2">
+                    <label>Release Type</label>
+                    <div class="flex align-items-center gap-2">
+                      <p-radioButton name="releaseType" value="Days" formControlName="releaseType" inputId="days"></p-radioButton>
+                      <label for="days">Days</label>
+                      <p-radioButton name="releaseType" value="Date" formControlName="releaseType" inputId="date"></p-radioButton>
+                      <label for="date">Date</label>
+                    </div>
+                  </div>
+              
+                  <!-- Room -->
+                  <div class="col-12 md:col-6 lg:col-2">
+                    <label for="room">Room</label>
+                    <p-dropdown formControlName="room" [options]="roomOptions" placeholder="Select Room"></p-dropdown>
+                  </div>
+              
+                  <!-- From Date -->
+                  <div class="col-12 md:col-6 lg:col-2">
+                    <label for="fromDate">From</label>
+                    <p-calendar formControlName="fromDate" placeholder="From" [showIcon]="true"></p-calendar>
+                  </div>
+              
+                  <!-- To Date -->
+                  <div class="col-12 md:col-6 lg:col-2">
+                    <label for="toDate">To</label>
+                    <p-calendar formControlName="toDate" placeholder="To" [showIcon]="true"></p-calendar>
+                  </div>
+              
+                  <!-- Increase Days -->
+                  <div class="col-12 md:col-6 lg:col-2">
+                    <label for="increaseDays">Increase Days</label>
+                    <p-dropdown formControlName="increaseDays" [options]="increaseDaysOptions" placeholder="Select Days"></p-dropdown>
+                  </div>
+              
+                  <!-- Specific Date -->
+                  <div class="col-12 md:col-6 lg:col-2">
+                    <label for="specificDate">Date</label>
+                    <p-calendar formControlName="specificDate" placeholder="Date" [showIcon]="true"></p-calendar>
+                  </div>
+              
+                  
+                </div>
+              </div>
+              
+        
+              <!-- Tablo: Eklenen Veriler -->
+              <div class="col-12" *ngIf="addedRows.length > 0 && supplierContractsForm.get('liberateMinimumAllotmentState')?.value">
+                <p-table [value]="addedRows">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Release Type</th>
+                      <th>Room</th>
+                      <th>From</th>
+                      <th>To</th>
+                      <th>Increase Days</th>
+                      <th>Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-row>
+                    <tr>
+                      <td>{{ row.releaseType }}</td>
+                      <td>{{ row.room }}</td>
+                      <td>{{ row.from }}</td>
+                      <td>{{ row.to }}</td>
+                      <td>{{ row.increaseDays }}</td>
+                      <td>{{ row.date }}</td>
+                      <td>
+                        <button pButton icon="pi pi-trash" class="p-button-danger" type="button" (click)="deleteRow(row)"></button>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+        
+              <!-- Save Button -->
+              <!-- <div class="col-12">
+                <button pButton type="submit" label="Save" class="p-button-primary" [disabled]="supplierContractsForm.invalid"></button>
+              </div> -->
+            </div>
+          </form>
+        </p-fieldset>
+       </div>
+        
+  
+        <!-- liberty end -->
+  
+  
+        <!-- Save Button -->
+        <div class="col-12">
+          <button pButton type="submit" label="Save" [disabled]="supplierContractsForm.invalid"></button>
+        </div>
+      </div>
+    </form>
+  </p-fieldset>

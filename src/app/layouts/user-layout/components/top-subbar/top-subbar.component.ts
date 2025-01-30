@@ -88,21 +88,21 @@ export class TopSubBarComponent implements OnInit {
                 label: 'Promotions',
                 icon: 'fa fa-percent',
                 items: [
-                    { label: 'Create Promotions', icon: 'fa fa-plus', routerLink: ['my-facility'] }
+                    { label: 'Create Promotions', icon: 'fa fa-plus', routerLink: ['promotions'] }
                 ]
             },
             {
                 label: 'Stop-Sales',
                 icon: 'fa fa-stop',
                 items: [
-                    { label: 'Create Stop-Sales', icon: 'fa fa-plus', routerLink: ['my-facility'] }
+                    { label: 'Create Stop-Sales', icon: 'fa fa-plus', routerLink: ['stop-sales'] }
                 ]
             },
             {
                 label: 'Actions',
                 icon: 'fa fa-hexagon-nodes',
                 items: [
-                    { label: 'Create Actions', icon: 'fa fa-plus', routerLink: ['my-facility'] }
+                    { label: 'Create Actions', icon: 'fa fa-plus', routerLink: ['actions'] }
                 ]
             },
 

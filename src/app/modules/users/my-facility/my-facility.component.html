@@ -3,7 +3,7 @@
 <div class="card">
     <p-progressBar [value]="value" />
 </div>
-<div class="card flex justify-content-center">
+<div class="card  justify-content-center">
     <p-stepper>
         <p-stepperPanel header="General">
             <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
@@ -87,8 +87,8 @@
         
         <p-stepperPanel header="Mice">
             <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
-                <div class="flex flex-column ">
-                    <div class="border-2 border-dashed surface-border border-round   flex-auto flex justify-content-center align-items-center font-medium">
+                <div class=" ">
+                    <div class="border-2 border-dashed surface-border border-round    font-medium">
                         <facility-mice componentPath="mice.component"></facility-mice>
 
                     </div>
@@ -129,7 +129,7 @@
         </p-stepperPanel>
         <p-stepperPanel header="Supplier Contracts">
             <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
-                <div class="flex flex-column h-12rem">
+                <div class="flex flex-column">
                     <div class="border-2 border-dashed surface-border border-round   flex-auto flex justify-content-center align-items-center font-medium">
                         <facility-supplier-contracts componentPath="supplier-contracts.component"></facility-supplier-contracts>
 
@@ -150,7 +150,7 @@
         </p-stepperPanel>
         <p-stepperPanel header="Cancellation Pol.">
             <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
-                <div class="flex flex-column h-12rem">
+                <div class="flex flex-column ">
                     <div class="border-2 border-dashed surface-border border-round   flex-auto flex justify-content-center align-items-center font-medium">
                         <facility-cancellation-policies componentPath="cancellation-policies.component"></facility-cancellation-policies>
 

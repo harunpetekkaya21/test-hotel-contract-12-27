@@ -7,6 +7,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 
 export interface RoomType {
@@ -54,7 +55,7 @@ export interface AdultPricingUnRefundable extends AdultPricing { }
   selector: 'facility-rooms',
   standalone: true,
   imports: [FormsModule,ReactiveFormsModule,CommonModule,
-    DropdownModule,FloatLabelModule,InputNumberModule,TableModule,CheckboxModule,ButtonModule,InputTextModule
+    DropdownModule,FloatLabelModule,InputNumberModule,TableModule,CheckboxModule,ButtonModule,InputTextModule,MultiSelectModule
   ],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.scss'
@@ -66,6 +67,13 @@ export class RoomsComponent {
     { label: 'Çıkar (-)', value: '-' },
     { label: 'Yüzde (%)', value: '%' },
   ];
+
+  roomTypeFeatureOptions=[
+    { label: 'Deniz Manzarali', id:1 },
+    { label: 'Dag Manzarali', id:2 },
+    { label: 'Orman Manzarali', id:3  },
+  ]
+  selectedRoomTypeFeatureOptions:any[];
 
   // Para birimi seçenekleri
   currencyOptions = [
@@ -88,6 +96,8 @@ export class RoomsComponent {
 
 
   updateAdults() {
+
+    
     const count = this.createRoomType.yetiskinKapasitesi;
 
     if (count === 0) {

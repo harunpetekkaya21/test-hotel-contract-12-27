@@ -45,7 +45,7 @@ export interface Cell {
   allotment: number | null;
   adults: Adult[];
   childPricing: ChildPricing[];
-  stopSales: boolean | null;
+  // stopSales: boolean | null;
   invalid?: boolean;
 }
 @Component({
@@ -80,7 +80,7 @@ export class DateBasedContractComponent {
   selectedRoomTypes: { name: string; capacity: number; childCapacity: number, basePrice: number }[] = [];
 
   displayedDates: string[] = [];
-  stopSales = false;
+  // stopSales = false;
   addChildPricing = false;
 
   validationTriggered: boolean = false; // Doğrulama tetiklendi mi?
@@ -94,10 +94,10 @@ export class DateBasedContractComponent {
 
 
 
-  stopSalesOptions = [
-    { label: 'Evet', value: true },
-    { label: 'Hayir', value: false },
-  ];
+  // stopSalesOptions = [
+  //   { label: 'Evet', value: true },
+  //   { label: 'Hayir', value: false },
+  // ];
 
   availableRoomTypes: any[] = [];
 
@@ -211,7 +211,7 @@ export class DateBasedContractComponent {
         multiplier: 1.0,
         adultNumber: index + 1,
       })),
-      stopSales: false,
+      // stopSales: false,
       childPricing: Array.from({ length: childCapacity }, (_, index) => ({
         ageRange: { min: 0, max: 0 },
         price: 0,
@@ -390,7 +390,7 @@ export class DateBasedContractComponent {
         Cells: room.cells.map(cell => ({
           Date: cell.date,
           BasePrice: cell.basePrice,
-          StopSales: cell.stopSales,
+          // StopSales: cell.stopSales,
           Adults: cell.adults.map(adult => ({
             AdultNumber: adult.adultNumber,
             Price: adult.price,
