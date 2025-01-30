@@ -3,7 +3,7 @@
 <div class="card">
     <p-progressBar [value]="value" />
 </div>
-<div class="card  justify-content-center">
+<div class="card  ">
     <p-stepper>
         <p-stepperPanel header="General">
             <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
@@ -108,8 +108,8 @@
         </p-stepperPanel>
         <p-stepperPanel header="Otel Type / Temas">
             <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
-                <div class="flex flex-column h-12rem">
-                    <div class="border-2 border-dashed surface-border border-round   flex-auto flex justify-content-center align-items-center font-medium">
+                <div class="flex flex-column ">
+                    <div class="border-2 border-dashed surface-border border-round   ">
                         <facility-oteltype-temas componentPath="oteltype-temas.component"></facility-oteltype-temas>
 
                     </div>
@@ -172,8 +172,8 @@
         <!-- Last -->
         <p-stepperPanel header="Documents">
             <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
-                <div class="flex flex-column h-12rem">
-                    <div class="border-2 border-dashed surface-border border-round   flex-auto flex justify-content-center align-items-center font-medium">
+                <div class="flex flex-column ">
+                    <div class="border-2 border-dashed surface-border border-round    font-medium">
                         <facility-documents componentPath="documents.component"></facility-documents>
 
                     </div>

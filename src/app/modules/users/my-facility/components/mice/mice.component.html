@@ -21,19 +21,55 @@
             <label>Oda Adı:</label>
             <input pInputText type="text" formControlName="name" />
           </div>
+
+          <div class="form-group">
+            <label>Area(m2):</label>
+            <p-inputNumber type="number" formControlName="area" min="1" />
+          </div>
+          <div class="form-group">
+            <label>Height:</label>
+            <p-inputNumber type="number" formControlName="height" min="1" />
+          </div>
+
   
           <div class="form-group">
-            <label>Kapasite:</label>
-            <p-inputNumber type="number" formControlName="capacity" min="1" />
+            <label>Theatre Capacity:</label>
+            <p-inputNumber type="number" formControlName="theatreCapacity" min="1" />
           </div>
   
+          <div class="form-group">
+            <label>ClassRoom Capacity:</label>
+            <p-inputNumber type="number" formControlName="classRoomCapacity" min="1" />
+          </div>
+
+ <div class="form-group">
+            <label>U Shape Capacity:</label>
+            <p-inputNumber type="number" formControlName="uShapeCapacity" min="1" />
+          </div>
+
+          <div class="form-group">
+            <label>Board Shape Capacity:</label>
+            <p-inputNumber type="number" formControlName="boardShapeCapacity" min="1" />
+          </div>
+          <div class="form-group">
+            <label>Cabaret Capacity:</label>
+            <p-inputNumber type="number" formControlName="cabaretCapacity" min="1" />
+          </div>
+          <div class="form-group">
+            <label>Banquet Capacity:</label>
+            <p-inputNumber type="number" formControlName="banquetCapacity" min="1" />
+          </div>
+
+
+
+
           <div class="form-group">
             <label>Metrekare:</label>
             <p-inputNumber type="number" formControlName="size" min="1" />
           </div>
   
           <div class="form-group">
-            <label>Projeksiyon Cihazı Var Mı?</label>
+            <label>Teknik ekipman var mi ? </label>
             <p-inputSwitch  formControlName="hasProjector" />
           </div>
         </div>

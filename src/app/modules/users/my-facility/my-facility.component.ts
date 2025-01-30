@@ -23,5 +23,5 @@ import { OpportunitiesComponent } from './components/opportunities/opportunities
   styleUrl: './my-facility.component.scss'
 })
 export class MyFacilityComponent {
-  value: number = 30;
+  value: number = 10;
 }

@@ -65,7 +65,17 @@ export class MiceComponent {
   private createRoom(): FormGroup {
     return this.fb.group({
       name: ['', Validators.required],
-      capacity: [0], // Max 10 kişi kapasite
+      // capacity: [0], // Max 10 kişi kapasite
+      area:[0],
+      height:[0],
+      theatreCapacity:[0],
+      classRoomCapacity:[0],
+      uShapeCapacity:[0],
+      boardShapeCapacity:[0],
+      cabaretCapacity:[0],
+      banquetCapacity:[0],
+
+
       size: [0], // Max 100 m²
       hasProjector: [false]
     });

@@ -1,1 +1,20 @@
-<p>oteltype-temas works!</p>
+<div class="container">
+    <form [formGroup]="form">
+      <div class="theme-list">
+        <div *ngFor="let theme of hotelThemes; let i = index" class="theme-card">
+          <!-- İkon -->
+          <i [class]="theme.icon" class="theme-icon"></i>
+  
+          <!-- Tema İsmi -->
+          <span class="theme-name">{{ theme.name }}</span>
+  
+          <!-- Checkbox -->
+          <p-checkbox binary="true" [formControl]="getThemeControl(i)"></p-checkbox>
+        </div>
+      </div>
+  
+      <!-- Kaydet Butonu -->
+      <button type="button" (click)="saveSelection()" pButton label=" Kaydet" icon="pi pi-save"></button>
+    </form>
+  </div>
+  
