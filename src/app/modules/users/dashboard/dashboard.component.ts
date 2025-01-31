@@ -15,6 +15,8 @@ import { MenuModule } from 'primeng/menu';
 import { debounceTime, Subscription } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
 
 // Bildirim öğesi için arayüz
 export interface NotificationItem {
@@ -75,8 +77,8 @@ export interface Channel {
   countColor: string; // Sayı metninin rengi (CSS sınıfı)
 }
 
-
-export interface CompetitorAnalysis {
+//Yolcu Istatigi
+export interface PassengerStatistics {
   nationality: string; // Milliyet
   year2020: number;
   year2021: number;
@@ -88,10 +90,22 @@ export interface CompetitorAnalysis {
   marketShare: string; // Milliyet Payı %
 }
 
+
+//Rakip Analizi
+interface Hotel {
+  name: string;
+  sales: number;
+}
+
+interface MonthData {
+  month: string;
+  hotels: Hotel[];
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CardModule, BadgeModule, ChartModule, CommonModule, MessagesModule, TableModule, MenuModule, ButtonModule, ScrollPanelModule],
+  imports: [CardModule, BadgeModule, ChartModule, CommonModule, MessagesModule, TableModule, MenuModule, ButtonModule, ScrollPanelModule,DropdownModule,FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -119,11 +133,62 @@ export class DashboardComponent {
   ];
 
 
-
+  passengerStatistics
   //rakip analiz. 
-  competitorData: CompetitorAnalysis[] = [];
+  passengerStatisticsData: PassengerStatistics[] = [];
  
+//rakip analizi
+  selectedMonth: string = 'March';
+  months: { label: string; value: string }[] = [
+    { label: 'March', value: 'March' },
+    { label: 'April', value: 'April' },
+    { label: 'May', value: 'May' },
+    { label: 'June', value: 'June' }
+  ];
 
+  competitorAnalysisData: MonthData[] = [
+    {
+      month: 'March',
+      hotels: [
+        { name: 'Ciragan Palace Kempinski (Istanbul)', sales: 320 },
+        { name: 'D Maris Bay (Marmaris)', sales: 280 },
+        { name: 'Maxx Royal Kemer Resort (Antalya)', sales: 250 },
+        { name: 'Argos in Cappadocia (Nevşehir)', sales: 190 },
+        { name: 'Mandarin Oriental (Bodrum)', sales: 300 }
+      ]
+    },
+    {
+      month: 'April',
+      hotels: [
+        { name: 'Shangri-La Bosphorus (Istanbul)', sales: 340 },
+        { name: 'Hillside Beach Club (Fethiye)', sales: 310 },
+        { name: 'Rixos Premium Belek (Antalya)', sales: 290 },
+        { name: 'Museum Hotel (Cappadocia)', sales: 210 },
+        { name: 'Kempinski Hotel The Dome (Belek)', sales: 280 }
+      ]
+    },
+    {
+      month: 'May',
+      hotels: [
+        { name: 'Four Seasons Hotel (Istanbul)', sales: 380 },
+        { name: 'Nikki Beach Resort (Bodrum)', sales: 330 },
+        { name: 'Cornelia Diamond Golf Resort (Belek)', sales: 270 },
+        { name: 'Cappadocia Cave Suites', sales: 230 },
+        { name: 'Lujo Hotel (Bodrum)', sales: 310 }
+      ]
+    },
+    {
+      month: 'June',
+      hotels: [
+        { name: 'Swissotel The Bosphorus (Istanbul)', sales: 400 },
+        { name: 'Titanic Mardan Palace (Antalya)', sales: 350 },
+        { name: 'Regnum Carya (Belek)', sales: 320 },
+        { name: 'The Bodrum Edition', sales: 290 },
+        { name: 'Susesi Luxury Resort (Antalya)', sales: 340 }
+      ]
+    }
+  ];
+  
 
   constructor() {
 
@@ -135,7 +200,7 @@ export class DashboardComponent {
     this.initContractSummary();
     this.initFacilitySummary();
     this.initChannels();
-    this.initcompetitorData();
+    this.initPassengerStatisticsData();
   }
 
   isVisible = true;
@@ -325,8 +390,8 @@ export class DashboardComponent {
     ];
   }
 
-  initcompetitorData(){
-    this.competitorData = [
+  initPassengerStatisticsData(){
+    this.passengerStatisticsData = [
       {
         nationality: 'Rusya',
         year2020: 57114,
@@ -384,6 +449,10 @@ export class DashboardComponent {
       },
       // Diğer veriler burada devam eder...
     ];
+  }
+
+  get selectedHotels(): Hotel[] {
+    return this.competitorAnalysisData.find(m => m.month === this.selectedMonth)?.hotels || [];
   }
 
   getPercentageClass(percentageChange: string): string {
