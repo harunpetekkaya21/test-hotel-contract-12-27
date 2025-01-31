@@ -1,3 +1,144 @@
-<div class="card">
-    stop sales page
+<p-toast></p-toast>
+
+
+<div class="card control-card">
+  <div class="date-room-controls">
+    <div class="control-group">
+      <div class="input-with-icon">
+        <i class="fas fa-calendar-alt"></i>
+        <p-calendar id="startDate" [(ngModel)]="startDate" [showButtonBar]="true" dateFormat="dd.mm.yy"
+          placeholder="Baslangic Tarihi" appendTo="body"></p-calendar>
+      </div>
+
+      <div class="input-with-icon">
+        <i class="fas fa-calendar-alt"></i>
+        <p-calendar id="endDate" [(ngModel)]="endDate" [minDate]="startDate" [showButtonBar]="true"
+          dateFormat="dd.mm.yy" placeholder="Bitis Tarihi" appendTo="body"></p-calendar>
+      </div>
+
+      <!-- <div class="input-with-icon">
+        <p-checkbox binary="true" label="Bir sonraki yil icin de gecerli"></p-checkbox>
+      </div> -->
+    
+      <div>
+        <button pButton label="Periyot Ekle" icon="pi pi-plus" (click)="addPeriod()"></button>
+      </div>
+
+      
+    </div>
+  </div>
 </div>
+
+<!-- Accordion İçeriği -->
+<div class="content">
+
+  <p-accordion class="w-full" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
+    <p-accordionTab *ngFor="let period of periods; let i = index">
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2 w-full header-content">
+          <span>Periyot {{ i + 1 }}:</span>
+          <span class="font-bold white-space-nowrap">{{ period.startDate | date: 'dd.MM.yyyy' }} - {{ period.endDate |
+            date: 'dd.MM.yyyy' }}</span>
+          <div class="ml-auto mr-2">
+            <button pButton icon="pi pi-trash" class="acordiontab-delete" (click)="removePeriod(i)"></button>
+          </div>
+
+
+        </div>
+      </ng-template>
+
+      <div class="card">
+        <div class="control-group">
+          <div class="input-with-icon">
+
+            <p-multiSelect [(ngModel)]="period.selectedRoomTypes" [maxSelectedLabels]="1"
+              selectedItemsLabel="{0} oda tipi seçildi" [options]="availableRoomTypes" optionLabel="name"
+              placeholder="Oda Tipi Seç" (onChange)="onRoomTypeChange(period)"></p-multiSelect>
+            <!-- <p-checkbox [(ngModel)]="period.addChildPricing" binary="true" label="Cocuk Fiyatlandirmasi"
+              (onChange)="onChildPricingToggle(period)"></p-checkbox> -->
+            
+            
+              <p-checkbox [(ngModel)]="period.stopSales" binary="true" label="Satisi Durdur"></p-checkbox>
+            
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="grid">
+        <div *ngFor="let room of period.roomData" class="col-12 md:col-12 lg:col-6">
+          <h5 class="roomtype-name">{{ room.roomType }}</h5>
+          <div *ngFor="let cell of room.cells" class=" cell-content" >
+            <!-- Base Fiyat -->
+            <!-- <div class="input-group ">
+              <i class="fas fa-euro-sign "></i>
+              <span class="prefix">Base Fiyat</span>
+              <p-inputNumber class="" [(ngModel)]="cell.basePrice" mode="currency" [currency]="selectedCurrency"
+                [min]="0" (ngModelChange)="onBasePriceChange(cell)"></p-inputNumber>
+            </div> -->
+
+            <!-- Kontejan -->
+            <!-- <div class="input-group" >
+              <i class="fas fa-chart-bar"></i>
+              <span class="prefix">Kontenjan</span>
+              <p-inputNumber [ngClass]="{ 'invalid-cell': cell.invalid }" [(ngModel)]="cell.allotment" [min]="0"></p-inputNumber>
+            </div> -->
+
+            <!-- Misafir Fiyatları -->
+            <!-- <ng-container *ngFor="let adult of cell.adults; let i = index">
+              <div class="input-group">
+                <i class="fas fa-user "></i>
+                <span class="prefix">{{ i + 1 }} kisi icin fiyat:</span>
+                <p-inputNumber class="" [(ngModel)]="adult.price" mode="currency"
+                  [currency]="selectedCurrency"></p-inputNumber>
+
+                <p-dropdown class="" [(ngModel)]="adult.multiplier" [options]="multiplierOptions" optionLabel="label"
+                  appendTo="body" optionValue="value" (ngModelChange)="onMultiplierChange(cell, i)"></p-dropdown>
+              </div>
+            </ng-container> -->
+
+            <!-- Çocuk Fiyatlandırması -->
+            <!-- <ng-container *ngIf="period.addChildPricing">
+              <ng-container *ngFor="let child of cell.childPricing; let i = index">
+                <div class="child-input-group">
+                  <i class="fas fa-baby "></i>
+                  <span class="prefix">{{ i + 1 }}. Yas Araligi</span>
+                  <p-inputNumber class="child-small-input" [(ngModel)]="child.ageRange.min" [min]="0"
+                    placeholder="Min Age"></p-inputNumber>
+                  <p-inputNumber class="child-small-input" [(ngModel)]="child.ageRange.max"
+                    [min]="child.ageRange.min + 1" placeholder="Max Age"></p-inputNumber>
+                  <p-inputNumber class="child-price-input" [(ngModel)]="child.price" [min]="0" mode="currency"
+                    [currency]="selectedCurrency" placeholder="Price"></p-inputNumber>
+                  x
+                  <p-dropdown class="child-small-dropdown" [(ngModel)]="child.multiplier" [options]="multiplierOptions"
+                    optionLabel="label" optionValue="value" (ngModelChange)="onChildMultiplierChange(cell, i)"
+                    appendTo="body"></p-dropdown>
+                </div>
+              </ng-container>
+            </ng-container> -->
+
+             <!-- Satışı Durdur -->
+             <ng-container >
+              <div class="input-group">
+                <i class="fas fa-ban"></i>
+                <p-dropdown [(ngModel)]="cell.stopSales" [options]="stopSalesOptions" placeholder="Satisi Durdur"
+                  appendTo="body"></p-dropdown>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+
+    </p-accordionTab>
+  </p-accordion>
+
+  <button pButton label="Kaydet" icon="pi pi-save" class="save-button" (click)="saveData()"></button>
+
+
+</div>
+
+
+<app-stop-sale-confirm-dialog [(visible)]="contractConfirmDialog"
+[(visible)]="contractConfirmDialog" (saveContract)="onPeriodBaseContractSave($event)"></app-stop-sale-confirm-dialog>

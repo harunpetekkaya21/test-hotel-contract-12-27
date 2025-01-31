@@ -1,0 +1,17 @@
+
+<p-dialog
+[(visible)]="visible"
+[modal]="true"
+[style]="{ width: '25vw' }"
+(onHide)="onDialogClose()"
+header="Stop-Sale Kayit Edilecektir, Onayliyor musun?"
+>
+<div class="p-fluid formgrid grid">
+
+</div>
+
+<ng-template pTemplate="footer">
+  <button pButton label="Kaydet" (click)="save()" class="p-button-success"></button>
+  <button pButton label="İptal" (click)="cancel()" class="p-button-secondary"></button>
+</ng-template>
+</p-dialog>

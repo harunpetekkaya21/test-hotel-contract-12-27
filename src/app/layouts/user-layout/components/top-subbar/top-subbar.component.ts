@@ -42,26 +42,26 @@ export class TopSubBarComponent implements OnInit {
             //     ]
 
             // },
-            // {
+            {
 
-            //     label: 'Contracts',
-            //     icon: 'fa fa-book',
-            //     items: [
-            //         {
-            //             label: 'Contract List',
-            //             icon: 'fa fa-list',
-            //             routerLink: ['contracts/list-contracts']
-            //         },
-            //         {
-            //             label: 'Create New Contract',
-            //             icon: 'fa fa-square-plus',
-            //             routerLink: ['contracts/create-new-contract']
-            //         }
+                label: 'Contracts',
+                icon: 'fa fa-book',
+                items: [
+                    {
+                        label: 'Contract List',
+                        icon: 'fa fa-list',
+                        routerLink: ['contracts/list-contracts']
+                    },
+                    {
+                        label: 'Create New Contract',
+                        icon: 'fa fa-square-plus',
+                        routerLink: ['contracts/create-new-contract']
+                    }
 
 
-            //     ]
+                ]
 
-            // },
+            },
             // {
 
             //     label: 'Settings',

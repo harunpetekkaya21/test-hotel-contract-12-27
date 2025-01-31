@@ -21,7 +21,7 @@ import { ContractConfirmDialogComponent } from '../../contract-confirm-dialog/co
 import { PriceCalculationService } from '../../../../../core/services/contract/price-calculation.service';
 
 
-export interface Period {
+ interface Period {
   id: string;
   startDate: Date;
   endDate: Date;
@@ -31,12 +31,12 @@ export interface Period {
   roomData: RoomData[];
 }
 
-export interface RoomData {
+ interface RoomData {
   roomType: string;
   cells: Cell[];
 }
 
-export interface Cell {
+ interface Cell {
   basePrice: number | 0;
   allotment: number | 0;
   adults: Adult[];
@@ -45,13 +45,13 @@ export interface Cell {
   invalid?: boolean; // Hücre geçerlilik durumu
 }
 
-export interface Adult {
+ interface Adult {
   adultNumber: number;
   price: number | 0;
   multiplier: number;
 }
 
-export interface ChildPricing {
+ interface ChildPricing {
   ageRange: { min: number; max: number };
   price: number | 0;
   multiplier: number;
