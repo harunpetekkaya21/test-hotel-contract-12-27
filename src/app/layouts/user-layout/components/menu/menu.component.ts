@@ -20,93 +20,94 @@ export class MenuComponent implements OnInit {
     ngOnInit() {
         this.model = [
             {
-                label: '',
+                label: 'Dashboard',
                 items: [
                     { label: 'Dashboard', icon: 'fa fa-home', routerLink: [''] }
                 ]
             },
 
-          
+            // {
+
+            //     label: 'Roooms',
+            //     icon: 'fa fa-bed',
+            //     items: [
+
+            //         {
+            //             label: 'Room Type List',
+            //             icon: 'fa fa-list',
+            //             routerLink: ['rooms/list-room-type']
+            //         },
+            //         {
+            //             label: 'Create New Room Type',
+            //             icon: 'fa fa-square-plus',
+            //             routerLink: ['rooms/create-new-room-type']
+            //         }
+            //     ]
+
+            // },
             {
-                label: 'Rooms',
-                icon: '',
-                items: [
 
-                    {
-                        label: 'Roooms',
-                        icon: 'fa fa-bed',
-                        items: [
-                           
-                            {
-                                label: 'Room Type List',
-                                icon: 'fa fa-list',
-                                routerLink: ['rooms/list-room-type']
-                            },
-                            {
-                                label: 'Create New Room Type',
-                                icon: 'fa fa-square-plus',
-                                routerLink: ['rooms/create-new-room-type']
-                            }
-                            
-                            
-
-                        ]
-                    },
-
-                ]
-            },
-            {
                 label: 'Contracts',
-                icon: '',
+                icon: 'fa fa-book',
                 items: [
-
                     {
-                        label: 'Contracts',
-                        icon: 'fa fa-book',
-                        items: [
-                            {
-                                label: 'Contract List',
-                                icon: 'fa fa-list',
-                                routerLink: ['contracts/list-contracts']
-                            },
-                            {
-                                label: 'Create New Contract',
-                                icon: 'fa fa-square-plus',
-                                routerLink: ['contracts/create-new-contract']
-                            }
-                            
-
-                        ]
+                        label: 'Contract List',
+                        icon: 'fa fa-list',
+                        routerLink: ['contracts/list-contracts']
                     },
-                    
+                    {
+                        label: 'Create New Contract',
+                        icon: 'fa fa-square-plus',
+                        routerLink: ['contracts/create-new-contract']
+                    }
 
+
+                ]
+
+            },
+            // {
+
+            //     label: 'Settings',
+            //     icon: 'fa fa-cog',
+            //     items: [
+            //         {
+            //             label: '',
+            //             icon: '',
+            //             routerLink: ['']
+            //         },
+
+            //     ]
+
+            // },
+
+            {
+                label: 'My Facility',
+                icon: 'fa fa-hotel',
+                items: [
+                    { label: 'My Facility', icon: 'fa fa-hotel', routerLink: ['my-facility'] }
                 ]
             },
             {
-                label: 'Settings',
-                icon: '',
+                label: 'Promotions',
+                icon: 'fa fa-percent',
                 items: [
-
-                    {
-                        label: 'Settings',
-                        icon: 'fa fa-cog',
-                        items: [
-                            {
-                                label: 'My Profile',
-                                icon: 'fa fa-user',
-                                routerLink: ['settings/profile']
-                            },
-                            
-                            
-
-                        ]
-                    },
-                    
-
+                    { label: 'Create Promotions', icon: 'fa fa-plus', routerLink: ['promotions'] }
                 ]
             },
-
-           
+            {
+                label: 'Stop-Sales',
+                icon: 'fa fa-stop',
+                items: [
+                    { label: 'Create Stop-Sales', icon: 'fa fa-plus', routerLink: ['stop-sales'] }
+                ]
+            },
+            // {
+            //     label: 'Actions',
+            //     icon: 'fa fa-hexagon-nodes',
+            //     items: [
+            //         { label: 'Create Actions', icon: 'fa fa-plus', routerLink: ['actions'] }
+            //     ]
+            // },
 
         ];
     }
