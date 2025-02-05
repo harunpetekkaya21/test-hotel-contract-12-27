@@ -1,31 +1,16 @@
 <div class="card">
 
-    <div class="container">
-        <form [formGroup]="form">
-          <div class="discount-list">
-            <div class="discount-row" *ngFor="let discount of discountsArray; let i = index" [formGroup]="discount">
-              
-              <!-- İndirim Türü -->
-              <div class="discount-type">
-                <p>{{ discountTypes[i].name }}</p>
-              </div>
-      
-              <div class="discount-switch">
-                <p-inputSwitch formControlName="isActive"></p-inputSwitch>
-              </div>
-              <!-- İndirim Şartı (Dropdown) -->
-              <div class="discount-condition" *ngIf="discount.get('isActive')?.value">
-                <p-dropdown formControlName="condition" [options]="conditions" optionLabel="label" placeholder="Sart Seciniz"></p-dropdown>
-              </div>
-      
-              <!-- Aktif/Pasif (InputSwitch) -->
-             
-            </div>
-          </div>
-      
-          <!-- Kaydet Butonu -->
-          <button type="button" (click)="saveDiscounts()" pButton label="Save" icon="pi pi-save"></button>
-        </form>
-      </div>
+  <p-tabView [activeIndex]="1">
+   
+    <p-tabPanel header="Promotion List">
+        <ng-template pTemplate="content"> Complex Content to Lazy Load </ng-template>
+    </p-tabPanel>
+    <p-tabPanel header="Create New Promotions">
+        <ng-template pTemplate="content"> 
+          <!-- <app-create-promotion></app-create-promotion> -->
+           <app-test-promotions></app-test-promotions>
+        </ng-template>
+    </p-tabPanel>
+    </p-tabView>
       
 </div>

@@ -88,7 +88,7 @@ export class TopSubBarComponent implements OnInit {
                 label: 'Promotions',
                 icon: 'fa fa-percent',
                 items: [
-                    { label: 'Create Promotions', icon: 'fa fa-plus', routerLink: ['promotions'] }
+                    { label: 'Promotions Management', icon: 'fa fa-gears', routerLink: ['promotions'] }
                 ]
             },
             {

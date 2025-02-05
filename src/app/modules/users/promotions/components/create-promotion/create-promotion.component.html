@@ -1,0 +1,142 @@
+<div class="grid">
+
+    <!-- date ranges -->
+    <div class="col-12 lg:col-6 xl:col-6">
+        <p-fieldset legend="1-Date Ranges" toggleable="false">
+            <p-calendar placeholder="Start Date" [(ngModel)]="startDate" [showIcon]="true" [showOnFocus]="false"
+                inputId="buttondisplay" />
+            <p-calendar placeholder="End Date" [(ngModel)]="endDate" [showIcon]="true" [showOnFocus]="false"
+                inputId="buttondisplay" />
+        </p-fieldset>
+    </div>
+
+    <!-- room types -->
+    <div class="col-12 lg:col-6 xl:col-6">
+        <p-fieldset legend="2-Room Types" toggleable="false">
+            <!-- MultiSelect Dropdown -->
+            <p-table scrollable="true" scrollHeight="200px" [value]="simpleRoomTypes"
+                [(selection)]="selectedSimpeRoomTypes" dataKey="id" [tableStyle]="{'min-width': '50rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+
+                        <th>Name</th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-roomType>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="roomType" />
+                        </td>
+
+                        <td>{{roomType.name}}</td>
+
+                    </tr>
+                </ng-template>
+            </p-table>
+
+
+        </p-fieldset>
+    </div>
+
+    <!-- offers -->
+    <div class="col-12 lg:col-12 xl:col-12">
+        <p-fieldset legend="3-Offers" toggleable="false">
+            <!-- Apply with other offers eklemeyi unutma ! -->
+            <p-dropdown [options]="offerTypeList" [(ngModel)]="selectedOfferType" optionLabel="name"
+                placeholder="Select a Offer Type" />
+
+                <div class="input-group">
+                    <label for="">Is Active</label>
+                    <p-inputSwitch [(ngModel)]="isActiveOffer" ></p-inputSwitch>
+                </div>
+
+                <div class="input-group">
+                    <label for="">Accommodation Name</label>
+                    <input [(ngModel)]="accommodationName" pInputText />
+                </div>
+
+                <div class="input-group">
+                    <label for="">Non-Refundable</label>
+                    <p-inputSwitch [(ngModel)]="isNonRefundableOffer" ></p-inputSwitch>
+                </div>
+            
+                <div class="input-group">
+                    <label for="">Priority</label>
+                    <p-inputNumber [(ngModel)]="offerPriority" />
+                </div>
+
+                <div class="input-group">
+                    <label for="">Application Type</label>
+                    <p-dropdown [options]="applicationTypeList" [(ngModel)]="selectedApplicationType" optionLabel="name"
+                placeholder="Select Application Type" />
+                </div>
+
+                <div class="input-group">
+                    <label for="">It is mandatory to know the promotional code to apply the offer:</label>
+                    <p-inputSwitch [(ngModel)]="itIsMandatoryToKnowThePromotionalCodeToApplyTheOffer" ></p-inputSwitch>
+                </div>
+
+
+                <div *ngIf="itIsMandatoryToKnowThePromotionalCodeToApplyTheOffer" class="input-group">
+                    <label for=""> Promo code for booking request</label>
+                    <input [(ngModel)]="promoCodeForBookingRequest" pInputText />
+                </div>
+               
+
+
+                <div class="input-group">
+                    <label for="">Board Types</label>
+                    <p-dropdown [options]="boardTypeList" [(ngModel)]="selectedBoardType" optionLabel="name"
+                placeholder="Select Board Type" />
+                </div>
+
+
+                <div class="input-group">
+                    <label for="">Minimum stay nights :</label>
+                    <p-inputNumber [(ngModel)]="minimumStayNightsFrom"  placeholder="From"/>
+                    <p-inputNumber [(ngModel)]="minimumStayNightsTo" placeholder="To" />
+                </div>
+
+
+
+                <div class="input-group">
+                    <label for="">Children A :</label>
+                    <div *ngFor="let a of ChildrenACategories" class="field-checkbox">
+                        <p-checkbox 
+                            [(ngModel)]="selectedChildrenA"
+                            [label]="a.name"
+                            name="group"
+                            [value]="a" />
+                    </div>
+                </div>
+
+                
+                <div class="input-group">
+                    <label for="">Children B:</label>
+                    <div *ngFor="let b of ChildrenBCategories" class="field-checkbox">
+                        <p-checkbox 
+                            [(ngModel)]="selectedChildrenB"
+                            [label]="b.name"
+                            name="group"
+                            [value]="b" />
+                    </div>
+                </div>
+
+
+                <div class="input-group">
+                    <label for="">Booking Date</label>
+                    <p-calendar placeholder="Start Date" [(ngModel)]="bookingStartDate" [showIcon]="true" [showOnFocus]="false"
+                    inputId="buttondisplay" />
+                <p-calendar placeholder="End Date" [(ngModel)]="bookingEndDate" [showIcon]="true" [showOnFocus]="false"
+                    inputId="buttondisplay" />
+                </div>
+                
+
+
+
+        </p-fieldset>
+    </div>
+
+</div>

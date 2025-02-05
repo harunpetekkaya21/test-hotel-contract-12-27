@@ -1,0 +1,189 @@
+<div class="grid">
+
+  <!-- date ranges -->
+  <div class="col-12 lg:col-6 xl:col-6">
+    <p-fieldset legend="1-Date Ranges" toggleable="false">
+      <p-calendar placeholder="Start Date" [(ngModel)]="startDate" [showIcon]="true" [showOnFocus]="false"
+        inputId="buttondisplay" />
+      <p-calendar placeholder="End Date" [(ngModel)]="endDate" [showIcon]="true" [showOnFocus]="false"
+        inputId="buttondisplay" />
+    </p-fieldset>
+  </div>
+
+  <!-- room types -->
+  <div class="col-12 lg:col-6 xl:col-6">
+    <p-fieldset legend="2-Room Types" toggleable="false">
+      <!-- MultiSelect Dropdown -->
+      <p-table scrollable="true" scrollHeight="200px" [value]="simpleRoomTypes" [(selection)]="selectedSimpeRoomTypes"
+        dataKey="id" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+
+            <th>Name</th>
+
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-roomType>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="roomType" />
+            </td>
+
+            <td>{{roomType.name}}</td>
+
+          </tr>
+        </ng-template>
+      </p-table>
+
+
+    </p-fieldset>
+  </div>
+
+
+  <div class="col-12 lg:col-12 xl:col-12">
+    <p-fieldset legend="Offers" toggleable="false">
+      <form [formGroup]="promotionsForm">
+
+
+        <div class="input-group">
+          <label for="offerType">Offer Type</label>
+          <p-dropdown formControlName="offerType" [options]="offerTypeList" optionLabel="name"
+            placeholder="Select an Offer Type" (onChange)="onOfferTypeChange($event.value)"></p-dropdown>
+        </div>
+
+        <div class="input-group">
+          <label>Is Active</label>
+          <p-inputSwitch formControlName="isActiveOffer"></p-inputSwitch>
+        </div>
+
+        <div class="input-group">
+          <label>Accommodation Name</label>
+          <input formControlName="accommodationName" pInputText />
+        </div>
+
+        <div class="input-group">
+          <label>Non-Refundable</label>
+          <p-inputSwitch formControlName="isNonRefundableOffer"></p-inputSwitch>
+        </div>
+
+        <div class="input-group">
+          <label>Priority</label>
+          <p-inputNumber formControlName="offerPriority"></p-inputNumber>
+        </div>
+
+        <div class="input-group">
+          <label>Application Type</label>
+          <p-dropdown formControlName="selectedApplicationType" [options]="applicationTypeList" optionLabel="name"
+            placeholder="Select Application Type"></p-dropdown>
+        </div>
+
+        <div class="input-group">
+          <label>It is mandatory to know the promotional code to apply the offer:</label>
+          <p-inputSwitch formControlName="itIsMandatoryToKnowThePromotionalCodeToApplyTheOffer"></p-inputSwitch>
+        </div>
+
+
+        <div class="input-group"
+          *ngIf="promotionsForm.get('itIsMandatoryToKnowThePromotionalCodeToApplyTheOffer')?.value">
+          <label>Promo code for booking request</label>
+          <input formControlName="promoCodeForBookingRequest" pInputText />
+        </div>
+
+
+        <div class="input-group">
+          <label>Board Types</label>
+          <p-dropdown formControlName="boardType" [options]="boardTypeList" optionLabel="name"
+            placeholder="Select Board Type"></p-dropdown>
+        </div>
+
+        <div class="input-group">
+          <label>Minimum stay nights:</label>
+          <p-inputNumber formControlName="minimumStayNightsFrom" placeholder="From"></p-inputNumber>
+          <p-inputNumber formControlName="minimumStayNightsTo" placeholder="To"></p-inputNumber>
+        </div>
+
+        <div class="input-group">
+          <label>Children A:</label>
+          <div *ngFor="let a of ChildrenACategories" class="field-checkbox">
+            <p-checkbox formControlName="selectedChildrenA" [label]="a.name" name="groupA" [value]="a">
+            </p-checkbox>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Children B:</label>
+          <div *ngFor="let b of ChildrenBCategories" class="field-checkbox">
+            <p-checkbox formControlName="selectedChildrenB" [label]="b.name" name="groupB" [value]="b">
+            </p-checkbox>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Booking Date</label>
+          <p-calendar formControlName="bookingStartDate" placeholder="Start Date" [showIcon]="true"
+            [showOnFocus]="false">
+          </p-calendar>
+
+          <p-calendar formControlName="bookingEndDate" placeholder="End Date" [showIcon]="true" [showOnFocus]="false">
+          </p-calendar>
+        </div>
+
+
+        <!--   "Board type offer" seçildiğinde göster -->
+        <div *ngIf="promotionsForm.get('offerType')?.value?.name === 'Board type offer'">
+          <div class="input-group">
+            <label>Apply to additionals</label>
+            <p-checkbox binary="true" formControlName="applyToAdditionals"></p-checkbox>
+          </div>
+
+          <div class="input-group">
+            <label>Apply to children</label>
+            <p-checkbox binary="true" formControlName="applyToChildren"></p-checkbox>
+          </div>
+
+          <div class="input-group">
+            <label>Customer pays</label>
+            <p-dropdown formControlName="customerPays" [options]="customerPaysOptions"
+              placeholder="Select an option"></p-dropdown>
+          </div>
+
+          <div class="input-group">
+            <label>And gets</label>
+            <p-dropdown formControlName="andGets" [options]="andGetsOptions"
+              placeholder="Select an option"></p-dropdown>
+          </div>
+        </div>
+
+        <!--   "Nights offer" seçildiğinde göster -->
+        <div *ngIf="promotionsForm.get('offerType')?.value?.name === 'Nights offer'">
+          <div class="input-group">
+            <label>For each</label>
+            <p-dropdown formControlName="nightsOffer_ForEach" [options]="nightsOfferForEachOptions"
+              placeholder="Select an option"></p-dropdown>
+          </div>
+
+          <div class="input-group">
+            <label>Free</label>
+            <p-dropdown formControlName="nightsOffer_Free" [options]="nightsOfferFreeOptions"
+              placeholder="Select an option"></p-dropdown>
+          </div>
+
+          <div class="input-group">
+            <label>Type</label>
+            <p-dropdown formControlName="nightsOffer_Type" [options]="nightsOffer_TypeOptions"
+              placeholder="Select an option"></p-dropdown>
+          </div>
+
+          <div class="input-group">
+            <label>Apply only once</label>
+            <p-checkbox binary="true" formControlName="nightsOffer_ApplyOnlyOnce"></p-checkbox>
+          </div>
+
+        </div>
+
+      </form>
+    </p-fieldset>
+  </div>
+
+</div>
